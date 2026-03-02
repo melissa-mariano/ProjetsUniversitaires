@@ -1,15 +1,15 @@
-# projects
+# 🔬 melissa's academic lab
 
-Répertoire de projets de science des données et de traitement du langage naturel (NLP) que je développe pour différents secteurs de l’industrie.
+bienvenue dans mon répertoire de stockage pour mes projets universitaires.
+
+## 📂 contenu du dépôt
+ce "lab" peut contenir différents types de fichiers et projets :
+* **programmation & stats** : scripts, fonctions et analyses (R, Python, etc.).
+* **traitement de données** : manipulation de structures complexes (Vecteurs, Matrices, Listes).
+* **intelligence artificielle & NLP** : études sur le langage naturel et modèles de données.
+* **projets industriels** : analyses appliquées à des secteurs spécifiques.
+* **rapports de TD/TP** : solutions et exercices pratiques des modules de formation.
 
 
-Projets actuels : 
-
-📊 Analyse RSE / ESG du CAC 40 (FR + EN)
-
-Objectif : extraire et analyser les rapports RSE/ESG (PDF) des entreprises du CAC 40.
-Le projet comprend le nettoyage des textes, la lemmatisation bilingue (français/anglais), la détection automatique de langue, la création de n-grammes et la comparaison des thèmes ESG par entreprise et par secteur d’activité.
-
-
-Statut : 🚧 en construction — de nouveaux projets et améliorations seront ajoutés progressivement.
-
+---
+*note : ce dépôt sert de sauvegarde pour mon parcours à l'université.*
