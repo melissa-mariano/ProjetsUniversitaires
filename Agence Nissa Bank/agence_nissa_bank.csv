@@ -1,0 +1,13 @@
+﻿ID Client;Âge;Situation;Revenu mensuel €;Produits détenus;Crédit en cours;Épargne €
+C001;22;Étudiant;850;Compte courant, Carte Jeune;Non;200
+C002;45;Employé;1 600;Compte, Assurance Habitation;Oui (Crédit auto);500
+C003;34;Entrepreneur local;2 100;Compte, Carte pro;Oui (Micro-crédit);1 200
+C004;67;Retraité;1 400;Compte, Livret A;Non;8 000
+C005;29;Sans emploi;1 000 (RSA + aides);Compte, Carte de retrait;Non;100
+C006;51;Fonctionnaire;2 400;Compte, Assurance vie;Oui (Crédit immo);12 000
+C007;38;Employé;1 800;Compte, Carte bancaire;Non;1 500
+C008;19;Étudiant;700;Compte, Carte jeune;Non;50
+C009;42;Artisan;1 950;Compte, Carte pro, Crédit micro-entreprise;Oui;0
+C010;58;Retraité;1 300;Compte, Livret A;Non;6 000
+C011;27;Employé;1 500;Compte, Assurance santé;Oui (Crédit conso);300
+C012;36;Sans emploi;1 100 (RSA + aide logement);Compte;Non;100
