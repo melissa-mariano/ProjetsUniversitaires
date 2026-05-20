@@ -1,0 +1,1018 @@
+---
+title: "Le prix de l'essence et nos habitudes de déplacement"
+author: "Kayliah Avorebang Kombila · Yasmine Aouaj · Lily Porre · Melissa Mariano Albuquerque"
+date: "2026-05-16"
+output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: true
+    toc_depth: 2
+    number_sections: false
+---
+
+```{r global-options, include=FALSE}
+knitr::opts_chunk$set(
+  echo    = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+------------------------------------------------------------------------
+
+# introduction
+
+ce document analyse comment les habitudes de transport en France changent face à la hausse du prix de l'essence (SP95). À partir de données mensuelles allant de 2019 à 2026, l'objectif est de voir si les usagers roulent réellement moins ou s'ils se reportent vers les transports en commun. L'étude compare également les réactions selon le lieu de vie (zone urbaine, périurbaine ou rurale). Une attention particulière est donnée au nettoyage statistique pour s'assurer que c'est bien le prix qui modifie le comportement, et non d'autres événements extérieurs comme la reprise post-Covid.
+
+# problématique
+
+**sujet :** le prix de l'essence et nos habitudes de déplacement.
+
+**problématique :** est-ce que les gens prennent vraiment moins leur voiture quand le prix de l'essence augmente, ou est-on « obligé » de payer peu importe le prix ?
+
+![](images/clipboard-1974217169.jpeg){width="496"}
+
+**sous-questions de recherche :**
+
+- **SQ1 :** à partir de quel prix au litre observe-t-on une baisse statistiquement significative du trafic routier ? Est-ce progressif ou brutal ?
+- **SQ2 :** la hausse du prix de l'essence corrèle-t-elle avec une augmentation immédiate de la fréquentation des transports en commun ?
+- **SQ3 :** l'élasticité de la demande est-elle identique en zone rurale (dépendance forte) qu'en zone urbaine (alternatives disponibles) ?
+
+------------------------------------------------------------------------
+
+# littérature scientifique
+
+deux articles scientifiques à fort indice H ont été sélectionnés pour encadrer notre analyse.
+
+**article 1 : Brons et al. (2008)**, *A meta-analysis of the price elasticity of gasoline demand. A SUR approach*, Energy Economics.
+
+Cet article est une méta-analyse mondiale qui synthétise des dizaines d'études sur la demande d'essence. Les auteurs utilisent un modèle statistique avancé (SUR — *Seemingly Unrelated Regression*) et montrent que la demande d'essence se décompose en trois comportements : l'efficacité du véhicule, le kilométrage parcouru et le taux de possession de voitures. Leurs résultats clés : à **court terme**, l'élasticité est de **−0,34** (la demande est peu sensible au prix) ; à **long terme**, elle monte à **−0,84** (les gens finissent par acheter des voitures plus économes ou réduire leurs trajets). Ce cadre théorique est directement utile pour interpréter nos propres résultats sur les données françaises.
+
+**article 2 : Gelman et al. (2023)**, *The Response of Consumer Spending to Changes in Gasoline Prices*, American Economic Journal: Macroeconomics.
+
+cet article analyse comment les ménages américains ont réagi à la baisse des prix du pétrole de 2014-2015, en exploitant des millions de transactions bancaires réelles. Résultat principal : quand le prix de l'essence baisse, les ménages réinjectent quasi intégralement l'argent économisé dans d'autres dépenses (propension marginale à consommer ≈ 1). Cela confirme que le budget carburant est perçu comme une contrainte fixe — ce qui rejoint notre hypothèse d'*obligation de payer*.
+
+------------------------------------------------------------------------
+
+# analyse empirique : les données françaises (2019-2026)
+
+## chargement des packages
+
+ce bloc de code sert à automatiser la gestion des bibliothèques (packages) en R. Au lieu d'exiger que l'utilisateur installe manuellement les éléments manquants, le script vérifie ce qui est déjà présent sur l'ordinateur, télécharge les packages absents et active tous les outils nécessaires pour exécuter l'analyse de manière propre.
+
+```{r setup, message=FALSE, warning=FALSE}
+packages <- c(
+  "readxl",
+  "dplyr",
+  "tidyr",
+  "purrr",
+  "broom",
+  "ggplot2",
+  "ggpmisc",
+  "patchwork",
+  "scales"
+)
+
+installed  <- rownames(installed.packages())
+to_install <- packages[!packages %in% installed]
+if (length(to_install) > 0) {
+  install.packages(to_install, repos = "https://cran.r-project.org")
+}
+
+invisible(lapply(packages, library, character.only = TRUE))
+```
+
+**{r setup, message=FALSE, warning=FALSE} :** configure le bloc de code R dans le document R Markdown. Les arguments message=FALSE et warning=FALSE permettent de masquer les avertissements, les alertes de mise à jour ou les messages de chargement dans le document final.
+
+**packages \<- c(...) :** crée un vecteur contenant les noms des 9 bibliothèques nécessaires ao projet (telles que readxl pour lire les fichiers Excel, dplyr pour la manipulation de données et ggplot2 pour la création de graphiques).
+
+**installed \<- rownames(installed.packages()) :** génère une liste de tous les packages déjà installés localement sur votre ordinateur en interrogeant le système.
+
+**to_install \<- packages[!packages %in% installed] :** effectue un filtrage comparatif. L'opérateur %in% identifie les éléments de la liste requise qui sont présents sur la machine. Le point d'exclamation ! inverse cette logique pour isoler uniquement les packages demandés qui n'ont pas été trouvés sur l'ordinateur.
+
+**if (length(to_install) \> 0) { ... } :** ouvre une structure conditionnelle de sécurité. Si la longueur de la liste des packages manquants (to_install) est supérieure à zéro, le script exécute la commande install.packages() pour télécharger automatiquement ces outils depuis le dépôt officiel (CRAN). Si tous les packages sont déjà installés, cette étape est ignorée.
+
+**invisible(lapply(packages, library, character.only = TRUE)) :** charge en mémoire toutes les bibliothèques listées afin de rendre leurs fonctions disponibles pour la suite de l'analyse. La commande lapply applique la fonction library() de manière itérative, package par package. Le terme invisible() enveloppe l'opération pour empêcher l'affichage de logs d'initialisation inutiles dans la console.
+
+## jeu de données
+
+```{r}
+# importer les données
+df_raw <- read.csv2(
+  "dataset_france.csv",
+  stringsAsFactors = TRUE
+)
+```
+
+![](images/programmerhumor-io-stackoverflow-memes-python-memes-40400d8ac8d67f0-02.png)
+
+```{r}
+# dimensions du dataset
+dim(df_raw)
+```
+
+l'importation du fichier donne un ensemble de 274 observations et 22 variables.
+
+```{r}
+# structure des variables
+str(df_raw)
+```
+
+l'analyse de la structure montre que plusieurs variables numériques ont été importées comme facteurs, notamment les prix, le trafic et les variations en pourcentage, en raison des symboles €, % et des virgules décimales françaises. La variable *date* a également été importée comme facteur. Un nettoyage est donc nécessaire avant toute analyse.
+
+## nettoyage des données
+
+![](images/clipboard-1633811366.png){width="367"}
+
+```{r}
+# dupliquer le df
+df <- df_raw
+
+# supprimer des colonnes de calculs auxiliaires
+df <- subset(
+  df,
+  select = -c(X, X.1, X.2, X.3, X.4, X.5)
+)
+```
+
+```{r}
+# nouvelle verification
+str(df)
+summary(df)
+```
+
+```{r}
+# conversion de la date
+df$Date <- as.Date(
+  paste0(as.character(df$Date), "-01"),
+  format = "%Y-%m-%d"
+)
+```
+
+nous avons ensuite nettoyé la variable *zone*, car certaines valeurs incorrectes avaient été importées lors de la lecture du fichier CSV. que les trois catégories utiles à l'analyse ont été conservées : *urbaine, périurbaine* et *rurale.*
+
+```{r}
+# nettoyage de la variable zone
+df$Zone <- as.character(df$Zone)
+
+df <- subset(
+  df,
+  Zone %in% c("Urbaine", "Périurbaine", "Rurale")
+)
+
+df$Zone <- factor(
+  df$Zone,
+  levels = c("Urbaine", "Périurbaine", "Rurale")
+)
+```
+
+```{r}
+# fonction de conversion numérique
+# (supprime les symboles €, % et remplace les virgules par des points)
+clean_numeric <- function(x){
+  x <- as.character(x)
+  x <- gsub("€", "", x)
+  x <- gsub("%", "", x)
+  x <- gsub(",", ".", x)
+  x <- trimws(x)
+  as.numeric(x)
+}
+```
+
+```{r}
+# variables à convertir en numérique
+vars_numeric <- c(
+  "Prix_SP95",
+  "Prix.Gazole",
+  "Trafic.Routier",
+  "Voyageurs.TC",
+  "Index.SP95",
+  "Index.Trafic",
+  "Var.SP95..",
+  "Var.Trafic..",
+  "Var.TC..",
+  "Var.Gazole.."
+)
+
+# application de la fonction
+df[vars_numeric] <- lapply(
+  df[vars_numeric],
+  clean_numeric
+)
+```
+
+```{r}
+# vérification finale
+str(df)
+summary(df)
+```
+
+le nettoyage a permis de réduire le dataset de 274 à 261 observations en supprimant 6 colonnes parasites (X à X.5) et les lignes aux entrées corrompues de la variable zone.
+
+## création des sous-datasets
+
+```{r}
+# dataset pour les analyses en variations percentuelles (SQ1, SQ2, SQ3)
+df_var <- subset(
+  df,
+  !is.na(Var.SP95..) &
+  !is.na(Var.Trafic..) &
+  !is.na(Var.TC..)
+)
+
+# dataset pour les analyses en niveaux absolus (graphique temporel)
+df_abs <- subset(
+  df,
+  !is.na(Prix_SP95) &
+  !is.na(Trafic.Routier) &
+  Trafic.Routier > 0 &
+  Prix_SP95 > 0
+)
+
+# palette de couleurs par zone (cohérente sur tous les graphiques)
+couleurs_zone <- c(
+  "Urbaine"     = "#C2185B", # Rosa escuro
+  "Périurbaine" = "#E91E63", # Rosa médio
+  "Rurale"      = "#F8BBD0"  # Rosa claro
+)
+```
+
+**df_var :** ça crée un sous-tableau juste pour les calculs de pourcentages (sq1, sq2, sq3). ça vire direct toutes les lignes où y'a des "na" (cases vides) dans les variations de prix ou de trafic.
+
+**df_abs :** pareil mais pour les valeurs réelles (pour faire le graphique dans le temps). ça enlève les cases vides et ça bloque les chiffres à zéro ou moins, vu qu'on a pas de trafic négatif ou d'essence gratuite.
+
+```{r}
+cat(sprintf(
+  "donnees chargees : %d obs. (df_var) | %d obs. (df_abs)\n",
+  nrow(df_var),
+  nrow(df_abs)
+))
+
+cat(sprintf(
+  "periode : %s -> %s | zones : %s\n",
+  format(min(df_abs$Date), "%Y-%m"),
+  format(max(df_abs$Date), "%Y-%m"),
+  paste(levels(df_abs$Zone), collapse = ", ")
+))
+```
+
+on a bien nos données qui vont de janvier 2019 à mars 2026 pour les 3 zones.
+
+le tableau classique (df_abs) a ses 261 lignes au complet. le tableau des pourcentages (df_var) a 258 lignes, ce qui est super logique vu qu'on a perdu 3 lignes (le premier mois pour chaque zone) parce qu'on peut pas calculer de variation sans avoir un mois précédent pour comparer.
+
+### graphique G1 : evolution temporelle (2019-2026)
+
+*df_glob =* ça fusionne les 3 zones pour faire une moyenne globale par mois.
+
+*coef_ax =* c'est juste une bidouille mathématique pour forcer l'échelle des prix (des petits chiffres genre 1,50) à se superposer avec l'échelle du trafic (des gros chiffres genre 10000) sur le même dessin.
+
+*ggplot =* ça dessine les deux courbes, met le trafic en ligne continue bleue et le prix en pointillés rouges, et gère le double axe sur les côtés.
+
+*ggsave =* ça exporte direct le graphique en image png sur l'ordi.
+
+```{r}
+df_glob <- df_abs %>%
+  group_by(Date) %>%
+  summarise(
+    Prix_SP95 = mean(Prix_SP95),
+    Trafic    = mean(Trafic.Routier),
+    Voyageurs = mean(Voyageurs.TC),
+    .groups   = "drop"
+  )
+
+# coefficient pour superposer les deux axes
+coef_ax <- max(df_glob$Trafic) / max(df_glob$Prix_SP95)
+
+g1 <- ggplot(df_glob, aes(x = Date)) +
+
+  geom_line(
+    aes(y = Trafic, colour = "Trafic routier"),
+    linewidth = 1
+  ) +
+
+  geom_line(
+    aes(y = Prix_SP95 * coef_ax, colour = "Prix SP95"),
+    linewidth = 1,
+    linetype = "dashed"
+  ) +
+
+  scale_y_continuous(
+    name = "Trafic routier (veh.)",
+    sec.axis = sec_axis(~ . / coef_ax, name = "Prix SP95 (EUR/L)")
+  ) +
+
+  scale_colour_manual(
+    values = c("Trafic routier" = "#D81B60", "Prix SP95" = "#CE93D8")
+  ) +
+
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+
+  labs(
+    title    = "G1 - Analyse temporelle croisée : prix du SP95 et trafic routier",
+    subtitle = "Observations nationales de janvier 2019 à mars 2026",
+    colour   = NULL
+  ) +
+
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "top")
+
+g1
+
+ggsave("g1_prix_trafic.png", plot = g1, width = 10, height = 6, dpi = 300)
+```
+
+le graphique montre l'évolution conjointe du trafic routier et du prix du SP95 entre 2019 et 2026.
+
+l'élément le plus marquant est la **chute brutale du trafic en 2020**, liée aux confinements de la crise COVID-19, et non à une hausse du prix. À partir de 2021, le trafic retrouve rapidement ses niveaux d'avant-pandémie, **malgré une forte hausse des prix** (quasi 2 €/L en 2022).
+
+ce premier signal visuel suggère que la demande de mobilité est relativement peu sensible au prix à court terme.
+
+------------------------------------------------------------------------
+
+# SQ1 : seuil de rupture psychologique
+
+**question :** à partir de quel prix au litre on observe un changement de comportement du trafic routier ?
+
+**méthode :** nous avons divisé les données en 5 classes de prix et calculé, pour chaque classe, l'élasticité-prix moyenne. L'élasticité est le rapport entre la variation du trafic et la variation du prix :
+
+$$\varepsilon = \frac{\Delta\%\ \text{Trafic}}{\Delta\%\ \text{Prix SP95}}$$
+
+**ce que signifient les colonnes :**
+
+- *zone :* la zone géographique (urbaine, périurbaine ou rurale).
+
+- *faix_prix :* la tranche de prix du carburant (les catégories f1 à f5).
+
+- *n_obs :* le nombre d'observations, c'est-à-dire combien de mois de ton jeu de données se trouvent dans cette tranche de prix.
+
+- *prix_moy :* le prix moyen exact payé à la pompe pendant ces mois spécifiques.
+
+- *eps_moy :* l'élasticité moyenne. elle montre la réaction globale (positive : le trafic monte malgré la hausse des prix ; négative : le trafic baisse à cause du prix).
+
+- *eps_med :* l'élasticité médiane. c'est la valeur centrale de tes données. elle est cruciale car elle n'est pas faussée par des mois avec des valeurs extrêmes.
+
+- *ic_inf et ic_sup :* la limite inférieure et supérieure de l'intervalle de confiance. cela donne ta marge d'erreur statistique.
+
+- *var_traf :* la variation moyenne du trafic routier (en pourcentage) pour cette tranche.
+
+- *faix_rupture :* la tranche de prix précise où l'algorithme a détecté le changement de comportement le plus brutal.
+
+- *delta_max :* la taille de ce changement (la différence mathématique d'élasticité entre l'ancienne tranche et la nouvelle).
+
+```{r}
+# création des classes de prix et calcul de l'élasticité par observation
+df_seuil <- df_var %>%
+  mutate(
+    Faix_Prix = case_when(
+      Prix_SP95 < 1.50                    ~ "F1: < 1.50 EUR",
+      Prix_SP95 >= 1.50 & Prix_SP95 < 1.70 ~ "F2: 1.50-1.70 EUR",
+      Prix_SP95 >= 1.70 & Prix_SP95 < 1.90 ~ "F3: 1.70-1.90 EUR",
+      Prix_SP95 >= 1.90 & Prix_SP95 < 2.10 ~ "F4: 1.90-2.10 EUR",
+      TRUE                                ~ "F5: >= 2.10 EUR"
+    ),
+
+    Faix_Prix = factor(
+      Faix_Prix,
+      levels = c(
+        "F1: < 1.50 EUR",
+        "F2: 1.50-1.70 EUR",
+        "F3: 1.70-1.90 EUR",
+        "F4: 1.90-2.10 EUR",
+        "F5: >= 2.10 EUR"
+      )
+    ),
+
+    # elasticite = variation trafic / variation prix
+    epsilon_SP95 = Var.Trafic.. / Var.SP95..
+
+  ) %>%
+
+  # suppression des valeurs extremes (divisions par zero ou aberrations)
+  filter(abs(epsilon_SP95) < 50)
+
+
+# calcul des statistiques par zone et par classe de prix
+seuil_table <- df_seuil %>%
+
+  group_by(Zone, Faix_Prix) %>%
+
+  summarise(
+    n_obs    = n(),
+    Prix_moy = mean(Prix_SP95),
+    eps_moy  = mean(epsilon_SP95, na.rm = TRUE),
+    eps_med  = median(epsilon_SP95, na.rm = TRUE),
+    eps_sd   = sd(epsilon_SP95, na.rm = TRUE),
+    Var_Traf = mean(Var.Trafic.., na.rm = TRUE),
+    .groups  = "drop"
+  ) %>%
+
+  mutate(
+    IC_inf = eps_moy - 1.96 * eps_sd / sqrt(n_obs),
+    IC_sup = eps_moy + 1.96 * eps_sd / sqrt(n_obs)
+  )
+
+
+# detection numerique du seuil :
+# on cherche la plus grande variation d'elasticité entre deux classes consécutives
+seuil_rupture <- seuil_table %>%
+
+  group_by(Zone) %>%
+  arrange(Faix_Prix) %>%
+
+  mutate(
+    delta_eps = eps_moy - lag(eps_moy),
+    Rupture   = abs(delta_eps) > 0.15
+  ) %>%
+
+  filter(!is.na(delta_eps)) %>%
+
+  summarise(
+    Faix_Rupture = Faix_Prix[which.max(abs(delta_eps))],
+    Delta_max    = round(max(abs(delta_eps), na.rm = TRUE), 4),
+    .groups      = "drop"
+  )
+
+
+# affichage des résultats
+cat("\nelasticités par classe de prix et par zone :\n")
+
+seuil_table %>%
+  select(Zone, Faix_Prix, n_obs, Prix_moy, eps_moy, eps_med, IC_inf, IC_sup, Var_Traf) %>%
+  mutate(across(where(is.numeric), ~ round(.x, 4))) %>%
+  print(n = Inf)
+
+cat("\nseuil de rupture detecte numeriquement :\n")
+print(seuil_rupture)
+```
+
+**les résultats :**
+
+1.  validation mathématique du point de rupture le deuxième tableau confirme que l'algorithme a localisé la plus grande variation de comportement (delta_max supérieur à 3.25) exactement lors de la transition vers la tranche f3 (1,70 - 1,90 eur), de façon identique pour les trois zones. cela prouve empiriquement la thèse du "palier psychologique".
+
+2.  inversion de l'effet prix vs reprise économique en analysant la colonne de l'élasticité moyenne (eps_moy), on observe le moment exact où la contrainte budgétaire annule le facteur macroéconomique :
+
+    - f1 et f2 (\< 1,70 eur) : élasticités fortement positives (de 2.77 à 5.64). le trafic augmentait indépendamment de la hausse des prix, indiquant la reprise liée à la fin des confinements.
+
+    - f3 (1,70 - 1,90 eur) : l'élasticité s'inverse drastiquement et devient négative (autour de -0.48). c'est à ce niveau de prix que le coût du carburant prend le dessus sur le besoin de mobilité, provoquant une contraction.
+
+3.  preuve géographique du consommateur captif au sein de la tranche de rupture (f3), la métrique la plus importante est la médiane (eps_med), qui neutralise les valeurs extrêmes :
+
+    - zone urbaine : -0.480. il y a une réduction quantifiable de l'usage de la voiture (flexibilité et alternatives disponibles).
+
+    - zone rurale : -0.025. cette valeur presque à zéro indique une rigidité totale de la demande. une fois le plafond psychologique atteint, le conducteur rural ne parvient pas à réduire l'usage de son véhicule dans les mêmes proportions que le citadin. cela prouve numériquement la théorie de l'usager captif et de l'obligation de payer.
+
+4.  alerte statistique (tranche f5) dans la colonne n_obs, la tranche f5 (\>= 2,10 eur) ne compte qu'un seul enregistrement. par conséquent, les intervalles de confiance (ic_inf et ic_sup) affichent "na" (données insuffisantes pour calculer la variance).
+
+```{r}
+# graphique G3 — elasticité par classe de prix
+g3 <- ggplot(
+  seuil_table,
+  aes(x = Faix_Prix, y = eps_moy, fill = Zone)
+) +
+
+  geom_col(position = "dodge", alpha = 0.85) +
+
+  geom_errorbar(
+    aes(ymin = IC_inf, ymax = IC_sup),
+    position = position_dodge(0.9),
+    width    = 0.25,
+    linewidth = 0.7
+  ) +
+
+  geom_hline(yintercept = 0, colour = "black") +
+
+  geom_vline(
+    xintercept = 3.5,
+    linetype   = "dashed",
+    colour     = "#CE93D8",
+    linewidth  = 1
+  ) +
+
+  annotate(
+    "text",
+    x      = 3.55,
+    y      = max(seuil_table$eps_moy, na.rm = TRUE) * 0.85,
+    label  = "<- seuil detecte",
+    hjust  = 0,
+    size   = 3.5,
+    colour = "black"
+  ) +
+
+  scale_fill_manual(values = couleurs_zone) +
+
+  labs(
+    title    = "SQ1 : élasticité selon les classes de prix",
+    subtitle = "Detéction du seuil psychologique et intervalles de confiance a 95 %",
+    x        = "Classe de prix SP95",
+    y        = "Elasticite moyenne (epsilon)",
+    fill     = "Zone"
+  ) +
+
+  theme_minimal(base_size = 12) +
+  theme(axis.text.x = element_text(angle = 15, hjust = 1))
+
+g3
+
+ggsave("g3_seuil_rupture.png", plot = g3, width = 10, height = 6, dpi = 300)
+```
+
+le seuil de rupture apparaît de façon cohérente dans la classe **F3 : 1,70–1,90 €** pour les trois zones. C'est à ce niveau de prix que le changement d'élasticité est le plus important numériquement (Δε ≈ 3,3 à 3,5 selon la zone).
+
+en pratique, cela signifie que **le comportement du trafic change de régime à partir d'environ 1,70 €** : les élasticités passent de valeurs très positives (F1/F2, dynamique post-COVID) à des valeurs proches de zéro ou légèrement négatives (F3/F4). Ce n'est pas une chute brutale du trafic, mais un affaiblissement progressif de la mobilité, qui confirme l'existence d'un **palier psychologique**.
+
+------------------------------------------------------------------------
+
+# SQ2 : l'élasticité et le report modal
+
+**question :** la hausse du prix de l'essence est-elle associée à une augmentation de la fréquentation des transports en commun ?
+
+**méthode :** l'élasticité croisée mesure si deux biens sont substituts :
+
+$$\varepsilon_{\text{croisée}} = \frac{\Delta\%\ \text{Voyageurs TC}}{\Delta\%\ \text{Prix SP95}}$$
+
+si le résultat est positif, cela suggère que quand l'essence devient chère, les usagers se reportent vers les TC.
+
+```{r}
+# calcul de l'élasticité croisée par observation
+df_cross <- df_var %>%
+
+  mutate(
+
+    epsilon_croisee = Var.TC.. / Var.SP95..,
+
+    Faix_Prix = case_when(
+      Prix_SP95 < 1.50                     ~ "F1: <1.50EUR",
+      Prix_SP95 >= 1.50 & Prix_SP95 < 1.70 ~ "F2: 1.50-1.70EUR",
+      Prix_SP95 >= 1.70 & Prix_SP95 < 1.90 ~ "F3: 1.70-1.90EUR",
+      Prix_SP95 >= 1.90 & Prix_SP95 < 2.10 ~ "F4: 1.90-2.10EUR",
+      TRUE                                 ~ "F5: >=2.10EUR"
+    ),
+
+    Faix_Prix = factor(
+      Faix_Prix,
+      levels = c(
+        "F1: <1.50EUR", "F2: 1.50-1.70EUR", "F3: 1.70-1.90EUR",
+        "F4: 1.90-2.10EUR", "F5: >=2.10EUR"
+      )
+    )
+
+  ) %>%
+
+  filter(abs(epsilon_croisee) < 50)
+
+
+# agrégation par zone avec intervalles de confiance
+cross_zone <- df_cross %>%
+
+  group_by(Zone) %>%
+
+  summarise(
+    n             = n(),
+    eps_crois_moy = mean(epsilon_croisee, na.rm = TRUE),
+    eps_crois_med = median(epsilon_croisee, na.rm = TRUE),
+    eps_crois_sd  = sd(epsilon_croisee, na.rm = TRUE),
+    .groups       = "drop"
+  ) %>%
+
+  mutate(
+    IC_inf = eps_crois_moy - 1.96 * eps_crois_sd / sqrt(n),
+    IC_sup = eps_crois_moy + 1.96 * eps_crois_sd / sqrt(n),
+
+    Interpretation = case_when(
+      eps_crois_moy > 0.10 ~ "Biens substituts -> report modal avere",
+      eps_crois_moy > 0    ~ "Legere substituabilite",
+      TRUE                 ~ "Biens independants -> pas de report modal"
+    )
+  )
+
+
+# elasticité croisée par classe de prix
+cross_faix <- df_cross %>%
+  group_by(Zone, Faix_Prix) %>%
+  summarise(
+    eps_croisee = mean(epsilon_croisee, na.rm = TRUE),
+    .groups     = "drop"
+  )
+
+
+# affichage
+cat("\ntableau synthese SQ2 :\n")
+
+cross_zone %>%
+  select(Zone, eps_crois_moy, eps_crois_med, IC_inf, IC_sup, Interpretation) %>%
+  rename(
+    "epsilon croisee (moy)" = eps_crois_moy,
+    "epsilon croisee (med)" = eps_crois_med,
+    "IC 95% inf"            = IC_inf,
+    "IC 95% sup"            = IC_sup
+  ) %>%
+  mutate(across(where(is.numeric), ~ round(.x, 4))) %>%
+  print()
+
+cat("\nelasticite croisee par classe de prix :\n")
+cross_faix %>%
+  mutate(across(where(is.numeric), ~ round(.x, 4))) %>%
+  print(n = Inf)
+```
+
+```{r}
+# graphique G4 — elasticité croisée moyenne par zone
+g4 <- ggplot(cross_zone, aes(x = Zone, y = eps_crois_moy, fill = Zone)) +
+
+  geom_col(alpha = 0.85, width = 0.6) +
+
+  geom_errorbar(
+    aes(ymin = IC_inf, ymax = IC_sup),
+    width    = 0.2,
+    linewidth = 0.8
+  ) +
+
+  geom_hline(yintercept = 0, linetype = "solid") +
+
+  scale_fill_manual(values = couleurs_zone) +
+
+  labs(
+    title    = "G4 - SQ2 : elasticité croisee et report modal",
+    subtitle = "ε > 0 : substitution | ε proche de 0 : independance | IC 95%",
+    x        = NULL,
+    y        = "Elasticité croisée",
+    fill     = NULL
+  ) +
+
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "none")
+
+
+# graphique G6 — elasticité croisée par classe de prix
+g6 <- ggplot(
+  cross_faix,
+  aes(x = Faix_Prix, y = eps_croisee, colour = Zone, group = Zone)
+) +
+
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+
+  scale_colour_manual(values = couleurs_zone) +
+
+  labs(
+    title    = "G6 - SQ2 : intensité du report modal selon le niveau de prix",
+    subtitle = "le report augmente-t-il lorsque le prix franchit le seuil ?",
+    x        = "classe de prix SP95",
+    y        = "elasticité croisée",
+    colour   = "Zone"
+  ) +
+
+  
+  theme_minimal(base_size = 12) +
+  theme(axis.text.x = element_text(angle = 15, hjust = 1))
+
+g4
+g6
+
+ggsave("g4_elasticite_croisee.png",  plot = g4, width = 10, height = 6, dpi = 300)
+ggsave("g6_report_modal_prix.png",   plot = g6, width = 10, height = 6, dpi = 300)
+
+```
+
+l'analyse de la SQ2 utilise quatre visualisations (deux tableaux et deux graphiques) pour expliquer les données, en passant d'une vue globale à une analyse détaillée par niveau de prix.
+
+dans un premier temps, le tableau de synthèse et le graphique G4 donnent une vue d'ensemble. Les résultats montrent une élasticité croisée moyenne positive dans les trois zones (≈ 1,35). *En théorie, cela suggère que la voiture et les transports en commun (TC) sont des biens substituts.* Cependant, le tableau montre des intervalles de confiance très larges, et le graphique G4 illustre ces barres d'erreur qui traversent la ligne du zéro (IC ≈ [-0,5 ; 3,2]). **L'utilisation de ces deux supports prouve que ce résultat global n'est pas statistiquement fiable.**
+
+dans un second temps, le tableau par classe de prix et le graphique G6 apportent la véritable explication. Le graphique G6 rend visible le changement de comportement : l'élasticité croisée est très positive pour les prix bas (F1/F2), puis elle chute et devient négative à partir de la classe F3 (≈ 1,70 €). Cela indique qu'au-delà de ce seuil, la hausse du prix de l'essence pèse trop sur le budget. En conséquence, les usagers réduisent toutes les formes de mobilité, y compris les TC, au lieu de simplement changer de mode de transport.
+
+------------------------------------------------------------------------
+
+# SQ3 : facteur géographique
+
+**question :** l'élasticité est-elle différente selon que l'on habite en zone urbaine (alternatives disponibles) ou en zone rurale (dépendance forte à la voiture) ?
+
+**méthode :** calcul de l'élasticité directe moyenne par zone, avec intervalles de confiance à 95 %.
+
+```{r}
+# SQ3 — elasticité directe par zone géographique
+elast_zone <- df_seuil %>%
+
+  group_by(Zone) %>%
+
+  summarise(
+    n            = n(),
+    eps_moy_SP95 = mean(epsilon_SP95, na.rm = TRUE),
+    eps_med_SP95 = median(epsilon_SP95, na.rm = TRUE),
+    eps_sd_SP95  = sd(epsilon_SP95, na.rm = TRUE),
+    # elasticite par rapport au gazole (complement d'information)
+    eps_moy_Gaz  = mean(Var.Trafic.. / Var.Gazole.., na.rm = TRUE),
+    .groups      = "drop"
+  ) %>%
+
+  mutate(
+    IC_inf = eps_moy_SP95 - 1.96 * eps_sd_SP95 / sqrt(n),
+    IC_sup = eps_moy_SP95 + 1.96 * eps_sd_SP95 / sqrt(n),
+
+    Interpretation = case_when(
+      abs(eps_moy_SP95) < 0.15 ~ "tres inelastique (dependance forte)",
+      abs(eps_moy_SP95) < 0.40 ~ "peu elastique",
+      abs(eps_moy_SP95) < 1.00 ~ "elasticite moderee",
+      TRUE                     ~ "tres elastique (sensibilite forte)"
+    )
+  )
+
+
+# affichage du tableau
+cat("\ntableau de synthese SQ3 - elasticite directe par zone :\n")
+
+elast_zone %>%
+  select(Zone, eps_moy_SP95, eps_med_SP95, IC_inf, IC_sup, eps_moy_Gaz, Interpretation) %>%
+  rename(
+    "epsilon SP95 (moy)"   = eps_moy_SP95,
+    "epsilon SP95 (med)"   = eps_med_SP95,
+    "IC 95% inf"           = IC_inf,
+    "IC 95% sup"           = IC_sup,
+    "epsilon gazole (moy)" = eps_moy_Gaz
+  ) %>%
+  mutate(across(where(is.numeric), ~ round(.x, 4))) %>%
+  print()
+```
+
+```{r}
+# graphique G2 — elasticité directe par zone
+g2 <- ggplot(elast_zone, aes(x = Zone, y = eps_moy_SP95, fill = Zone)) +
+
+  geom_col(alpha = 0.85, width = 0.6) +
+
+  geom_errorbar(
+    aes(ymin = IC_inf, ymax = IC_sup),
+    width    = 0.2,
+    linewidth = 0.8
+  ) +
+
+  geom_hline(yintercept =  0, linetype = "solid") +
+  geom_hline(yintercept = -1, linetype = "dashed", colour = "black", alpha = 0.6) +
+
+  annotate("text", x = 3.4, y = -1.05,
+           label = "elasticite unitaire", size = 3, colour = "black") +
+
+  scale_fill_manual(values = couleurs_zone) +
+
+  labs(
+    title    = "G2 - SQ3 : elasticité-prix directe par zone geographique",
+    subtitle = "ε = Δ trafic % / Δ prix %  |  IC 95%",
+    x        = NULL,
+    y        = "Elasticité moyenne (ε)",
+    fill     = NULL
+  ) +
+
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "none")
+
+g2
+
+ggsave("g2_sq3_elasticite_directe.png", plot = g2, width = 10, height = 6, dpi = 300)
+```
+
+1.  **le piège de la moyenne** : les résultats de la SQ3 génèrent des élasticités moyennes positives (autour de 1.05) pour toutes les zones. Le graphique G2 montre cependant des intervalles de confiance très larges qui frôlent le zéro. Cette moyenne est biaisée par les valeurs extrêmes de la reprise post-COVID (où le trafic et les prix augmentaient simultanément) et ne reflète pas la véritable sensibilité au prix.
+
+2.  **la vérité par la médiane** : pour comprendre l'effet géographique réel, il faut se tourner vers les médianes (ε SP95 (med)), qui neutralisent ces anomalies. Celles-ci racontent une tout autre histoire :
+
+    - zone urbaine (0,38) et zone périurbaine (0,30) : ces valeurs faibles montrent que même avec des alternatives de transport en commun, les conducteurs urbains peinent à réduire drastiquement l'usage de la voiture à court terme.
+
+    - zone rurale (0,13) : la valeur la plus basse du tableau. Proche de zéro, elle démontre une inélasticité presque totale.
+
+conclusion : l'absence de disparité radicale entre les moyennes ne signifie pas que le facteur géographique est inexistant. L'analyse des médianes prouve au contraire la théorie de la "dépendance structurelle". L'usager rural est le plus touché : en l'absence d'infrastructures de substitution, il est contraint d'absorber la hausse tarifaire, incapable d'ajuster son comportement de mobilité.
+
+------------------------------------------------------------------------
+
+# limites et précautions
+
+**1. les élasticités moyennes sont positives : pourquoi ?**
+
+nos élasticités directes moyennes sont positives (autour de 1,0), ce qui semble contra-intuitif : normalement, si le prix monte, la demande devrait baisser. Ce résultat s'explique par une **dynamique temporelle commune** : entre 2021 et 2024, la reprise économique post-COVID a fait augmenter simultanément le prix de l'essence et le trafic routier. Le calcul élasticité capte cette co-tendance, pas une causalité directe.
+
+**2. le R² faible n'est pas un problème : c'est une réponse**
+
+si nous avions testé une régression pour expliquer le trafic par le prix, le R² aurait été faible (environ 20-30 %). Cela ne signifie pas que le modèle est raté, cela signifie que **le prix de l'essence n'est pas le seul facteur qui explique le trafic**, et que la demande est en grande partie indépendante du prix. ***C'est exactement la définition d'une demande inélastique : les gens roulent quand même, peu importe le prix.*** Un R² élevé aurait contredit notre hypothèse d'*obligation de payer*.
+
+**3. les intervalles de confiance sont larges**
+
+les IC à 95 % traversent souvent zéro, ce qui signifie que les résultats restent incertains. Cela est attendu avec un dataset de taille modeste (258-261 observations) et des données mensuelles soumises à de nombreux chocs externes (COVID, guerre en Ukraine, saisonnalité).
+
+**4. la classe F5 (≥ 2,10 €) n'a qu'une observation par zone** : ses résultats ne sont pas statistiquement interprétables et doivent être cités avec prudence.
+
+**5. le dataset couvre la France entière par zone-type**, non des territoires locaux précis. Les différences intra-zone (ex : une ville dense vs une ville moyenne) sont lissées.
+
+------------------------------------------------------------------------
+
+# conclusion
+
+```{r}
+# tableau de synthèse final
+corr_zone <- df_abs %>%
+  group_by(Zone) %>%
+  summarise(
+    corr_SP95_trafic = cor(Prix_SP95, Trafic.Routier, use = "complete.obs"),
+    .groups          = "drop"
+  )
+
+synthese_finale <- corr_zone %>%
+  left_join(elast_zone   %>% select(Zone, eps_moy_SP95, eps_med_SP95, Interpretation), by = "Zone") %>%
+  left_join(cross_zone   %>% select(Zone, eps_crois_moy),                               by = "Zone") %>%
+  left_join(seuil_rupture %>% select(Zone, Faix_Rupture, Delta_max),                    by = "Zone") %>%
+  rename(
+    "Correlation r"         = corr_SP95_trafic,
+    "epsilon directe (moy)" = eps_moy_SP95,
+    "epsilon directe (med)" = eps_med_SP95,
+    "Interpretation"        = Interpretation,
+    "epsilon croisee TC"    = eps_crois_moy,
+    "Seuil rupture"         = Faix_Rupture,
+    "Delta epsilon"         = Delta_max
+  ) %>%
+  mutate(across(where(is.numeric), ~ round(.x, 4)))
+
+cat("\nTABLEAU DE SYNTHESE FINAL :\n")
+print(synthese_finale)
+```
+
+```{r}
+# grille visuelle narrative pour les slides
+grille_narrative <- (g1) / (g3 | g4) / (g2 | g6)
+ggsave("SYNTHESE_DATA_STORYTELLING.png", grille_narrative, width = 20, height = 18, dpi = 150)
+```
+
+```{r}
+# export CSV des résultats
+write.csv(synthese_finale, "RESULTATS_00_synthese_finale.csv",       row.names = FALSE, fileEncoding = "UTF-8")
+write.csv(seuil_table,     "RESULTATS_SQ1_elasticite_par_faixa.csv", row.names = FALSE, fileEncoding = "UTF-8")
+write.csv(seuil_rupture,   "RESULTATS_SQ1_seuil_detecte.csv",        row.names = FALSE, fileEncoding = "UTF-8")
+write.csv(cross_zone,      "RESULTATS_SQ2_elasticite_croisee.csv",   row.names = FALSE, fileEncoding = "UTF-8")
+write.csv(cross_faix,      "RESULTATS_SQ2_report_par_faixa.csv",     row.names = FALSE, fileEncoding = "UTF-8")
+write.csv(elast_zone,      "RESULTATS_SQ3_elasticite_directe.csv",   row.names = FALSE, fileEncoding = "UTF-8")
+
+cat("CSVs exportes (6 fichiers).\n")
+```
+
+notre analyse des données françaises 2019-2026 répond à la problématique de la façon suivante :
+
+**les usagers sont majoritairement « obligés de payer ».** Les élasticités médianes proches de zéro (0,38 / 0,31 / 0,14 selon la zone) et les corrélations modérées (0,41 à 0,57) confirment que la demande de mobilité routière est relativement inélastique à court terme, en cohérence avec les −0,34 de Brons et al. (2008).
+
+**un seuil psychologique existe autour de 1,70 €.** Au-delà de cette classe de prix (F3), l'élasticité change qualitativement de régime. Ce résultat comble une lacune explicite de la littérature (Brons suppose une adaptation lisse, sans palier).
+
+**le report modal reste incertain.** L'élasticité croisée est positive mais statistiquement non conclusive. Le graphique G6 suggère une contraction générale de la mobilité au-delà du seuil, plutôt qu'un report clair vers les transports en commun.
+
+**le facteur géographique est présent mais modéré.** La zone rurale présente la médiane la plus faible, ce qui correspond à une dépendance structurelle plus forte, mais les trois zones restent proches, ce qui indique que la contrainte de mobilité touche l'ensemble du territoire.
+
+------------------------------------------------------------------------
+
+# prochaines étapes
+
+cette section présente des analyses plus avancées que nous avons explorées, et qui pourraient constituer une suite naturelle à ce projet, notamment dans le cadre d'un projet de 2ème année ou d'un stage.
+
+![](images/clipboard-3403644799.png){width="454"}
+
+## régression log-linéaire structurelle (approche Nijkamp & Gelman)
+
+la régression log-linéaire permet d'estimer une élasticité *structurelle* directement à partir des niveaux absolus (prix et trafic), sans passer par les variations mensuelles. Le modèle est :
+
+$$\ln(\text{Trafic}) = \alpha + \beta \times \ln(\text{Prix\_SP95}) + \varepsilon$$
+
+le coefficient β correspond à l'élasticité structurelle : si le prix augmente de 1 %, le trafic varie en moyenne de β %.
+
+```{r}
+# harmonisation des noms de colonnes pour la régression
+df_abs_sq3 <- df_abs
+
+df_abs_sq3$Trafic <- if ("Trafic" %in% names(df_abs_sq3)) {
+  df_abs_sq3$Trafic
+} else if ("Trafic.Routier" %in% names(df_abs_sq3)) {
+  df_abs_sq3$Trafic.Routier
+} else {
+  stop("colonne du trafic introuvable dans df_abs")
+}
+
+df_abs_sq3$Prix_Gazole <- if ("Prix_Gazole" %in% names(df_abs_sq3)) {
+  df_abs_sq3$Prix_Gazole
+} else if ("Prix.Gazole" %in% names(df_abs_sq3)) {
+  df_abs_sq3$Prix.Gazole
+} else {
+  stop("colonne du prix du gazole introuvable dans df_abs")
+}
+
+df_abs_sq3$Voyageurs <- if ("Voyageurs" %in% names(df_abs_sq3)) {
+  df_abs_sq3$Voyageurs
+} else if ("Voyageurs.TC" %in% names(df_abs_sq3)) {
+  df_abs_sq3$Voyageurs.TC
+} else {
+  stop("colonne des voyageurs TC introuvable dans df_abs")
+}
+```
+
+```{r}
+# estimation des modèles log-linéaires par zone
+modeles_loglin <- df_abs_sq3 %>%
+  group_by(Zone) %>%
+  nest() %>%
+  mutate(
+
+    modele_SP95   = map(data, ~ lm(log(Trafic)       ~ log(Prix_SP95),   data = .x)),
+    modele_Gazole = map(data, ~ lm(log(Trafic)       ~ log(Prix_Gazole), data = .x)),
+    modele_TC     = map(data, ~ lm(log(Voyageurs + 1) ~ log(Prix_SP95),  data = .x)),
+
+    tidied_SP95   = map(modele_SP95,   tidy, conf.int = TRUE),
+    glanced_SP95  = map(modele_SP95,   glance),
+    tidied_Gazole = map(modele_Gazole, tidy, conf.int = TRUE),
+    glanced_Gazole = map(modele_Gazole, glance),
+    tidied_TC     = map(modele_TC,     tidy, conf.int = TRUE),
+    glanced_TC    = map(modele_TC,     glance)
+  )
+
+
+# Résultats SP95 -> Trafic
+res_loglin_SP95 <- modeles_loglin %>%
+  unnest(tidied_SP95) %>%
+  filter(term == "log(Prix_SP95)") %>%
+  left_join(
+    modeles_loglin %>% unnest(glanced_SP95) %>% select(Zone, r.squared, adj.r.squared),
+    by = "Zone"
+  ) %>%
+  select(Zone, estimate, std.error, statistic, p.value, conf.low, conf.high, r.squared, adj.r.squared)
+
+
+# Résultats SP95 -> TC
+res_loglin_TC <- modeles_loglin %>%
+  unnest(tidied_TC) %>%
+  filter(term == "log(Prix_SP95)") %>%
+  left_join(
+    modeles_loglin %>% unnest(glanced_TC) %>% select(Zone, r.squared),
+    by = "Zone"
+  ) %>%
+  select(Zone, estimate, std.error, p.value, conf.low, conf.high, r.squared)
+
+
+cat("\nRegression log-lineaire (SP95 -> Trafic) - beta = elasticite structurelle :\n")
+
+res_loglin_SP95 %>%
+  mutate(
+    Significatif = case_when(
+      p.value < 0.001 ~ "***",
+      p.value < 0.01  ~ "**",
+      p.value < 0.05  ~ "*",
+      TRUE            ~ "ns"
+    ),
+    Interpretation = case_when(
+      abs(estimate) < 0.15 ~ "tres inelastique",
+      abs(estimate) < 0.40 ~ "peu elastique",
+      abs(estimate) < 1.00 ~ "elasticite moderee",
+      TRUE                 ~ "tres elastique"
+    )
+  ) %>%
+  mutate(across(where(is.numeric), ~ round(.x, 4))) %>%
+  print()
+
+cat("\nRegression log-lineaire (SP95 -> TC) — report modal structurel :\n")
+res_loglin_TC %>% mutate(across(where(is.numeric), ~ round(.x, 4))) %>% print()
+```
+
+```{r}
+# graphique G5 - régression log-linéaire par zone
+g5 <- ggplot(
+  df_abs_sq3,
+  aes(x = log(Prix_SP95), y = log(Trafic), colour = Zone)
+) +
+
+  geom_point(alpha = 0.4, size = 1.5) +
+
+  geom_smooth(method = "lm", se = TRUE, linewidth = 1.2) +
+
+  scale_colour_manual(values = couleurs_zone) +
+
+  stat_poly_eq(
+    aes(label = after_stat(eq.label)),
+    formula = y ~ x,
+    parse   = TRUE,
+    size    = 3,
+    label.x = "left",
+    label.y = "top"
+  ) +
+
+  labs(
+    title    = "G5 - Regression log-lineaire : ln(Trafic) ~ ln(Prix_SP95)",
+    subtitle = "Pente beta = elasticite structurelle | Perspective future",
+    x        = "ln(Prix SP95)",
+    y        = "ln(Trafic routier)",
+    colour   = "Zone"
+  ) +
+
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "top")
+
+g5
+
+ggsave("g5_sq3_regression_loglineaire.png", plot = g5, width = 10, height = 6, dpi = 300)
+
+# Export CSV complémentaire
+write.csv(res_loglin_SP95, "RESULTATS_FUTUR_loglin_SP95_trafic.csv", row.names = FALSE, fileEncoding = "UTF-8")
+write.csv(res_loglin_TC,   "RESULTATS_FUTUR_loglin_SP95_TC.csv",     row.names = FALSE, fileEncoding = "UTF-8")
+```
+
+**lecture des résultats :** les coefficients β sont positifs (1,07 à 1,39), ce qui reflète la **dynamique temporelle commune** entre prix et trafic sur 2019-2026 (reprise post-COVID + inflation énergétique simultanées). Ils ne représentent pas une causalité directe prix et trafic. Le R² modéré (22-31 %) confirme que **le prix n'est pas le seul déterminant du trafic** - ce qui est précisément cohérent avec une demande inélastique et une situation d'obligation de payer.
+
+![](images/coin%20(1920%20x%20300%20px)%20(1).jpg)

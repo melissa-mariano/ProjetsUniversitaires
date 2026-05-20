@@ -1,0 +1,4 @@
+"Zone","n","eps_crois_moy","eps_crois_med","eps_crois_sd","IC_inf","IC_sup","Interpretation"
+"Urbaine",84,1.35589056499211,0.74027534965035,8.75260645394689,-0.515885243165186,3.22766637314941,"Biens substituts -> report modal avere"
+"Périurbaine",84,1.35125274162965,0.735440340909091,8.74114811276351,-0.518072659789773,3.22057814304908,"Biens substituts -> report modal avere"
+"Rurale",84,1.33081639274578,0.845833333333333,8.76092318700335,-0.542737978153928,3.20437076364549,"Biens substituts -> report modal avere"

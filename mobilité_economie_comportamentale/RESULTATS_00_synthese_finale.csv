@@ -1,0 +1,4 @@
+"Zone","Correlation r","epsilon directe (moy)","epsilon directe (med)","Interpretation","epsilon croisee TC","Seuil rupture","Delta epsilon"
+"Urbaine",0.5687,1.1064,0.3845,"tres elastique (sensibilite forte)",1.3559,"F3: 1.70-1.90 EUR",3.4744
+"Périurbaine",0.4978,1.0611,0.3078,"tres elastique (sensibilite forte)",1.3513,"F3: 1.70-1.90 EUR",3.363
+"Rurale",0.4134,1.0152,0.1348,"tres elastique (sensibilite forte)",1.3308,"F3: 1.70-1.90 EUR",3.2519

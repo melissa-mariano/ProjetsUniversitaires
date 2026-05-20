@@ -1,0 +1,2642 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Mobilité \& Économie comportementale},
+  pdfauthor={Kayliah Avorebang Kombila \textbar{} Yasmine Aouaj \textbar{} Lily Porre \textbar{} Melissa Mariano Albuquerque},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Mobilité \& Économie comportementale}
+\author{Kayliah Avorebang Kombila \textbar{} Yasmine Aouaj \textbar{}
+Lily Porre \textbar{} Melissa Mariano Albuquerque}
+\date{2026-05-16}
+
+\begin{document}
+\maketitle
+
+\section{PROJET : MOBILITÉ \& ÉCONOMIE COMPORTEMENTALE (FRANCE
+2019-2026)}\label{projet-mobilituxe9-uxe9conomie-comportementale-france-2019-2026}
+
+\subsection{Prix de l'essence \& habitudes de
+déplacement}\label{prix-de-lessence-habitudes-de-duxe9placement}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}
+  \StringTok{"readxl"}\NormalTok{,}
+  \StringTok{"dplyr"}\NormalTok{,}
+  \StringTok{"tidyr"}\NormalTok{,}
+  \StringTok{"purrr"}\NormalTok{,}
+  \StringTok{"broom"}\NormalTok{,}
+  \StringTok{"ggplot2"}\NormalTok{,}
+  \StringTok{"ggpmisc"}\NormalTok{,}
+  \StringTok{"patchwork"}\NormalTok{,}
+  \StringTok{"scales"}
+\NormalTok{)}
+
+\NormalTok{installed  }\OtherTok{\textless{}{-}} \FunctionTok{rownames}\NormalTok{(}\FunctionTok{installed.packages}\NormalTok{())}
+\NormalTok{to\_install }\OtherTok{\textless{}{-}}\NormalTok{ packages[}\SpecialCharTok{!}\NormalTok{packages }\SpecialCharTok{\%in\%}\NormalTok{ installed]}
+\ControlFlowTok{if}\NormalTok{ (}\FunctionTok{length}\NormalTok{(to\_install) }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{) \{}
+  \FunctionTok{install.packages}\NormalTok{(to\_install, }\AttributeTok{repos =} \StringTok{"https://cran.r{-}project.org"}\NormalTok{)}
+\NormalTok{\}}
+
+\FunctionTok{invisible}\NormalTok{(}\FunctionTok{lapply}\NormalTok{(packages, library, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{jeu de donées}\label{jeu-de-donuxe9es}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df\_raw }\OtherTok{\textless{}{-}} \FunctionTok{read.csv2}\NormalTok{(}
+  \StringTok{"dataset\_france.csv"}\NormalTok{,}
+  \AttributeTok{stringsAsFactors =} \ConstantTok{TRUE}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Dimensions du dataset}
+\FunctionTok{dim}\NormalTok{(df\_raw)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 274  22
+\end{verbatim}
+
+L'importation du fichier donne un ensemble de 274 observations et 22
+variables.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Structure des variables}
+\FunctionTok{str}\NormalTok{(df\_raw)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    274 obs. of  22 variables:
+##  $ Date              : Factor w/ 93 levels "","2019-01","2019-02",..: 2 2 2 3 3 3 4 4 4 5 ...
+##  $ Zone              : Factor w/ 8 levels "","0,41","0,50",..: 8 6 7 8 6 7 8 6 7 8 ...
+##  $ Prix_SP95         : Factor w/ 44 levels "","1,250 €","1,300 €",..: 9 9 9 10 10 10 11 11 11 15 ...
+##  $ Prix.Gazole       : Factor w/ 50 levels "","0,38","0,47",..: 14 14 14 16 16 16 18 18 18 21 ...
+##  $ Trafic.Routier    : Factor w/ 260 levels "","10001","10002",..: 96 22 198 82 18 188 112 42 212 121 ...
+##  $ Voyageurs.TC      : Factor w/ 231 levels "","10073","10172",..: 200 55 129 207 61 133 222 76 142 3 ...
+##  $ Index.SP95        : Factor w/ 43 levels "","0,62","0,64",..: 39 39 39 40 40 40 41 41 41 6 ...
+##  $ Index.Trafic      : Factor w/ 251 levels "","0,54","0,57",..: 173 177 180 153 152 151 223 218 214 248 ...
+##  $ Index.TC          : num  86.4 86.4 86.5 88.5 88.5 ...
+##  $ Var.SP95..        : Factor w/ 69 levels "","-0,54%","-0,65%",..: 1 1 1 57 57 57 43 43 43 65 ...
+##  $ Var.Trafic..      : Factor w/ 228 levels "","-0,01%","-0,02%",..: 1 1 1 19 36 44 227 223 217 164 ...
+##  $ Var.TC..          : Factor w/ 174 levels "","-0,03%","-0,90%",..: 1 1 1 109 113 110 163 162 165 141 ...
+##  $ Niveau.Prix.SP95  : Factor w/ 5 levels "","Bas","Élevé",..: 2 2 2 2 2 2 2 2 2 4 ...
+##  $ Niveau.Prix.Gazole: Factor w/ 5 levels "","Bas","Élevé",..: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ Var.Gazole..      : Factor w/ 73 levels "","-0,56%","-0,68%",..: 1 1 1 58 58 58 43 43 43 64 ...
+##  $ Index.Gazole      : num  95.7 95.7 95.7 97.8 97.8 ...
+##  $ X                 : logi  NA NA NA NA NA NA ...
+##  $ X.1               : Factor w/ 4 levels ""," ","GLOBALE ",..: 1 1 4 1 3 1 2 1 1 1 ...
+##  $ X.2               : Factor w/ 7 levels "","1,521666667",..: 1 1 1 5 2 1 1 7 6 3 ...
+##  $ X.3               : Factor w/ 6 levels "","10032,69444",..: 1 1 1 6 2 1 1 1 4 3 ...
+##  $ X.4               : Factor w/ 6 levels "","10419,5","1593,583333",..: 1 1 1 6 5 1 1 1 2 3 ...
+##  $ X.5               : Factor w/ 3 levels "","1,441666667",..: 1 1 1 3 2 1 1 1 1 1 ...
+\end{verbatim}
+
+L'analyse de la structure des données (str) montre que plusieurs
+variables numériques ont été importées comme facteurs. C'est notamment
+le cas des variables de prix, de trafic et de variations en pourcentage,
+probablement en raison de la présence de symboles tels que €, \% et des
+virgules décimales françaises. De plus, la variable Date a également été
+importée comme facteur alors qu'un format de type date serait plus
+approprié pour une analyse temporelle. Ces observations indiquent la
+nécessité d'un nettoyage et d'une conversion des types avant les
+traitements statistiques.
+
+\subsubsection{nettoyage de donnés}\label{nettoyage-de-donnuxe9s}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Copie de travail}
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df\_raw}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# supression de colonnes de calculs}
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(}
+\NormalTok{  df,}
+  \AttributeTok{select =} \SpecialCharTok{{-}}\FunctionTok{c}\NormalTok{(X, X}\FloatTok{.1}\NormalTok{, X}\FloatTok{.2}\NormalTok{, X}\FloatTok{.3}\NormalTok{, X}\FloatTok{.4}\NormalTok{, X}\FloatTok{.5}\NormalTok{)}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{str}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    274 obs. of  16 variables:
+##  $ Date              : Factor w/ 93 levels "","2019-01","2019-02",..: 2 2 2 3 3 3 4 4 4 5 ...
+##  $ Zone              : Factor w/ 8 levels "","0,41","0,50",..: 8 6 7 8 6 7 8 6 7 8 ...
+##  $ Prix_SP95         : Factor w/ 44 levels "","1,250 €","1,300 €",..: 9 9 9 10 10 10 11 11 11 15 ...
+##  $ Prix.Gazole       : Factor w/ 50 levels "","0,38","0,47",..: 14 14 14 16 16 16 18 18 18 21 ...
+##  $ Trafic.Routier    : Factor w/ 260 levels "","10001","10002",..: 96 22 198 82 18 188 112 42 212 121 ...
+##  $ Voyageurs.TC      : Factor w/ 231 levels "","10073","10172",..: 200 55 129 207 61 133 222 76 142 3 ...
+##  $ Index.SP95        : Factor w/ 43 levels "","0,62","0,64",..: 39 39 39 40 40 40 41 41 41 6 ...
+##  $ Index.Trafic      : Factor w/ 251 levels "","0,54","0,57",..: 173 177 180 153 152 151 223 218 214 248 ...
+##  $ Index.TC          : num  86.4 86.4 86.5 88.5 88.5 ...
+##  $ Var.SP95..        : Factor w/ 69 levels "","-0,54%","-0,65%",..: 1 1 1 57 57 57 43 43 43 65 ...
+##  $ Var.Trafic..      : Factor w/ 228 levels "","-0,01%","-0,02%",..: 1 1 1 19 36 44 227 223 217 164 ...
+##  $ Var.TC..          : Factor w/ 174 levels "","-0,03%","-0,90%",..: 1 1 1 109 113 110 163 162 165 141 ...
+##  $ Niveau.Prix.SP95  : Factor w/ 5 levels "","Bas","Élevé",..: 2 2 2 2 2 2 2 2 2 4 ...
+##  $ Niveau.Prix.Gazole: Factor w/ 5 levels "","Bas","Élevé",..: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ Var.Gazole..      : Factor w/ 73 levels "","-0,56%","-0,68%",..: 1 1 1 58 58 58 43 43 43 64 ...
+##  $ Index.Gazole      : num  95.7 95.7 95.7 97.8 97.8 ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       Date              Zone      Prix_SP95    Prix.Gazole  Trafic.Routier
+##         :  5   Périurbaine:87   1,900 €: 30   1,950 €: 21          : 11   
+##  2019-01:  3   Rurale     :87   1,850 €: 24   1,850 €: 18   4662   :  2   
+##  2019-02:  3   Urbaine    :87   1,880 €: 18   1,800 €: 15   4762   :  2   
+##  2019-03:  3              : 7   1,800 €: 15   1,900 €: 15   4929   :  2   
+##  2019-04:  3   0,64       : 3   1,500 €: 12   1,450 €: 12   5170   :  2   
+##  2019-05:  3   0,41       : 1   1,550 €: 12   1,750 €: 12   10001  :  1   
+##  (Other):254   (Other)    : 2   (Other):163   (Other):181   (Other):254   
+##   Voyageurs.TC   Index.SP95   Index.Trafic    Index.TC        Var.SP95.. 
+##         :  9   124,86 : 30          : 10   Min.   :  6.50          : 16  
+##  252    :  5   121,58 : 24   93,07  :  3   1st Qu.: 87.37   1,06%  : 12  
+##  219    :  4   123,55 : 18   96,34  :  3   Median : 95.51   -1,05% :  9  
+##  232    :  3   118,29 : 15   101,05 :  2   Mean   : 91.99   -0,54% :  6  
+##  234    :  3   101,86 : 12   101,91 :  2   3rd Qu.:104.73   -1,04% :  6  
+##  10596  :  2   128,15 : 12   103,22 :  2   Max.   :129.39   -1,32% :  6  
+##  (Other):248   (Other):163   (Other):252   NA's   :13       (Other):219  
+##   Var.Trafic..    Var.TC..     Niveau.Prix.SP95  Niveau.Prix.Gazole
+##         : 16          : 16             : 13               : 13     
+##  -1,58% :  3   -6,12% :  6   Bas       : 66     Bas       : 90     
+##  -1,86% :  3   2,35%  :  6   Élevé     :159     Élevé     :141     
+##  -2,02% :  3   4,17%  :  6   Moyen     : 30     Moyen     : 15     
+##  -4,11% :  3   -1,66% :  5   Très élevé:  6     Très élevé: 15     
+##  2,04%  :  3   -2,00% :  5                                         
+##  (Other):243   (Other):230                                         
+##   Var.Gazole..  Index.Gazole   
+##         : 16   Min.   : 81.16  
+##  1,56%  :  9   1st Qu.:100.58  
+##  -0,68% :  6   Median :122.77  
+##  -1,02% :  6   Mean   :117.26  
+##  -1,03% :  6   3rd Qu.:131.79  
+##  -2,56% :  6   Max.   :149.13  
+##  (Other):225   NA's   :13
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# conversion de la date}
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{Date }\OtherTok{\textless{}{-}} \FunctionTok{as.Date}\NormalTok{(}
+  \FunctionTok{paste0}\NormalTok{(}\FunctionTok{as.character}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{Date), }\StringTok{"{-}01"}\NormalTok{),}
+  \AttributeTok{format =} \StringTok{"\%Y{-}\%m{-}\%d"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+nous avons ensuite nettoye la variable \texttt{zone}, car certaines
+valeurs incorrectes avaient ete importees lors de la lecture du fichier
+csv. seules les trois categories utiles a l'analyse ont ete conservees :
+\texttt{urbaine}, \texttt{periurbaine} et \texttt{rurale}. cette etape
+permet d'eviter des erreurs dans les analyses statistiques et les
+visualisations.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# nettoyage de la variable zone}
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{Zone }\OtherTok{\textless{}{-}} \FunctionTok{as.character}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{Zone)}
+
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(}
+\NormalTok{  df,}
+\NormalTok{  Zone }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{"Urbaine"}\NormalTok{, }\StringTok{"Périurbaine"}\NormalTok{, }\StringTok{"Rurale"}\NormalTok{)}
+\NormalTok{)}
+
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{Zone }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(}
+\NormalTok{  df}\SpecialCharTok{$}\NormalTok{Zone,}
+  \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Urbaine"}\NormalTok{, }\StringTok{"Périurbaine"}\NormalTok{, }\StringTok{"Rurale"}\NormalTok{)}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# function de conversion numerique}
+\NormalTok{clean\_numeric }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x)\{}
+
+\NormalTok{  x }\OtherTok{\textless{}{-}} \FunctionTok{as.character}\NormalTok{(x)}
+
+\NormalTok{  x }\OtherTok{\textless{}{-}} \FunctionTok{gsub}\NormalTok{(}\StringTok{"€"}\NormalTok{, }\StringTok{""}\NormalTok{, x)}
+\NormalTok{  x }\OtherTok{\textless{}{-}} \FunctionTok{gsub}\NormalTok{(}\StringTok{"\%"}\NormalTok{, }\StringTok{""}\NormalTok{, x)}
+\NormalTok{  x }\OtherTok{\textless{}{-}} \FunctionTok{gsub}\NormalTok{(}\StringTok{","}\NormalTok{, }\StringTok{"."}\NormalTok{, x)}
+
+\NormalTok{  x }\OtherTok{\textless{}{-}} \FunctionTok{trimws}\NormalTok{(x)}
+
+  \FunctionTok{as.numeric}\NormalTok{(x)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#variables numerique}
+\NormalTok{vars\_numeric }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}
+  \StringTok{"Prix\_SP95"}\NormalTok{,}
+  \StringTok{"Prix.Gazole"}\NormalTok{,}
+  \StringTok{"Trafic.Routier"}\NormalTok{,}
+  \StringTok{"Voyageurs.TC"}\NormalTok{,}
+  \StringTok{"Index.SP95"}\NormalTok{,}
+  \StringTok{"Index.Trafic"}\NormalTok{,}
+  \StringTok{"Var.SP95.."}\NormalTok{,}
+  \StringTok{"Var.Trafic.."}\NormalTok{,}
+  \StringTok{"Var.TC.."}\NormalTok{,}
+  \StringTok{"Var.Gazole.."}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# appliquer la fonciton numerique}
+\NormalTok{df[vars\_numeric] }\OtherTok{\textless{}{-}} \FunctionTok{lapply}\NormalTok{(}
+\NormalTok{  df[vars\_numeric],}
+\NormalTok{  clean\_numeric}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# verification finale}
+\FunctionTok{str}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    261 obs. of  16 variables:
+##  $ Date              : Date, format: "2019-01-01" "2019-01-01" ...
+##  $ Zone              : Factor w/ 3 levels "Urbaine","Périurbaine",..: 1 2 3 1 2 3 1 2 3 1 ...
+##  $ Prix_SP95         : num  1.45 1.45 1.45 1.48 1.48 1.48 1.5 1.5 1.5 1.55 ...
+##  $ Prix.Gazole       : num  1.38 1.38 1.38 1.41 1.41 1.41 1.43 1.43 1.43 1.47 ...
+##  $ Trafic.Routier    : num  12562 10624 4760 12328 10409 ...
+##  $ Voyageurs.TC      : num  9007 1377 212 9219 1410 ...
+##  $ Index.SP95        : num  95.3 95.3 95.3 97.3 97.3 ...
+##  $ Index.Trafic      : num  92.8 92.9 93 91 91 ...
+##  $ Index.TC          : num  86.4 86.4 86.5 88.5 88.5 ...
+##  $ Var.SP95..        : num  NA NA NA 2.07 2.07 2.07 1.35 1.35 1.35 3.33 ...
+##  $ Var.Trafic..      : num  NA NA NA -1.86 -2.02 -2.18 6.96 6.74 6.53 2.34 ...
+##  $ Var.TC..          : num  NA NA NA 2.35 2.4 2.36 6.89 6.88 6.91 3.23 ...
+##  $ Niveau.Prix.SP95  : Factor w/ 5 levels "","Bas","Élevé",..: 2 2 2 2 2 2 2 2 2 4 ...
+##  $ Niveau.Prix.Gazole: Factor w/ 5 levels "","Bas","Élevé",..: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ Var.Gazole..      : num  NA NA NA 2.17 2.17 2.17 1.42 1.42 1.42 2.8 ...
+##  $ Index.Gazole      : num  95.7 95.7 95.7 97.8 97.8 ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       Date                     Zone      Prix_SP95      Prix.Gazole  
+##  Min.   :2019-01-01   Urbaine    :87   Min.   :1.250   Min.   :1.17  
+##  1st Qu.:2020-10-01   Périurbaine:87   1st Qu.:1.540   1st Qu.:1.45  
+##  Median :2022-08-01   Rurale     :87   Median :1.820   Median :1.77  
+##  Mean   :2022-08-01                    Mean   :1.728   Mean   :1.69  
+##  3rd Qu.:2024-06-01                    3rd Qu.:1.890   3rd Qu.:1.90  
+##  Max.   :2026-03-01                    Max.   :2.100   Max.   :2.15  
+##                                                                      
+##  Trafic.Routier   Voyageurs.TC     Index.SP95      Index.Trafic   
+##  Min.   :  766   Min.   :   16   Min.   : 82.15   Min.   : 13.95  
+##  1st Qu.: 4998   1st Qu.:  252   1st Qu.:101.20   1st Qu.: 89.76  
+##  Median :10644   Median : 1510   Median :119.61   Median : 95.63  
+##  Mean   : 9319   Mean   : 3758   Mean   :113.54   Mean   : 92.46  
+##  3rd Qu.:12447   3rd Qu.: 9104   3rd Qu.:124.21   3rd Qu.:101.22  
+##  Max.   :16008   Max.   :13467   Max.   :138.01   Max.   :118.19  
+##                                                                   
+##     Index.TC        Var.SP95..      Var.Trafic..        Var.TC..      
+##  Min.   :  6.50   Min.   :-8.780   Min.   :-75.360   Min.   :-81.660  
+##  1st Qu.: 87.37   1st Qu.:-1.270   1st Qu.: -3.958   1st Qu.: -4.370  
+##  Median : 95.51   Median : 1.075   Median : -1.560   Median :  2.335  
+##  Mean   : 91.99   Mean   : 0.357   Mean   :  2.449   Mean   :  4.106  
+##  3rd Qu.:104.73   3rd Qu.: 1.800   3rd Qu.:  3.938   3rd Qu.:  4.390  
+##  Max.   :129.39   Max.   :10.530   Max.   :208.700   Max.   :245.160  
+##                   NA's   :3        NA's   :3         NA's   :3        
+##    Niveau.Prix.SP95  Niveau.Prix.Gazole  Var.Gazole..       Index.Gazole   
+##            :  0               :  0      Min.   :-11.6300   Min.   : 81.16  
+##  Bas       : 66     Bas       : 90      1st Qu.: -1.1300   1st Qu.:100.58  
+##  Élevé     :159     Élevé     :141      Median :  1.0950   Median :122.77  
+##  Moyen     : 30     Moyen     : 15      Mean   :  0.5342   Mean   :117.26  
+##  Très élevé:  6     Très élevé: 15      3rd Qu.:  2.1100   3rd Qu.:131.79  
+##                                         Max.   : 19.4400   Max.   :149.13  
+##                                         NA's   :3
+\end{verbatim}
+
+\subsubsection{créer df differents pour chaque
+besoin}\label{cruxe9er-df-differents-pour-chaque-besoin}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# creation du dataset pour les analyses en variations}
+\NormalTok{df\_var }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(}
+\NormalTok{  df,}
+  \SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(Var.SP95..) }\SpecialCharTok{\&}
+  \SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(Var.Trafic..) }\SpecialCharTok{\&}
+  \SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(Var.TC..)}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# creation du dataset pour les analyses en niveaux absolus}
+\NormalTok{df\_abs }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(}
+\NormalTok{  df,}
+  \SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(Prix\_SP95) }\SpecialCharTok{\&}
+  \SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(Trafic.Routier) }\SpecialCharTok{\&}
+\NormalTok{  Trafic.Routier }\SpecialCharTok{\textgreater{}} \DecValTok{0} \SpecialCharTok{\&}
+\NormalTok{  Prix\_SP95 }\SpecialCharTok{\textgreater{}} \DecValTok{0}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{couleurs\_zone }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}
+  \StringTok{"Urbaine"} \OtherTok{=} \StringTok{"\#2196F3"}\NormalTok{,}
+  \StringTok{"Périurbaine"} \OtherTok{=} \StringTok{"\#FF9800"}\NormalTok{,}
+  \StringTok{"Rurale"} \OtherTok{=} \StringTok{"\#4CAF50"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\FunctionTok{sprintf}\NormalTok{(}
+  \StringTok{"donnees chargees : \%d obs. (df\_var) | \%d obs. (df\_abs)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{,}
+  \FunctionTok{nrow}\NormalTok{(df\_var),}
+  \FunctionTok{nrow}\NormalTok{(df\_abs)}
+\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## donnees chargees : 258 obs. (df_var) | 261 obs. (df_abs)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\FunctionTok{sprintf}\NormalTok{(}
+  \StringTok{"periode : \%s {-}\textgreater{} \%s | zones : \%s}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{,}
+  \FunctionTok{format}\NormalTok{(}\FunctionTok{min}\NormalTok{(df\_abs}\SpecialCharTok{$}\NormalTok{Date), }\StringTok{"\%Y{-}\%m"}\NormalTok{),}
+  \FunctionTok{format}\NormalTok{(}\FunctionTok{max}\NormalTok{(df\_abs}\SpecialCharTok{$}\NormalTok{Date), }\StringTok{"\%Y{-}\%m"}\NormalTok{),}
+  \FunctionTok{paste}\NormalTok{(}\FunctionTok{levels}\NormalTok{(df\_abs}\SpecialCharTok{$}\NormalTok{Zone), }\AttributeTok{collapse =} \StringTok{", "}\NormalTok{)}
+\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## periode : 2019-01 -> 2026-03 | zones : Urbaine, Périurbaine, Rurale
+\end{verbatim}
+
+\subsubsection{creation de df global}\label{creation-de-df-global}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df\_glob }\OtherTok{\textless{}{-}}\NormalTok{ df\_abs }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Date) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{Prix\_SP95 =} \FunctionTok{mean}\NormalTok{(Prix\_SP95),}
+    \AttributeTok{Trafic    =} \FunctionTok{mean}\NormalTok{(Trafic.Routier),}
+    \AttributeTok{Voyageurs =} \FunctionTok{mean}\NormalTok{(Voyageurs.TC),}
+    \AttributeTok{.groups   =} \StringTok{"drop"}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# calcul du coefficient de mise a l\textquotesingle{}echelle}
+
+\NormalTok{coef\_ax }\OtherTok{\textless{}{-}} \FunctionTok{max}\NormalTok{(df\_glob}\SpecialCharTok{$}\NormalTok{Trafic) }\SpecialCharTok{/} \FunctionTok{max}\NormalTok{(df\_glob}\SpecialCharTok{$}\NormalTok{Prix\_SP95)}
+
+
+\CommentTok{\# creation du graphique temporel}
+
+\NormalTok{g1 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(df\_glob, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Date)) }\SpecialCharTok{+}
+
+  \CommentTok{\# courbe du trafic routier}
+
+  \FunctionTok{geom\_line}\NormalTok{(}
+    \FunctionTok{aes}\NormalTok{(}
+      \AttributeTok{y =}\NormalTok{ Trafic,}
+      \AttributeTok{colour =} \StringTok{"Trafic routier"}
+\NormalTok{    ),}
+    \AttributeTok{linewidth =} \DecValTok{1}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# courbe du prix SP95}
+
+  \FunctionTok{geom\_line}\NormalTok{(}
+    \FunctionTok{aes}\NormalTok{(}
+      \AttributeTok{y =}\NormalTok{ Prix\_SP95 }\SpecialCharTok{*}\NormalTok{ coef\_ax,}
+      \AttributeTok{colour =} \StringTok{"Prix SP95"}
+\NormalTok{    ),}
+    \AttributeTok{linewidth =} \DecValTok{1}\NormalTok{,}
+    \AttributeTok{linetype =} \StringTok{"dashed"}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# ajout des axes}
+
+  \FunctionTok{scale\_y\_continuous}\NormalTok{(}
+    \AttributeTok{name =} \StringTok{"Trafic routier (veh.)"}\NormalTok{,}
+
+    \AttributeTok{sec.axis =} \FunctionTok{sec\_axis}\NormalTok{(}
+      \SpecialCharTok{\textasciitilde{}}\NormalTok{ . }\SpecialCharTok{/}\NormalTok{ coef\_ax,}
+      \AttributeTok{name =} \StringTok{"Prix SP95 (€/L)"}
+\NormalTok{    )}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# couleurs des courbes}
+
+  \FunctionTok{scale\_colour\_manual}\NormalTok{(}
+    \AttributeTok{values =} \FunctionTok{c}\NormalTok{(}
+      \StringTok{"Trafic routier"} \OtherTok{=} \StringTok{"\#2196F3"}\NormalTok{,}
+      \StringTok{"Prix SP95"} \OtherTok{=} \StringTok{"\#F44336"}
+\NormalTok{    )}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# affichage des annees}
+
+  \FunctionTok{scale\_x\_date}\NormalTok{(}
+    \AttributeTok{date\_breaks =} \StringTok{"1 year"}\NormalTok{,}
+    \AttributeTok{date\_labels =} \StringTok{"\%Y"}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# titres}
+
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"G1 — Evolution du prix SP95 et du trafic routier (2019{-}2026)"}\NormalTok{,}
+    \AttributeTok{subtitle =} \StringTok{"Donnees agregées toutes zones confondues"}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# theme general}
+
+  \FunctionTok{theme\_minimal}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{12}\NormalTok{) }\SpecialCharTok{+}
+
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{legend.position =} \StringTok{"top"}
+\NormalTok{  )}
+
+
+\CommentTok{\# affichage du graphique}
+
+\NormalTok{g1}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{price_elasticity_gasoline_demand_corrigé_files/figure-latex/unnamed-chunk-18-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# sauvegarde du graphique dans le dossier du projet}
+
+\FunctionTok{ggsave}\NormalTok{(}
+  \AttributeTok{filename =} \StringTok{"g1\_prix\_trafic.png"}\NormalTok{,}
+  \AttributeTok{plot =}\NormalTok{ g1,}
+  \AttributeTok{width =} \DecValTok{10}\NormalTok{,}
+  \AttributeTok{height =} \DecValTok{6}\NormalTok{,}
+  \AttributeTok{dpi =} \DecValTok{300}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Le graphique présente l'évolution conjointe du trafic routier et du prix
+du SP95 entre 2019 et 2026. La courbe bleue représente le trafic
+routier, tandis que la courbe rouge en pointillés correspond au prix du
+carburant SP95.
+
+L'élément le plus marquant du graphique est la chute brutale du trafic
+en 2020. Le nombre de véhicules diminue fortement, atteignant un niveau
+exceptionnellement bas, alors que le prix du carburant ne baisse que de
+manière modérée. Cette rupture correspond clairement à la crise
+sanitaire de la COVID-19, marquée par les confinements, les restrictions
+de circulation et la réduction générale de la mobilité. Cela suggère que
+la baisse du trafic n'a pas été provoquée principalement par le prix du
+carburant, mais plutôt par un choc externe lié au contexte sanitaire.
+
+À partir de 2021, le trafic routier retrouve rapidement des niveaux
+proches de ceux observés avant la pandémie, malgré une forte
+augmentation du prix du SP95. Cette observation est particulièrement
+intéressante dans le cadre de l'étude de l'élasticité-prix de la
+demande. En théorie, une hausse des prix devrait entraîner une
+diminution de la demande. Pourtant, dans ce cas, le trafic reste
+relativement élevé même lorsque les prix augmentent. Cela peut indiquer
+que la demande de mobilité routière est relativement inélastique à moyen
+terme.
+
+Le graphique met également en évidence une forte hausse du prix du SP95
+entre 2021 et 2022, avec un niveau proche de 2 €/L. Cette évolution peut
+être associée au contexte de crise énergétique européenne, à la guerre
+en Ukraine et à l'augmentation générale des prix de l'énergie.
+
+Enfin, après 2022, le trafic présente des variations régulières au cours
+du temps, avec des phases de hausse et de baisse relativement cycliques.
+Ce comportement peut refléter des effets de saisonnalité, notamment liés
+aux périodes de vacances et aux variations saisonnières de la mobilité.
+
+Dans l'ensemble, la relation visuelle entre les deux variables ne montre
+pas une corrélation négative immédiate et très forte. Les deux courbes
+n'évoluent pas systématiquement dans des directions opposées, ce qui
+pourrait indiquer soit une faible élasticité-prix, soit des effets
+différés dans le temps.
+
+\subsubsection{SQ1 --- seuil de rupture
+psychologique}\label{sq1-seuil-de-rupture-psychologique}
+
+a partir de quel niveau de prix observe-t-on une baisse significative du
+trafic routier ?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# creation de classes de prix du SP95}
+\CommentTok{\# et calcul de l\textquotesingle{}elasticite pour chaque observation}
+
+\NormalTok{df\_seuil }\OtherTok{\textless{}{-}}\NormalTok{ df\_var }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{mutate}\NormalTok{(}
+
+    \CommentTok{\# creation de 5 intervalles de prix}
+
+    \AttributeTok{Faix\_Prix =} \FunctionTok{case\_when}\NormalTok{(}
+
+\NormalTok{      Prix\_SP95 }\SpecialCharTok{\textless{}} \FloatTok{1.50} \SpecialCharTok{\textasciitilde{}} \StringTok{"F1: \textless{}1.50€"}\NormalTok{,}
+
+\NormalTok{      Prix\_SP95 }\SpecialCharTok{\textgreater{}=} \FloatTok{1.50} \SpecialCharTok{\&}\NormalTok{ Prix\_SP95 }\SpecialCharTok{\textless{}} \FloatTok{1.70} \SpecialCharTok{\textasciitilde{}} \StringTok{"F2: 1.50{-}1.70€"}\NormalTok{,}
+
+\NormalTok{      Prix\_SP95 }\SpecialCharTok{\textgreater{}=} \FloatTok{1.70} \SpecialCharTok{\&}\NormalTok{ Prix\_SP95 }\SpecialCharTok{\textless{}} \FloatTok{1.90} \SpecialCharTok{\textasciitilde{}} \StringTok{"F3: 1.70{-}1.90€"}\NormalTok{,}
+
+\NormalTok{      Prix\_SP95 }\SpecialCharTok{\textgreater{}=} \FloatTok{1.90} \SpecialCharTok{\&}\NormalTok{ Prix\_SP95 }\SpecialCharTok{\textless{}} \FloatTok{2.10} \SpecialCharTok{\textasciitilde{}} \StringTok{"F4: 1.90{-}2.10€"}\NormalTok{,}
+
+      \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \StringTok{"F5: ≥2.10€"}
+\NormalTok{    ),}
+
+    \CommentTok{\# organisation de l\textquotesingle{}ordre des classes}
+
+    \AttributeTok{Faix\_Prix =} \FunctionTok{factor}\NormalTok{(}
+\NormalTok{      Faix\_Prix,}
+
+      \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}
+        \StringTok{"F1: \textless{}1.50€"}\NormalTok{,}
+        \StringTok{"F2: 1.50{-}1.70€"}\NormalTok{,}
+        \StringTok{"F3: 1.70{-}1.90€"}\NormalTok{,}
+        \StringTok{"F4: 1.90{-}2.10€"}\NormalTok{,}
+        \StringTok{"F5: ≥2.10€"}
+\NormalTok{      )}
+\NormalTok{    ),}
+
+    \CommentTok{\# calcul de l\textquotesingle{}elasticite{-}prix}
+    \CommentTok{\# epsilon = variation du trafic / variation du prix}
+
+    \AttributeTok{epsilon\_SP95 =}\NormalTok{ Var.Trafic.. }\SpecialCharTok{/}\NormalTok{ Var.SP95..}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \CommentTok{\# suppression des valeurs extremes}
+  \CommentTok{\# afin d\textquotesingle{}eviter des elasticites irreales}
+
+  \FunctionTok{filter}\NormalTok{(}\FunctionTok{abs}\NormalTok{(epsilon\_SP95) }\SpecialCharTok{\textless{}} \DecValTok{50}\NormalTok{)}
+
+
+\CommentTok{\# calcul des statistiques descriptives}
+\CommentTok{\# par zone et par classe de prix}
+
+\NormalTok{seuil\_table }\OtherTok{\textless{}{-}}\NormalTok{ df\_seuil }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{group\_by}\NormalTok{(Zone, Faix\_Prix) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{summarise}\NormalTok{(}
+
+    \CommentTok{\# nombre d\textquotesingle{}observations}
+
+    \AttributeTok{n\_obs =} \FunctionTok{n}\NormalTok{(),}
+
+    \CommentTok{\# prix moyen dans chaque classe}
+
+    \AttributeTok{Prix\_moy =} \FunctionTok{mean}\NormalTok{(Prix\_SP95),}
+
+    \CommentTok{\# elasticite moyenne}
+
+    \AttributeTok{eps\_moy =} \FunctionTok{mean}\NormalTok{(epsilon\_SP95, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+
+    \CommentTok{\# elasticite mediane}
+
+    \AttributeTok{eps\_med =} \FunctionTok{median}\NormalTok{(epsilon\_SP95, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+
+    \CommentTok{\# ecart{-}type de l\textquotesingle{}elasticite}
+
+    \AttributeTok{eps\_sd =} \FunctionTok{sd}\NormalTok{(epsilon\_SP95, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+
+    \CommentTok{\# variation moyenne du trafic}
+
+    \AttributeTok{Var\_Traf =} \FunctionTok{mean}\NormalTok{(Var.Trafic.., }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{mutate}\NormalTok{(}
+
+    \CommentTok{\# calcul des intervalles de confiance a 95 \%}
+
+    \AttributeTok{IC\_inf =}\NormalTok{ eps\_moy }\SpecialCharTok{{-}} \FloatTok{1.96} \SpecialCharTok{*}\NormalTok{ eps\_sd }\SpecialCharTok{/} \FunctionTok{sqrt}\NormalTok{(n\_obs),}
+
+    \AttributeTok{IC\_sup =}\NormalTok{ eps\_moy }\SpecialCharTok{+} \FloatTok{1.96} \SpecialCharTok{*}\NormalTok{ eps\_sd }\SpecialCharTok{/} \FunctionTok{sqrt}\NormalTok{(n\_obs)}
+\NormalTok{  )}
+
+
+\CommentTok{\# detection du seuil de rupture}
+\CommentTok{\# on identifie la plus forte variation d\textquotesingle{}elasticite}
+\CommentTok{\# entre deux classes de prix consecutives}
+
+\NormalTok{seuil\_rupture }\OtherTok{\textless{}{-}}\NormalTok{ seuil\_table }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{group\_by}\NormalTok{(Zone) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{arrange}\NormalTok{(Faix\_Prix) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{mutate}\NormalTok{(}
+
+    \CommentTok{\# difference entre deux elasticites consecutives}
+
+    \AttributeTok{delta\_eps =}\NormalTok{ eps\_moy }\SpecialCharTok{{-}} \FunctionTok{lag}\NormalTok{(eps\_moy),}
+
+    \CommentTok{\# identification d\textquotesingle{}une rupture importante}
+
+    \AttributeTok{Rupture =} \FunctionTok{abs}\NormalTok{(delta\_eps) }\SpecialCharTok{\textgreater{}} \FloatTok{0.15}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(delta\_eps)) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{summarise}\NormalTok{(}
+
+    \CommentTok{\# classe de prix correspondant}
+    \CommentTok{\# au plus grand saut d\textquotesingle{}elasticite}
+
+    \AttributeTok{Faix\_Rupture =}\NormalTok{ Faix\_Prix[}\FunctionTok{which.max}\NormalTok{(}\FunctionTok{abs}\NormalTok{(delta\_eps))],}
+
+    \AttributeTok{Delta\_max =} \FunctionTok{round}\NormalTok{(}\FunctionTok{max}\NormalTok{(}\FunctionTok{abs}\NormalTok{(delta\_eps), }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\DecValTok{4}\NormalTok{),}
+
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  )}
+
+
+\CommentTok{\# affichage des resultats numeriques}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{elasticites par classe de prix et par zone :}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## elasticites par classe de prix et par zone :
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{seuil\_table }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{select}\NormalTok{(}
+\NormalTok{    Zone,}
+\NormalTok{    Faix\_Prix,}
+\NormalTok{    n\_obs,}
+\NormalTok{    Prix\_moy,}
+\NormalTok{    eps\_moy,}
+\NormalTok{    eps\_med,}
+\NormalTok{    IC\_inf,}
+\NormalTok{    IC\_sup,}
+\NormalTok{    Var\_Traf}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{mutate}\NormalTok{(}
+    \FunctionTok{across}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.numeric), }\SpecialCharTok{\textasciitilde{}} \FunctionTok{round}\NormalTok{(.x, }\DecValTok{4}\NormalTok{))}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{print}\NormalTok{(}\AttributeTok{n =} \ConstantTok{Inf}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 15 x 9
+##    Zone        Faix_Prix   n_obs Prix_moy eps_moy eps_med IC_inf IC_sup Var_Traf
+##    <fct>       <fct>       <dbl>    <dbl>   <dbl>   <dbl>  <dbl>  <dbl>    <dbl>
+##  1 Urbaine     F1: <1.50€     12     1.40   5.64    2.99  -0.511 11.8     -4.07 
+##  2 Urbaine     F2: 1.50-1~    18     1.56   2.99    1.31   0.424  5.56     4.08 
+##  3 Urbaine     F3: 1.70-1~    33     1.83  -0.480  -0.480 -1.68   0.714   -1.07 
+##  4 Urbaine     F4: 1.90-2~    20     1.92  -0.707  -0.673 -2.29   0.880    0.216
+##  5 Urbaine     F5: ≥2.10€      1     2.1    1.38    1.38  NA     NA       14.6  
+##  6 Périurbaine F1: <1.50€     12     1.40   5.55    2.92  -0.534 11.6     -4.10 
+##  7 Périurbaine F2: 1.50-1~    18     1.56   2.88    1.19   0.356  5.41     3.93 
+##  8 Périurbaine F3: 1.70-1~    33     1.83  -0.479  -0.406 -1.67   0.708   -1.01 
+##  9 Périurbaine F4: 1.90-2~    20     1.92  -0.725  -0.758 -2.20   0.752    0.251
+## 10 Périurbaine F5: ≥2.10€      1     2.1    0.959   0.959 NA     NA       10.1  
+## 11 Rurale      F1: <1.50€     12     1.40   5.46    2.85  -0.559 11.5     -4.13 
+## 12 Rurale      F2: 1.50-1~    18     1.56   2.77    1.06   0.290  5.26     3.77 
+## 13 Rurale      F3: 1.70-1~    33     1.83  -0.478  -0.025 -1.66   0.705   -0.942
+## 14 Rurale      F4: 1.90-2~    20     1.92  -0.743  -0.937 -2.12   0.632    0.291
+## 15 Rurale      F5: ≥2.10€      1     2.1    0.511   0.511 NA     NA        5.38
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# affichage du seuil detecte}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{seuil de rupture detecte numeriquement :}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## seuil de rupture detecte numeriquement :
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(seuil\_rupture)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 3
+##   Zone        Faix_Rupture   Delta_max
+##   <fct>       <fct>              <dbl>
+## 1 Urbaine     F3: 1.70-1.90€      3.47
+## 2 Périurbaine F3: 1.70-1.90€      3.36
+## 3 Rurale      F3: 1.70-1.90€      3.25
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# creation du graphique des elasticites}
+
+\NormalTok{g3 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(}
+\NormalTok{  seuil\_table,}
+  \FunctionTok{aes}\NormalTok{(}
+    \AttributeTok{x =}\NormalTok{ Faix\_Prix,}
+    \AttributeTok{y =}\NormalTok{ eps\_moy,}
+    \AttributeTok{fill =}\NormalTok{ Zone}
+\NormalTok{  )}
+\NormalTok{) }\SpecialCharTok{+}
+
+  \CommentTok{\# creation des barres}
+
+  \FunctionTok{geom\_col}\NormalTok{(}
+    \AttributeTok{position =} \StringTok{"dodge"}\NormalTok{,}
+    \AttributeTok{alpha =} \FloatTok{0.85}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# ajout des intervalles de confiance}
+
+  \FunctionTok{geom\_errorbar}\NormalTok{(}
+    \FunctionTok{aes}\NormalTok{(}
+      \AttributeTok{ymin =}\NormalTok{ IC\_inf,}
+      \AttributeTok{ymax =}\NormalTok{ IC\_sup}
+\NormalTok{    ),}
+
+    \AttributeTok{position =} \FunctionTok{position\_dodge}\NormalTok{(}\FloatTok{0.9}\NormalTok{),}
+
+    \AttributeTok{width =} \FloatTok{0.25}\NormalTok{,}
+
+    \AttributeTok{linewidth =} \FloatTok{0.7}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# ligne horizontale correspondant a zero}
+
+  \FunctionTok{geom\_hline}\NormalTok{(}
+    \AttributeTok{yintercept =} \DecValTok{0}\NormalTok{,}
+    \AttributeTok{colour =} \StringTok{"black"}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# ligne verticale indiquant le seuil detecte}
+
+  \FunctionTok{geom\_vline}\NormalTok{(}
+    \AttributeTok{xintercept =} \FloatTok{3.5}\NormalTok{,}
+    \AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{,}
+    \AttributeTok{colour =} \StringTok{"\#F44336"}\NormalTok{,}
+    \AttributeTok{linewidth =} \DecValTok{1}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# annotation du seuil}
+
+  \FunctionTok{annotate}\NormalTok{(}
+    \StringTok{"text"}\NormalTok{,}
+
+    \AttributeTok{x =} \FloatTok{3.55}\NormalTok{,}
+
+    \AttributeTok{y =} \FunctionTok{max}\NormalTok{(seuil\_table}\SpecialCharTok{$}\NormalTok{eps\_moy, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{*} \FloatTok{0.85}\NormalTok{,}
+
+    \AttributeTok{label =} \StringTok{"\textless{}{-} seuil detecte"}\NormalTok{,}
+
+    \AttributeTok{hjust =} \DecValTok{0}\NormalTok{,}
+
+    \AttributeTok{size =} \FloatTok{3.5}\NormalTok{,}
+
+    \AttributeTok{colour =} \StringTok{"\#F44336"}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# couleurs selon la zone}
+
+  \FunctionTok{scale\_fill\_manual}\NormalTok{(}
+    \AttributeTok{values =}\NormalTok{ couleurs\_zone}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# titres du graphique}
+
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"G3 {-} SQ1 : elasticite selon les classes de prix"}\NormalTok{,}
+
+    \AttributeTok{subtitle =} \StringTok{"Detection du seuil psychologique et intervalles de confiance a 95 \%"}\NormalTok{,}
+
+    \AttributeTok{x =} \StringTok{"Classe de prix SP95"}\NormalTok{,}
+
+    \AttributeTok{y =} \StringTok{"Elasticite moyenne (epsilon)"}\NormalTok{,}
+
+    \AttributeTok{fill =} \StringTok{"Zone"}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# mise en forme generale}
+
+  \FunctionTok{theme\_minimal}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{12}\NormalTok{) }\SpecialCharTok{+}
+
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}
+      \AttributeTok{angle =} \DecValTok{15}\NormalTok{,}
+      \AttributeTok{hjust =} \DecValTok{1}
+\NormalTok{    )}
+\NormalTok{  )}
+
+
+\CommentTok{\# affichage du graphique}
+
+\NormalTok{g3}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{price_elasticity_gasoline_demand_corrigé_files/figure-latex/unnamed-chunk-19-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# sauvegarde du graphique dans le dossier du projet}
+
+\FunctionTok{ggsave}\NormalTok{(}
+  \AttributeTok{filename =} \StringTok{"g3\_seuil\_rupture.png"}\NormalTok{,}
+  \AttributeTok{plot =}\NormalTok{ g3,}
+  \AttributeTok{width =} \DecValTok{10}\NormalTok{,}
+  \AttributeTok{height =} \DecValTok{6}\NormalTok{,}
+  \AttributeTok{dpi =} \DecValTok{300}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Le point central est que le seuil de rupture apparait de maniere assez
+coherente dans la classe F3 : 1.70--1.90€ pour les trois zones. Cela
+signifie que, selon le critere numerique utilise, le changement le plus
+important d'elasticite se produit lorsque le prix entre dans cette
+tranche. En termes simples, le graphique suggere que le comportement du
+trafic change plus clairement a partir d'environ 1,70€.
+
+Cependant, plusieurs precautions d'interpretation sont necessaires.
+
+Les valeurs d'elasticite sont tres instables dans les classes de prix
+les plus basses, notamment en F1 et F2. Les intervalles de confiance
+sont tres larges, ce qui montre que les moyennes observees dans ces
+classes ne sont pas totalement fiables comme valeurs economiques
+absolues.
+
+Par ailleurs, la classe F5 ne contient qu'une seule observation pour
+chaque zone. Les resultats associes a cette classe doivent donc etre
+interpretes avec prudence et ne peuvent pas etre consideres comme
+statistiquement robustes.
+
+Le fait que les elasticites soient positives en F1 et F2 peut egalement
+indiquer la presence de bruit statistique, d'effets externes ou encore
+d'un contexte macroeconomique commun influencant simultanement les prix
+et le trafic.
+
+A partir de la classe F3, les elasticites deviennent proches de zero ou
+negatives, ce qui correspond davantage a l'idee d'un point de rupture
+psychologique.
+
+\subsubsection{SQ2 - ELASTICITE CROISEE \& REPORT
+MODAL}\label{sq2---elasticite-croisee-report-modal}
+
+la hausse du prix corrèle-t-elle avec une augmentation des tc ?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  SQ2 {-} elasticite croisee et report modal}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   SQ2 - elasticite croisee et report modal
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  epsilon croisee = variation TC / variation prix SP95}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   epsilon croisee = variation TC / variation prix SP95
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# creation du dataset pour l\textquotesingle{}analyse croisee}
+
+\NormalTok{df\_cross }\OtherTok{\textless{}{-}}\NormalTok{ df\_var }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{mutate}\NormalTok{(}
+
+    \CommentTok{\# calcul de l\textquotesingle{}elasticite croisee}
+    \CommentTok{\# variation des transports en commun}
+    \CommentTok{\# divisee par la variation du prix SP95}
+
+    \AttributeTok{epsilon\_croisee =}\NormalTok{ Var.TC.. }\SpecialCharTok{/}\NormalTok{ Var.SP95..,}
+
+    \CommentTok{\# creation des classes de prix}
+
+    \AttributeTok{Faix\_Prix =} \FunctionTok{case\_when}\NormalTok{(}
+
+\NormalTok{      Prix\_SP95 }\SpecialCharTok{\textless{}} \FloatTok{1.50} \SpecialCharTok{\textasciitilde{}} \StringTok{"F1: \textless{}1.50EUR"}\NormalTok{,}
+
+\NormalTok{      Prix\_SP95 }\SpecialCharTok{\textgreater{}=} \FloatTok{1.50} \SpecialCharTok{\&}\NormalTok{ Prix\_SP95 }\SpecialCharTok{\textless{}} \FloatTok{1.70} \SpecialCharTok{\textasciitilde{}} \StringTok{"F2: 1.50{-}1.70EUR"}\NormalTok{,}
+
+\NormalTok{      Prix\_SP95 }\SpecialCharTok{\textgreater{}=} \FloatTok{1.70} \SpecialCharTok{\&}\NormalTok{ Prix\_SP95 }\SpecialCharTok{\textless{}} \FloatTok{1.90} \SpecialCharTok{\textasciitilde{}} \StringTok{"F3: 1.70{-}1.90EUR"}\NormalTok{,}
+
+\NormalTok{      Prix\_SP95 }\SpecialCharTok{\textgreater{}=} \FloatTok{1.90} \SpecialCharTok{\&}\NormalTok{ Prix\_SP95 }\SpecialCharTok{\textless{}} \FloatTok{2.10} \SpecialCharTok{\textasciitilde{}} \StringTok{"F4: 1.90{-}2.10EUR"}\NormalTok{,}
+
+      \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \StringTok{"F5: \textgreater{}=2.10EUR"}
+\NormalTok{    ),}
+
+    \CommentTok{\# organisation des classes dans l\textquotesingle{}ordre croissant}
+
+    \AttributeTok{Faix\_Prix =} \FunctionTok{factor}\NormalTok{(}
+
+\NormalTok{      Faix\_Prix,}
+
+      \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}
+        \StringTok{"F1: \textless{}1.50EUR"}\NormalTok{,}
+        \StringTok{"F2: 1.50{-}1.70EUR"}\NormalTok{,}
+        \StringTok{"F3: 1.70{-}1.90EUR"}\NormalTok{,}
+        \StringTok{"F4: 1.90{-}2.10EUR"}\NormalTok{,}
+        \StringTok{"F5: \textgreater{}=2.10EUR"}
+\NormalTok{      )}
+\NormalTok{    )}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \CommentTok{\# suppression des valeurs extremes}
+
+  \FunctionTok{filter}\NormalTok{(}\FunctionTok{abs}\NormalTok{(epsilon\_croisee) }\SpecialCharTok{\textless{}} \DecValTok{50}\NormalTok{)}
+
+
+\CommentTok{\# calcul des statistiques par zone}
+
+\NormalTok{cross\_zone }\OtherTok{\textless{}{-}}\NormalTok{ df\_cross }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{group\_by}\NormalTok{(Zone) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{summarise}\NormalTok{(}
+
+    \CommentTok{\# nombre d\textquotesingle{}observations}
+
+    \AttributeTok{n =} \FunctionTok{n}\NormalTok{(),}
+
+    \CommentTok{\# elasticite croisee moyenne}
+
+    \AttributeTok{eps\_crois\_moy =} \FunctionTok{mean}\NormalTok{(epsilon\_croisee, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+
+    \CommentTok{\# elasticite mediane}
+
+    \AttributeTok{eps\_crois\_med =} \FunctionTok{median}\NormalTok{(epsilon\_croisee, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+
+    \CommentTok{\# ecart{-}type}
+
+    \AttributeTok{eps\_crois\_sd =} \FunctionTok{sd}\NormalTok{(epsilon\_croisee, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{mutate}\NormalTok{(}
+
+    \CommentTok{\# calcul des intervalles de confiance a 95 \%}
+
+    \AttributeTok{IC\_inf =}\NormalTok{ eps\_crois\_moy }\SpecialCharTok{{-}} \FloatTok{1.96} \SpecialCharTok{*}\NormalTok{ eps\_crois\_sd }\SpecialCharTok{/} \FunctionTok{sqrt}\NormalTok{(n),}
+
+    \AttributeTok{IC\_sup =}\NormalTok{ eps\_crois\_moy }\SpecialCharTok{+} \FloatTok{1.96} \SpecialCharTok{*}\NormalTok{ eps\_crois\_sd }\SpecialCharTok{/} \FunctionTok{sqrt}\NormalTok{(n),}
+
+    \CommentTok{\# interpretation economique automatique}
+
+    \AttributeTok{Interpretation =} \FunctionTok{case\_when}\NormalTok{(}
+
+\NormalTok{      eps\_crois\_moy }\SpecialCharTok{\textgreater{}} \FloatTok{0.10} \SpecialCharTok{\textasciitilde{}}
+        \StringTok{"Biens substituts {-}\textgreater{} report modal avere"}\NormalTok{,}
+
+\NormalTok{      eps\_crois\_moy }\SpecialCharTok{\textgreater{}} \DecValTok{0} \SpecialCharTok{\textasciitilde{}}
+        \StringTok{"Legere substituabilite"}\NormalTok{,}
+
+      \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}}
+        \StringTok{"Biens independants {-}\textgreater{} pas de report modal"}
+\NormalTok{    )}
+\NormalTok{  )}
+
+
+\CommentTok{\# affichage du tableau de synthese}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{ tableau synthese SQ2 :}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  tableau synthese SQ2 :
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cross\_zone }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{select}\NormalTok{(}
+\NormalTok{    Zone,}
+\NormalTok{    eps\_crois\_moy,}
+\NormalTok{    eps\_crois\_med,}
+\NormalTok{    IC\_inf,}
+\NormalTok{    IC\_sup,}
+\NormalTok{    Interpretation}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{rename}\NormalTok{(}
+
+    \StringTok{"epsilon croisee (moy)"} \OtherTok{=}\NormalTok{ eps\_crois\_moy,}
+
+    \StringTok{"epsilon croisee (med)"} \OtherTok{=}\NormalTok{ eps\_crois\_med,}
+
+    \StringTok{"IC 95\% inf"} \OtherTok{=}\NormalTok{ IC\_inf,}
+
+    \StringTok{"IC 95\% sup"} \OtherTok{=}\NormalTok{ IC\_sup}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{mutate}\NormalTok{(}
+    \FunctionTok{across}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.numeric), }\SpecialCharTok{\textasciitilde{}} \FunctionTok{round}\NormalTok{(.x, }\DecValTok{4}\NormalTok{))}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{print}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 6
+##   Zone   epsilon croisee (moy~1 epsilon croisee (med~2 `IC 95% inf` `IC 95% sup`
+##   <fct>                   <dbl>                  <dbl>        <dbl>        <dbl>
+## 1 Urbai~                   1.36                  0.740       -0.516         3.23
+## 2 Périu~                   1.35                  0.735       -0.518         3.22
+## 3 Rurale                   1.33                  0.846       -0.543         3.20
+## # i abbreviated names: 1: `epsilon croisee (moy)`, 2: `epsilon croisee (med)`
+## # i 1 more variable: Interpretation <chr>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# analyse de l\textquotesingle{}elasticite croisee}
+\CommentTok{\# selon les classes de prix}
+
+\NormalTok{cross\_faix }\OtherTok{\textless{}{-}}\NormalTok{ df\_cross }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{group\_by}\NormalTok{(Zone, Faix\_Prix) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{summarise}\NormalTok{(}
+
+    \AttributeTok{eps\_croisee =} \FunctionTok{mean}\NormalTok{(}
+\NormalTok{      epsilon\_croisee,}
+      \AttributeTok{na.rm =} \ConstantTok{TRUE}
+\NormalTok{    ),}
+
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  )}
+
+
+\CommentTok{\# affichage des resultats par classe de prix}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{ elasticite croisee par classe de prix :}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  elasticite croisee par classe de prix :
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cross\_faix }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{mutate}\NormalTok{(}
+    \FunctionTok{across}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.numeric), }\SpecialCharTok{\textasciitilde{}} \FunctionTok{round}\NormalTok{(.x, }\DecValTok{4}\NormalTok{))}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{print}\NormalTok{(}\AttributeTok{n =} \ConstantTok{Inf}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 15 x 3
+##    Zone        Faix_Prix        eps_croisee
+##    <fct>       <fct>                  <dbl>
+##  1 Urbaine     F1: <1.50EUR           8.40 
+##  2 Urbaine     F2: 1.50-1.70EUR       4.14 
+##  3 Urbaine     F3: 1.70-1.90EUR      -0.726
+##  4 Urbaine     F4: 1.90-2.10EUR      -1.90 
+##  5 Urbaine     F5: >=2.10EUR          0.655
+##  6 Périurbaine F1: <1.50EUR           8.36 
+##  7 Périurbaine F2: 1.50-1.70EUR       4.14 
+##  8 Périurbaine F3: 1.70-1.90EUR      -0.723
+##  9 Périurbaine F4: 1.90-2.10EUR      -1.91 
+## 10 Périurbaine F5: >=2.10EUR          0.66 
+## 11 Rurale      F1: <1.50EUR           8.35 
+## 12 Rurale      F2: 1.50-1.70EUR       4.14 
+## 13 Rurale      F3: 1.70-1.90EUR      -0.754
+## 14 Rurale      F4: 1.90-2.10EUR      -1.94 
+## 15 Rurale      F5: >=2.10EUR          0.650
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# graphique des elasticites croisees moyennes}
+
+\NormalTok{g4 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(}
+
+\NormalTok{  cross\_zone,}
+
+  \FunctionTok{aes}\NormalTok{(}
+    \AttributeTok{x =}\NormalTok{ Zone,}
+    \AttributeTok{y =}\NormalTok{ eps\_crois\_moy,}
+    \AttributeTok{fill =}\NormalTok{ Zone}
+\NormalTok{  )}
+\NormalTok{) }\SpecialCharTok{+}
+
+  \CommentTok{\# creation des barres}
+
+  \FunctionTok{geom\_col}\NormalTok{(}
+    \AttributeTok{alpha =} \FloatTok{0.85}\NormalTok{,}
+    \AttributeTok{width =} \FloatTok{0.6}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# ajout des intervalles de confiance}
+
+  \FunctionTok{geom\_errorbar}\NormalTok{(}
+
+    \FunctionTok{aes}\NormalTok{(}
+      \AttributeTok{ymin =}\NormalTok{ IC\_inf,}
+      \AttributeTok{ymax =}\NormalTok{ IC\_sup}
+\NormalTok{    ),}
+
+    \AttributeTok{width =} \FloatTok{0.2}\NormalTok{,}
+
+    \AttributeTok{linewidth =} \FloatTok{0.8}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# ligne de reference a zero}
+
+  \FunctionTok{geom\_hline}\NormalTok{(}
+    \AttributeTok{yintercept =} \DecValTok{0}\NormalTok{,}
+    \AttributeTok{linetype =} \StringTok{"solid"}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# couleurs des zones}
+
+  \FunctionTok{scale\_fill\_manual}\NormalTok{(}
+    \AttributeTok{values =}\NormalTok{ couleurs\_zone}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# titres du graphique}
+
+  \FunctionTok{labs}\NormalTok{(}
+
+    \AttributeTok{title =} \StringTok{"G4 {-} SQ2 : elasticite croisee et report modal"}\NormalTok{,}
+
+    \AttributeTok{subtitle =} \StringTok{"epsilon \textgreater{} 0 : substitution | epsilon proche de 0 : independance"}\NormalTok{,}
+
+    \AttributeTok{x =} \ConstantTok{NULL}\NormalTok{,}
+
+    \AttributeTok{y =} \StringTok{"Elasticite croisee"}\NormalTok{,}
+
+    \AttributeTok{fill =} \ConstantTok{NULL}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# mise en forme generale}
+
+  \FunctionTok{theme\_minimal}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{12}\NormalTok{) }\SpecialCharTok{+}
+
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{legend.position =} \StringTok{"none"}
+\NormalTok{  )}
+
+
+\CommentTok{\# graphique de l\textquotesingle{}evolution de l\textquotesingle{}elasticite}
+\CommentTok{\# selon les classes de prix}
+
+\NormalTok{g6 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(}
+
+\NormalTok{  cross\_faix,}
+
+  \FunctionTok{aes}\NormalTok{(}
+    \AttributeTok{x =}\NormalTok{ Faix\_Prix,}
+    \AttributeTok{y =}\NormalTok{ eps\_croisee,}
+    \AttributeTok{colour =}\NormalTok{ Zone,}
+    \AttributeTok{group =}\NormalTok{ Zone}
+\NormalTok{  )}
+\NormalTok{) }\SpecialCharTok{+}
+
+  \CommentTok{\# courbes par zone}
+
+  \FunctionTok{geom\_line}\NormalTok{(}
+    \AttributeTok{linewidth =} \FloatTok{1.2}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# ajout des points}
+
+  \FunctionTok{geom\_point}\NormalTok{(}
+    \AttributeTok{size =} \DecValTok{3}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# ligne horizontale a zero}
+
+  \FunctionTok{geom\_hline}\NormalTok{(}
+    \AttributeTok{yintercept =} \DecValTok{0}\NormalTok{,}
+    \AttributeTok{linetype =} \StringTok{"dashed"}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# couleurs des zones}
+
+  \FunctionTok{scale\_colour\_manual}\NormalTok{(}
+    \AttributeTok{values =}\NormalTok{ couleurs\_zone}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# titres du graphique}
+
+  \FunctionTok{labs}\NormalTok{(}
+
+    \AttributeTok{title =} \StringTok{"G6 {-} SQ2 : intensite du report modal selon le prix"}\NormalTok{,}
+
+    \AttributeTok{subtitle =} \StringTok{"le report modal augmente{-}t{-}il lorsque le prix franchit le seuil ?"}\NormalTok{,}
+
+    \AttributeTok{x =} \StringTok{"Classe de prix SP95"}\NormalTok{,}
+
+    \AttributeTok{y =} \StringTok{"Elasticite croisee"}\NormalTok{,}
+
+    \AttributeTok{colour =} \StringTok{"Zone"}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# mise en forme generale}
+
+  \FunctionTok{theme\_minimal}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{12}\NormalTok{) }\SpecialCharTok{+}
+
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}
+      \AttributeTok{angle =} \DecValTok{15}\NormalTok{,}
+      \AttributeTok{hjust =} \DecValTok{1}
+\NormalTok{    )}
+\NormalTok{  )}
+
+
+\CommentTok{\# affichage des graphiques}
+
+\NormalTok{g4}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{price_elasticity_gasoline_demand_corrigé_files/figure-latex/unnamed-chunk-20-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{g6}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{price_elasticity_gasoline_demand_corrigé_files/figure-latex/unnamed-chunk-20-2.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# sauvegarde du graphique G4}
+
+\FunctionTok{ggsave}\NormalTok{(}
+  \AttributeTok{filename =} \StringTok{"g4\_elasticite\_croisee.png"}\NormalTok{,}
+  \AttributeTok{plot =}\NormalTok{ g4,}
+  \AttributeTok{width =} \DecValTok{10}\NormalTok{,}
+  \AttributeTok{height =} \DecValTok{6}\NormalTok{,}
+  \AttributeTok{dpi =} \DecValTok{300}
+\NormalTok{)}
+
+
+\CommentTok{\# sauvegarde du graphique G6}
+
+\FunctionTok{ggsave}\NormalTok{(}
+  \AttributeTok{filename =} \StringTok{"g6\_report\_modal\_prix.png"}\NormalTok{,}
+  \AttributeTok{plot =}\NormalTok{ g6,}
+  \AttributeTok{width =} \DecValTok{10}\NormalTok{,}
+  \AttributeTok{height =} \DecValTok{6}\NormalTok{,}
+  \AttributeTok{dpi =} \DecValTok{300}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Les resultats de la SQ2 sont interessants car ils suggerent l'existence
+d'un certain report modal vers les transports en commun, mais avec
+plusieurs limites importantes d'interpretation.
+
+Le premier graphique (G4) montre que l'elasticite croisee moyenne est
+positive dans les trois zones :
+
+\begin{itemize}
+\tightlist
+\item
+  1,36 en zone urbaine ;
+\item
+  1,35 en zone periurbaine ;
+\item
+  1,33 en zone rurale.
+\end{itemize}
+
+En theorie economique, une elasticite croisee positive signifie que les
+deux biens peuvent etre consideres comme substituts. Dans ce contexte,
+cela suggere qu'une hausse du prix du SP95 pourrait etre associee a une
+augmentation de l'utilisation des transports en commun.
+
+Cependant, les intervalles de confiance sont tres larges et traversent
+zero dans toutes les zones :
+
+\begin{itemize}
+\tightlist
+\item
+  IC ≈ {[}-0,5 ; 3,2{]}.
+\end{itemize}
+
+Ce point est important car il indique une forte variabilite statistique.
+Ainsi, meme si la moyenne est positive, les resultats ne sont pas
+suffisamment stables pour confirmer avec certitude l'existence d'un
+report modal fort et systematique.
+
+Le second graphique (G6) est probablement le plus interessant de cette
+section.
+
+Il montre que :
+
+\begin{itemize}
+\tightlist
+\item
+  les elasticites croisees sont tres positives dans les classes de prix
+  faibles (F1 et F2) ;
+\item
+  elles deviennent ensuite negatives en F3 et F4 ;
+\item
+  avant de redevenir legerement positives en F5.
+\end{itemize}
+
+Cela suggere que la relation entre le prix du carburant et l'utilisation
+des transports en commun n'est pas lineaire.
+
+Plusieurs interpretations peuvent etre proposees.
+
+Lorsque les prix sont relativement faibles, de petites variations du
+SP95 peuvent coincider avec des periodes de croissance economique ou
+d'augmentation generale de la mobilite. Dans ce contexte, le trafic
+routier et les transports en commun peuvent augmenter simultanement.
+
+A partir de F3 (\textasciitilde1,70€--1,90€), les elasticites deviennent
+negatives. Cela peut indiquer que la hausse du prix commence a affecter
+plus globalement la mobilite, en reduisant a la fois l'utilisation de la
+voiture et certains deplacements en transports en commun.
+
+La forte baisse observee en F4 (\textasciitilde1,90€--2,10€) peut
+egalement refleter le contexte de crise energetique et d'inflation, dans
+lequel l'augmentation du cout de la mobilite affecte plusieurs formes de
+deplacement en meme temps.
+
+Enfin, un autre element important est que les trois zones presentent des
+resultats presque identiques. Cela suggere soit un comportement agregé
+relativement similaire entre les zones, soit une structure du dataset
+produisant des dynamiques tres proches entre les differents territoires.
+
+\subsubsection{SQ3 --- facteur geographique (contrainte vs
+choix)}\label{sq3-facteur-geographique-contrainte-vs-choix}
+
+l'elasticite est-elle identique en zone rurale et en zone urbaine ?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  SQ3 {-} facteur geographique}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   SQ3 - facteur geographique
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  A. elasticite directe discrete par zone}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   A. elasticite directe discrete par zone
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  B. regression log{-}lineaire structurelle (nijkamp \& gelman)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   B. regression log-lineaire structurelle (nijkamp & gelman)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ── SQ3{-}A : elasticite directe discrete ──────────────────────────────────────}
+
+\NormalTok{elast\_zone }\OtherTok{\textless{}{-}}\NormalTok{ df\_seuil }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{group\_by}\NormalTok{(Zone) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{summarise}\NormalTok{(}
+
+    \CommentTok{\# nombre d\textquotesingle{}observations par zone}
+
+    \AttributeTok{n =} \FunctionTok{n}\NormalTok{(),}
+
+    \CommentTok{\# elasticite{-}prix moyenne du SP95}
+
+    \AttributeTok{eps\_moy\_SP95 =} \FunctionTok{mean}\NormalTok{(epsilon\_SP95, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+
+    \CommentTok{\# elasticite{-}prix mediane du SP95}
+
+    \AttributeTok{eps\_med\_SP95 =} \FunctionTok{median}\NormalTok{(epsilon\_SP95, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+
+    \CommentTok{\# ecart{-}type de l\textquotesingle{}elasticite{-}prix du SP95}
+
+    \AttributeTok{eps\_sd\_SP95 =} \FunctionTok{sd}\NormalTok{(epsilon\_SP95, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+
+    \CommentTok{\# elasticite moyenne par rapport au gazole}
+    \CommentTok{\# ici, on regarde le rapport variation trafic / variation gazole}
+
+    \AttributeTok{eps\_moy\_Gaz =} \FunctionTok{mean}\NormalTok{(Var.Trafic.. }\SpecialCharTok{/}\NormalTok{ Var.Gazole.., }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{mutate}\NormalTok{(}
+
+    \CommentTok{\# intervalle de confiance a 95 \%}
+
+    \AttributeTok{IC\_inf =}\NormalTok{ eps\_moy\_SP95 }\SpecialCharTok{{-}} \FloatTok{1.96} \SpecialCharTok{*}\NormalTok{ eps\_sd\_SP95 }\SpecialCharTok{/} \FunctionTok{sqrt}\NormalTok{(n),}
+    \AttributeTok{IC\_sup =}\NormalTok{ eps\_moy\_SP95 }\SpecialCharTok{+} \FloatTok{1.96} \SpecialCharTok{*}\NormalTok{ eps\_sd\_SP95 }\SpecialCharTok{/} \FunctionTok{sqrt}\NormalTok{(n),}
+
+    \CommentTok{\# interpretation automatique selon l\textquotesingle{}intensite de l\textquotesingle{}elasticite}
+
+    \AttributeTok{Interpretation =} \FunctionTok{case\_when}\NormalTok{(}
+      \FunctionTok{abs}\NormalTok{(eps\_moy\_SP95) }\SpecialCharTok{\textless{}} \FloatTok{0.15} \SpecialCharTok{\textasciitilde{}} \StringTok{"tres inelastique (dependance forte)"}\NormalTok{,}
+      \FunctionTok{abs}\NormalTok{(eps\_moy\_SP95) }\SpecialCharTok{\textless{}} \FloatTok{0.40} \SpecialCharTok{\textasciitilde{}} \StringTok{"peu elastique"}\NormalTok{,}
+      \FunctionTok{abs}\NormalTok{(eps\_moy\_SP95) }\SpecialCharTok{\textless{}} \FloatTok{1.00} \SpecialCharTok{\textasciitilde{}} \StringTok{"elasticite moderee"}\NormalTok{,}
+      \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \StringTok{"tres elastique (sensibilite forte)"}
+\NormalTok{    )}
+\NormalTok{  )}
+
+
+\CommentTok{\# affichage du tableau de synthese}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{ tableau de synthese SQ3{-}A {-} elasticite directe par zone :}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  tableau de synthese SQ3-A - elasticite directe par zone :
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{elast\_zone }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{select}\NormalTok{(}
+\NormalTok{    Zone,}
+\NormalTok{    eps\_moy\_SP95,}
+\NormalTok{    eps\_med\_SP95,}
+\NormalTok{    IC\_inf,}
+\NormalTok{    IC\_sup,}
+\NormalTok{    eps\_moy\_Gaz,}
+\NormalTok{    Interpretation}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{rename}\NormalTok{(}
+    \StringTok{"epsilon SP95 (moy)"} \OtherTok{=}\NormalTok{ eps\_moy\_SP95,}
+    \StringTok{"epsilon SP95 (med)"} \OtherTok{=}\NormalTok{ eps\_med\_SP95,}
+    \StringTok{"IC 95\% inf"} \OtherTok{=}\NormalTok{ IC\_inf,}
+    \StringTok{"IC 95\% sup"} \OtherTok{=}\NormalTok{ IC\_sup,}
+    \StringTok{"epsilon gazole (moy)"} \OtherTok{=}\NormalTok{ eps\_moy\_Gaz}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{mutate}\NormalTok{(}
+    \FunctionTok{across}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.numeric), }\SpecialCharTok{\textasciitilde{}} \FunctionTok{round}\NormalTok{(.x, }\DecValTok{4}\NormalTok{))}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+
+  \FunctionTok{print}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 7
+##   Zone       `epsilon SP95 (moy)` `epsilon SP95 (med)` `IC 95% inf` `IC 95% sup`
+##   <fct>                     <dbl>                <dbl>        <dbl>        <dbl>
+## 1 Urbaine                    1.11                0.384       -0.163         2.38
+## 2 Périurbai~                 1.06                0.308       -0.187         2.31
+## 3 Rurale                     1.02                0.135       -0.212         2.24
+## # i 2 more variables: `epsilon gazole (moy)` <dbl>, Interpretation <chr>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# creation du graphique SQ3{-}A}
+
+\NormalTok{g2 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(elast\_zone, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Zone, }\AttributeTok{y =}\NormalTok{ eps\_moy\_SP95, }\AttributeTok{fill =}\NormalTok{ Zone)) }\SpecialCharTok{+}
+
+  \CommentTok{\# barres des elasticites moyennes}
+
+  \FunctionTok{geom\_col}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.85}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.6}\NormalTok{) }\SpecialCharTok{+}
+
+  \CommentTok{\# barres d\textquotesingle{}erreur : intervalle de confiance}
+
+  \FunctionTok{geom\_errorbar}\NormalTok{(}
+    \FunctionTok{aes}\NormalTok{(}\AttributeTok{ymin =}\NormalTok{ IC\_inf, }\AttributeTok{ymax =}\NormalTok{ IC\_sup),}
+    \AttributeTok{width =} \FloatTok{0.2}\NormalTok{,}
+    \AttributeTok{linewidth =} \FloatTok{0.8}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# ligne de reference a zero}
+
+  \FunctionTok{geom\_hline}\NormalTok{(}
+    \AttributeTok{yintercept =} \DecValTok{0}\NormalTok{,}
+    \AttributeTok{linetype =} \StringTok{"solid"}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# ligne de reference pour l\textquotesingle{}elasticite unitaire}
+
+  \FunctionTok{geom\_hline}\NormalTok{(}
+    \AttributeTok{yintercept =} \SpecialCharTok{{-}}\DecValTok{1}\NormalTok{,}
+    \AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{,}
+    \AttributeTok{colour =} \StringTok{"\#F44336"}\NormalTok{,}
+    \AttributeTok{alpha =} \FloatTok{0.6}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# annotation de l\textquotesingle{}elasticite unitaire}
+
+  \FunctionTok{annotate}\NormalTok{(}
+    \StringTok{"text"}\NormalTok{,}
+    \AttributeTok{x =} \FloatTok{3.4}\NormalTok{,}
+    \AttributeTok{y =} \SpecialCharTok{{-}}\FloatTok{1.05}\NormalTok{,}
+    \AttributeTok{label =} \StringTok{"elasticite unitaire"}\NormalTok{,}
+    \AttributeTok{size =} \DecValTok{3}\NormalTok{,}
+    \AttributeTok{colour =} \StringTok{"\#F44336"}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# couleurs par zone}
+
+  \FunctionTok{scale\_fill\_manual}\NormalTok{(}\AttributeTok{values =}\NormalTok{ couleurs\_zone) }\SpecialCharTok{+}
+
+  \CommentTok{\# titres et axes}
+
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"G2 {-} SQ3 : elasticite{-}prix directe de la demande de trafic (SP95)"}\NormalTok{,}
+    \AttributeTok{subtitle =} \StringTok{"epsilon = delta trafic \% / delta prix \%  |  IC 95\%  |  rurale \textasciitilde{} 0 {-}\textgreater{} contrainte"}\NormalTok{,}
+    \AttributeTok{x =} \ConstantTok{NULL}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Elasticite (epsilon)"}\NormalTok{,}
+    \AttributeTok{fill =} \ConstantTok{NULL}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# mise en forme generale}
+
+  \FunctionTok{theme\_minimal}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{12}\NormalTok{) }\SpecialCharTok{+}
+
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{legend.position =} \StringTok{"none"}
+\NormalTok{  )}
+
+
+\CommentTok{\# affichage du graphique}
+
+\NormalTok{g2}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{price_elasticity_gasoline_demand_corrigé_files/figure-latex/unnamed-chunk-21-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# sauvegarde du graphique}
+
+\FunctionTok{ggsave}\NormalTok{(}
+  \AttributeTok{filename =} \StringTok{"g2\_sq3\_elasticite\_directe.png"}\NormalTok{,}
+  \AttributeTok{plot =}\NormalTok{ g2,}
+  \AttributeTok{width =} \DecValTok{10}\NormalTok{,}
+  \AttributeTok{height =} \DecValTok{6}\NormalTok{,}
+  \AttributeTok{dpi =} \DecValTok{300}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Ces resultats montrent, de maniere generale, qu'il n'existe pas de
+difference geographique tres forte entre les zones, et que l'elasticite
+apparait positive dans les trois cas, mais avec une incertitude
+statistique importante.
+
+Le premier element marquant est la proximite des moyennes :
+
+Urbaine : 1,11 ; Periurbaine : 1,06 ; Rurale : 1,02.
+
+Cela suggere que le comportement observe est relativement similaire dans
+les trois zones.
+
+Les intervalles de confiance sont cependant tres larges et traversent
+tous zero :
+
+Urbaine : {[}-0,163 ; 2,38{]} ; Periurbaine : {[}-0,187 ; 2,31{]} ;
+Rurale : {[}-0,212 ; 2,24{]}.
+
+D'un point de vue statistique, cela signifie que les estimations restent
+fragiles. Il n'est donc pas possible d'affirmer avec certitude que
+l'elasticite est reellement positive et stable.
+
+Par ailleurs, les medianes sont nettement plus faibles que les moyennes
+:
+
+0,384 ; 0,308 ; 0,135.
+
+Cela indique que la distribution contient quelques valeurs elevees qui
+tirent artificiellement la moyenne vers le haut. En d'autres termes, la
+moyenne donne l'impression d'une elasticite plus forte que celle
+observee dans la majorite des cas.
+
+Le graphique confirme cette interpretation : les barres se situent
+autour de 1, mais les intervalles de confiance sont tres importants, ce
+qui traduit une forte variabilite des observations.
+
+Ainsi, l'interpretation la plus prudente consiste a dire que le
+comportement geographique ne semble pas tres different entre les zones,
+et que l'elasticite directe du trafic par rapport au prix du SP95 reste
+instable, fortement dispersee et statistiquement peu robuste.
+
+Enfin, un point important doit etre souligne : comme l'elasticite
+moyenne est positive, le resultat ne correspond pas au comportement
+economique classique d'une demande qui diminue lorsque le prix augmente.
+Cela renforce l'idee que les estimations sont probablement influencees
+par des tendances temporelles, des chocs externes ou des variables
+omises, et qu'elles ne doivent pas etre interpretees comme une relation
+causale pure entre le prix du carburant et le trafic routier.
+
+\subsubsection{SQ3-B --- regression log-lineaire
+structurelle}\label{sq3-b-regression-log-lineaire-structurelle}
+
+l'elasticite structurelle du trafic varie-t-elle selon la zone ?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ── harmonisation des noms de colonnes pour SQ3{-}B ────────────────────────────}
+\CommentTok{\# on cree un dataframe temporaire avec des noms standardises}
+\CommentTok{\# cela evite les erreurs si le fichier contient encore les anciens noms}
+
+\NormalTok{df\_abs\_sq3 }\OtherTok{\textless{}{-}}\NormalTok{ df\_abs}
+
+\CommentTok{\# trafic routier}
+\NormalTok{df\_abs\_sq3}\SpecialCharTok{$}\NormalTok{Trafic }\OtherTok{\textless{}{-}} \ControlFlowTok{if}\NormalTok{ (}\StringTok{"Trafic"} \SpecialCharTok{\%in\%} \FunctionTok{names}\NormalTok{(df\_abs\_sq3)) \{}
+\NormalTok{  df\_abs\_sq3}\SpecialCharTok{$}\NormalTok{Trafic}
+\NormalTok{\} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{ (}\StringTok{"Trafic.Routier"} \SpecialCharTok{\%in\%} \FunctionTok{names}\NormalTok{(df\_abs\_sq3)) \{}
+\NormalTok{  df\_abs\_sq3}\SpecialCharTok{$}\NormalTok{Trafic.Routier}
+\NormalTok{\} }\ControlFlowTok{else}\NormalTok{ \{}
+  \FunctionTok{stop}\NormalTok{(}\StringTok{"colonne du trafic introuvable dans df\_abs"}\NormalTok{)}
+\NormalTok{\}}
+
+\CommentTok{\# prix du gazole}
+\NormalTok{df\_abs\_sq3}\SpecialCharTok{$}\NormalTok{Prix\_Gazole }\OtherTok{\textless{}{-}} \ControlFlowTok{if}\NormalTok{ (}\StringTok{"Prix\_Gazole"} \SpecialCharTok{\%in\%} \FunctionTok{names}\NormalTok{(df\_abs\_sq3)) \{}
+\NormalTok{  df\_abs\_sq3}\SpecialCharTok{$}\NormalTok{Prix\_Gazole}
+\NormalTok{\} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{ (}\StringTok{"Prix.Gazole"} \SpecialCharTok{\%in\%} \FunctionTok{names}\NormalTok{(df\_abs\_sq3)) \{}
+\NormalTok{  df\_abs\_sq3}\SpecialCharTok{$}\NormalTok{Prix.Gazole}
+\NormalTok{\} }\ControlFlowTok{else}\NormalTok{ \{}
+  \FunctionTok{stop}\NormalTok{(}\StringTok{"colonne du prix du gazole introuvable dans df\_abs"}\NormalTok{)}
+\NormalTok{\}}
+
+\CommentTok{\# voyageurs en transports en commun}
+\NormalTok{df\_abs\_sq3}\SpecialCharTok{$}\NormalTok{Voyageurs }\OtherTok{\textless{}{-}} \ControlFlowTok{if}\NormalTok{ (}\StringTok{"Voyageurs"} \SpecialCharTok{\%in\%} \FunctionTok{names}\NormalTok{(df\_abs\_sq3)) \{}
+\NormalTok{  df\_abs\_sq3}\SpecialCharTok{$}\NormalTok{Voyageurs}
+\NormalTok{\} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{ (}\StringTok{"Voyageurs.TC"} \SpecialCharTok{\%in\%} \FunctionTok{names}\NormalTok{(df\_abs\_sq3)) \{}
+\NormalTok{  df\_abs\_sq3}\SpecialCharTok{$}\NormalTok{Voyageurs.TC}
+\NormalTok{\} }\ControlFlowTok{else}\NormalTok{ \{}
+  \FunctionTok{stop}\NormalTok{(}\StringTok{"colonne des voyageurs TC introuvable dans df\_abs"}\NormalTok{)}
+\NormalTok{\}}
+
+
+\CommentTok{\# ── SQ3{-}B : regression log{-}lineaire structurelle ─────────────────────────────}
+\CommentTok{\# ln(Trafic) = alpha + beta * ln(Prix\_SP95)}
+\CommentTok{\# beta = elasticite structurelle du trafic}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  SQ3{-}B {-} regression log{-}lineaire structurelle}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   SQ3-B - regression log-lineaire structurelle
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  ln(Trafic) = alpha + beta * ln(Prix\_SP95)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   ln(Trafic) = alpha + beta * ln(Prix_SP95)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ── estimation des modeles par zone ──────────────────────────────────────────}
+\CommentTok{\# 1) trafic \textasciitilde{} prix SP95}
+\CommentTok{\# 2) trafic \textasciitilde{} prix gazole}
+\CommentTok{\# 3) voyageurs TC \textasciitilde{} prix SP95}
+
+\NormalTok{modeles\_loglin }\OtherTok{\textless{}{-}}\NormalTok{ df\_abs\_sq3 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Zone) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{nest}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+
+    \CommentTok{\# modele principal : prix SP95 {-}\textgreater{} trafic}
+    \AttributeTok{modele\_SP95 =} \FunctionTok{map}\NormalTok{(}
+\NormalTok{      data,}
+      \SpecialCharTok{\textasciitilde{}} \FunctionTok{lm}\NormalTok{(}\FunctionTok{log}\NormalTok{(Trafic) }\SpecialCharTok{\textasciitilde{}} \FunctionTok{log}\NormalTok{(Prix\_SP95), }\AttributeTok{data =}\NormalTok{ .x)}
+\NormalTok{    ),}
+
+    \CommentTok{\# modele complementaire : prix gazole {-}\textgreater{} trafic}
+    \AttributeTok{modele\_Gazole =} \FunctionTok{map}\NormalTok{(}
+\NormalTok{      data,}
+      \SpecialCharTok{\textasciitilde{}} \FunctionTok{lm}\NormalTok{(}\FunctionTok{log}\NormalTok{(Trafic) }\SpecialCharTok{\textasciitilde{}} \FunctionTok{log}\NormalTok{(Prix\_Gazole), }\AttributeTok{data =}\NormalTok{ .x)}
+\NormalTok{    ),}
+
+    \CommentTok{\# modele transports en commun : prix SP95 {-}\textgreater{} voyageurs}
+    \AttributeTok{modele\_TC =} \FunctionTok{map}\NormalTok{(}
+\NormalTok{      data,}
+      \SpecialCharTok{\textasciitilde{}} \FunctionTok{lm}\NormalTok{(}\FunctionTok{log}\NormalTok{(Voyageurs }\SpecialCharTok{+} \DecValTok{1}\NormalTok{) }\SpecialCharTok{\textasciitilde{}} \FunctionTok{log}\NormalTok{(Prix\_SP95), }\AttributeTok{data =}\NormalTok{ .x)}
+\NormalTok{    ),}
+
+    \CommentTok{\# extraction des coefficients et des statistiques}
+    \AttributeTok{tidied\_SP95  =} \FunctionTok{map}\NormalTok{(modele\_SP95, tidy, }\AttributeTok{conf.int =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{glanced\_SP95 =} \FunctionTok{map}\NormalTok{(modele\_SP95, glance),}
+
+    \AttributeTok{tidied\_Gazole  =} \FunctionTok{map}\NormalTok{(modele\_Gazole, tidy, }\AttributeTok{conf.int =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{glanced\_Gazole =} \FunctionTok{map}\NormalTok{(modele\_Gazole, glance),}
+
+    \AttributeTok{tidied\_TC  =} \FunctionTok{map}\NormalTok{(modele\_TC, tidy, }\AttributeTok{conf.int =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{glanced\_TC =} \FunctionTok{map}\NormalTok{(modele\_TC, glance)}
+\NormalTok{  )}
+
+
+\CommentTok{\# ── resultats du modele SP95 {-}\textgreater{} trafic ───────────────────────────────────────}
+
+\NormalTok{res\_loglin\_SP95 }\OtherTok{\textless{}{-}}\NormalTok{ modeles\_loglin }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{unnest}\NormalTok{(tidied\_SP95) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(term }\SpecialCharTok{==} \StringTok{"log(Prix\_SP95)"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{left\_join}\NormalTok{(}
+\NormalTok{    modeles\_loglin }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{unnest}\NormalTok{(glanced\_SP95) }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{select}\NormalTok{(Zone, r.squared, adj.r.squared),}
+    \AttributeTok{by =} \StringTok{"Zone"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}
+\NormalTok{    Zone, estimate, std.error, statistic, p.value,}
+\NormalTok{    conf.low, conf.high, r.squared, adj.r.squared}
+\NormalTok{  )}
+
+
+\CommentTok{\# ── resultats du modele SP95 {-}\textgreater{} TC ───────────────────────────────────────────}
+
+\NormalTok{res\_loglin\_TC }\OtherTok{\textless{}{-}}\NormalTok{ modeles\_loglin }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{unnest}\NormalTok{(tidied\_TC) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(term }\SpecialCharTok{==} \StringTok{"log(Prix\_SP95)"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{left\_join}\NormalTok{(}
+\NormalTok{    modeles\_loglin }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{unnest}\NormalTok{(glanced\_TC) }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{select}\NormalTok{(Zone, r.squared),}
+    \AttributeTok{by =} \StringTok{"Zone"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}
+\NormalTok{    Zone, estimate, std.error, p.value,}
+\NormalTok{    conf.low, conf.high, r.squared}
+\NormalTok{  )}
+
+
+\CommentTok{\# ── affichage des resultats SP95 {-}\textgreater{} trafic ───────────────────────────────────}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{SQ3{-}B {-} regression log{-}lineaire (SP95 {-}\textgreater{} trafic)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## SQ3-B - regression log-lineaire (SP95 -> trafic)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{res\_loglin\_SP95 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{Significatif =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{      p.value }\SpecialCharTok{\textless{}} \FloatTok{0.001} \SpecialCharTok{\textasciitilde{}} \StringTok{"***"}\NormalTok{,}
+\NormalTok{      p.value }\SpecialCharTok{\textless{}} \FloatTok{0.01}  \SpecialCharTok{\textasciitilde{}} \StringTok{"**"}\NormalTok{,}
+\NormalTok{      p.value }\SpecialCharTok{\textless{}} \FloatTok{0.05}  \SpecialCharTok{\textasciitilde{}} \StringTok{"*"}\NormalTok{,}
+      \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \StringTok{"ns"}
+\NormalTok{    ),}
+    \AttributeTok{Interpretation =} \FunctionTok{case\_when}\NormalTok{(}
+      \FunctionTok{abs}\NormalTok{(estimate) }\SpecialCharTok{\textless{}} \FloatTok{0.15} \SpecialCharTok{\textasciitilde{}} \StringTok{"tres inelastique"}\NormalTok{,}
+      \FunctionTok{abs}\NormalTok{(estimate) }\SpecialCharTok{\textless{}} \FloatTok{0.40} \SpecialCharTok{\textasciitilde{}} \StringTok{"peu elastique"}\NormalTok{,}
+      \FunctionTok{abs}\NormalTok{(estimate) }\SpecialCharTok{\textless{}} \FloatTok{1.00} \SpecialCharTok{\textasciitilde{}} \StringTok{"elasticite moderee"}\NormalTok{,}
+      \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \StringTok{"tres elastique"}
+\NormalTok{    )}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.numeric), }\SpecialCharTok{\textasciitilde{}} \FunctionTok{round}\NormalTok{(.x, }\DecValTok{4}\NormalTok{))) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{print}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 11
+## # Groups:   Zone [3]
+##   Zone        estimate std.error statistic p.value conf.low conf.high r.squared
+##   <fct>          <dbl>     <dbl>     <dbl>   <dbl>    <dbl>     <dbl>     <dbl>
+## 1 Urbaine         1.39     0.222      6.23       0    0.944      1.83     0.314
+## 2 Périurbaine     1.23     0.221      5.56       0    0.788      1.67     0.266
+## 3 Rurale          1.07     0.220      4.85       0    0.629      1.50     0.217
+## # i 3 more variables: adj.r.squared <dbl>, Significatif <chr>,
+## #   Interpretation <chr>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ── affichage des resultats SP95 {-}\textgreater{} TC ───────────────────────────────────────}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{SQ3{-}B {-} regression log{-}lineaire (SP95 {-}\textgreater{} TC)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## SQ3-B - regression log-lineaire (SP95 -> TC)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{res\_loglin\_TC }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.numeric), }\SpecialCharTok{\textasciitilde{}} \FunctionTok{round}\NormalTok{(.x, }\DecValTok{4}\NormalTok{))) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{print}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 7
+## # Groups:   Zone [3]
+##   Zone        estimate std.error p.value conf.low conf.high r.squared
+##   <fct>          <dbl>     <dbl>   <dbl>    <dbl>     <dbl>     <dbl>
+## 1 Urbaine         2.22     0.295       0     1.63      2.81     0.400
+## 2 Périurbaine     2.22     0.294       0     1.63      2.80     0.4  
+## 3 Rurale          2.19     0.290       0     1.62      2.77     0.402
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ── graphique principal de la regression log{-}lineaire ────────────────────────}
+
+\NormalTok{g5 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(}
+\NormalTok{  df\_abs\_sq3,}
+  \FunctionTok{aes}\NormalTok{(}
+    \AttributeTok{x =} \FunctionTok{log}\NormalTok{(Prix\_SP95),}
+    \AttributeTok{y =} \FunctionTok{log}\NormalTok{(Trafic),}
+    \AttributeTok{colour =}\NormalTok{ Zone}
+\NormalTok{  )}
+\NormalTok{) }\SpecialCharTok{+}
+
+  \CommentTok{\# nuage de points par zone}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.4}\NormalTok{, }\AttributeTok{size =} \FloatTok{1.5}\NormalTok{) }\SpecialCharTok{+}
+
+  \CommentTok{\# droite de regression lineaire}
+  \FunctionTok{geom\_smooth}\NormalTok{(}
+    \AttributeTok{method =} \StringTok{"lm"}\NormalTok{,}
+    \AttributeTok{se =} \ConstantTok{TRUE}\NormalTok{,}
+    \AttributeTok{linewidth =} \FloatTok{1.2}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# couleurs des zones}
+  \FunctionTok{scale\_colour\_manual}\NormalTok{(}\AttributeTok{values =}\NormalTok{ couleurs\_zone) }\SpecialCharTok{+}
+
+  \CommentTok{\# equation de regression sur le graphique (ggpmisc)}
+  \FunctionTok{stat\_poly\_eq}\NormalTok{(}
+    \FunctionTok{aes}\NormalTok{(}\AttributeTok{label =} \FunctionTok{after\_stat}\NormalTok{(eq.label)),}
+    \AttributeTok{formula =}\NormalTok{ y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ x,}
+    \AttributeTok{parse =} \ConstantTok{TRUE}\NormalTok{,}
+    \AttributeTok{size =} \DecValTok{3}\NormalTok{,}
+    \AttributeTok{label.x =} \StringTok{"left"}\NormalTok{,}
+    \AttributeTok{label.y =} \StringTok{"top"}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# titres et axes}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"G5 {-} SQ3 : regression log{-}lineaire : ln(Trafic) \textasciitilde{} ln(Prix\_SP95)"}\NormalTok{,}
+    \AttributeTok{subtitle =} \StringTok{"la pente beta mesure l\textquotesingle{}elasticite structurelle du trafic"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"ln(Prix SP95)"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"ln(Trafic routier)"}\NormalTok{,}
+    \AttributeTok{colour =} \StringTok{"Zone"}
+\NormalTok{  ) }\SpecialCharTok{+}
+
+  \CommentTok{\# mise en forme generale}
+  \FunctionTok{theme\_minimal}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{12}\NormalTok{) }\SpecialCharTok{+}
+
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{legend.position =} \StringTok{"top"}
+\NormalTok{  )}
+
+
+\CommentTok{\# ── affichage du graphique ───────────────────────────────────────────────────}
+
+\NormalTok{g5}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{price_elasticity_gasoline_demand_corrigé_files/figure-latex/unnamed-chunk-22-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ── sauvegarde du graphique ──────────────────────────────────────────────────}
+
+\FunctionTok{ggsave}\NormalTok{(}
+  \AttributeTok{filename =} \StringTok{"g5\_sq3\_regression\_loglineaire.png"}\NormalTok{,}
+  \AttributeTok{plot =}\NormalTok{ g5,}
+  \AttributeTok{width =} \DecValTok{10}\NormalTok{,}
+  \AttributeTok{height =} \DecValTok{6}\NormalTok{,}
+  \AttributeTok{dpi =} \DecValTok{300}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+ce que montre la regression log-lineaire
+
+Le modele estime la relation suivante :
+
+ln(Trafic)=α+β×ln(Prix\_SP95)+ε
+
+Dans ce type de modele, le coefficient beta correspond directement a une
+elasticite structurelle constante.
+
+Autrement dit :
+
+si le prix augmente de 1 \%, alors le trafic varie en moyenne de beta
+\%. 1. les coefficients beta sont positifs dans toutes les zones
+
+Les elasticites estimees sont :
+
+zone urbaine : 1,39 zone periurbaine : 1,23 zone rurale : 1,07
+
+Cela signifie que, dans le modele estime, une hausse du prix du SP95 est
+associee a une hausse du trafic routier.
+
+Ce resultat est contre-intuitif du point de vue economique classique,
+car on attend normalement une relation negative entre prix et demande.
+
+Donc :
+
+le modele ne doit pas etre interprete comme une causalite directe
+simple.
+
+Il capture plutot une dynamique temporelle globale du dataset :
+
+reprise economique post-covid ; retour progressif de la mobilite ;
+inflation energetique ; augmentation simultanee du trafic et des prix
+entre 2021 et 2024.
+
+Autrement dit :
+
+le prix et le trafic augmentent ensemble dans le temps, ce qui produit
+une pente positive.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  les resultats sont statistiquement significatifs
+\end{enumerate}
+
+C'est le point le plus important.
+
+Contrairement aux elasticites discretes precedentes :
+
+les p-values sont quasiment nulles ; les coefficients sont tres
+significatifs (***) ; les intervalles de confiance ne traversent pas
+zero.
+
+Par exemple :
+
+urbaine : IC {[}0,944 ; 1,83{]} periurbaine : IC {[}0,788 ; 1,67{]}
+rurale : IC {[}0,629 ; 1,50{]}
+
+Donc :
+
+la relation positive observee est statistiquement robuste dans le cadre
+du modele.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  le facteur geographique reste relativement faible
+\end{enumerate}
+
+Les trois coefficients restent proches :
+
+1,39 1,23 1,07
+
+Cela suggere encore une fois que :
+
+les comportements agreges sont assez similaires entre zones.
+
+La zone urbaine apparait legerement plus sensible au prix, tandis que la
+zone rurale semble un peu plus stable, mais les differences restent
+moderees.
+
+Donc :
+
+le facteur geographique existe, mais il n'introduit pas une rupture
+majeure dans les comportements observes.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  le pouvoir explicatif reste moyen
+\end{enumerate}
+
+Les R² sont :
+
+0,314 (urbaine) 0,266 (periurbaine) 0,217 (rurale)
+
+Donc le prix explique seulement environ :
+
+22 \% a 31 \% de la variation du trafic.
+
+Cela veut dire que :
+
+une grande partie des variations du trafic depend probablement d'autres
+variables :
+
+contexte sanitaire ; saisonnalite ; activite economique ; politiques
+publiques ; teletravail ; habitudes de mobilite.
+
+Le prix du carburant n'est donc pas le seul determinant du trafic.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  regression SP95 -\textgreater{} transports en commun
+\end{enumerate}
+
+Les coefficients deviennent encore plus eleves :
+
+environ 2,2 dans les trois zones.
+
+Cela suggere qu'une hausse du prix du carburant est associee a une
+hausse importante de l'utilisation des transports en commun.
+
+Et ici encore :
+
+les coefficients sont tres significatifs ; les IC restent entierement
+positifs ; les R² (\textasciitilde0,40) sont meilleurs que pour le
+trafic routier.
+
+Donc :
+
+la relation statistique entre prix du carburant et usage des transports
+en commun apparait plus forte que celle observee avec le trafic routier.
+
+lecture globale prudente
+
+La conclusion la plus prudente serait probablement :
+
+les regressions montrent une relation statistique robuste entre hausse
+des prix et evolution des mobilites ; cependant, les coefficients
+positifs indiquent surtout une dynamique temporelle commune plutot
+qu'une elasticite causale pure ; les resultats suggerent aussi que les
+transports en commun reagissent davantage aux variations du prix du
+carburant que le trafic routier lui-meme.
+
+\subsubsection{grand finale}\label{grand-finale}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ══════════════════════════════════════════════════════════════════════════════}
+\CommentTok{\#  TABLEAU DE SYNTHÈSE FINAL}
+\CommentTok{\# ══════════════════════════════════════════════════════════════════════════════}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  TABLEAU DE SYNTHESE FINAL (pour le rapport)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   TABLEAU DE SYNTHESE FINAL (pour le rapport)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{corr\_zone }\OtherTok{\textless{}{-}}\NormalTok{ df\_abs }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Zone) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{corr\_SP95\_trafic =} \FunctionTok{cor}\NormalTok{(Prix\_SP95, Trafic.Routier, }\AttributeTok{use =} \StringTok{"complete.obs"}\NormalTok{),}
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  )}
+ 
+\NormalTok{synthese\_finale }\OtherTok{\textless{}{-}}\NormalTok{ corr\_zone }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{left\_join}\NormalTok{(elast\_zone     }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(Zone, eps\_moy\_SP95, Interpretation),           }\AttributeTok{by =} \StringTok{"Zone"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{left\_join}\NormalTok{(cross\_zone     }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(Zone, eps\_crois\_moy),                           }\AttributeTok{by =} \StringTok{"Zone"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{left\_join}\NormalTok{(seuil\_rupture  }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(Zone, Faix\_Rupture, Delta\_max),                 }\AttributeTok{by =} \StringTok{"Zone"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{left\_join}\NormalTok{(res\_loglin\_SP95 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(Zone, }\AttributeTok{beta\_loglin =}\NormalTok{ estimate,}
+                                        \AttributeTok{R2 =}\NormalTok{ r.squared, }\AttributeTok{Sig =}\NormalTok{ p.value),             }\AttributeTok{by =} \StringTok{"Zone"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{rename}\NormalTok{(}
+    \StringTok{"Correlation (r)"}    \OtherTok{=}\NormalTok{ corr\_SP95\_trafic,}
+    \StringTok{"epsilon directe"}    \OtherTok{=}\NormalTok{ eps\_moy\_SP95,}
+    \StringTok{"Interpretation"}     \OtherTok{=}\NormalTok{ Interpretation,}
+    \StringTok{"epsilon croisee TC"} \OtherTok{=}\NormalTok{ eps\_crois\_moy,}
+    \StringTok{"Seuil rupture"}      \OtherTok{=}\NormalTok{ Faix\_Rupture,}
+    \StringTok{"Delta epsilon"}      \OtherTok{=}\NormalTok{ Delta\_max,}
+    \StringTok{"beta log{-}lin"}       \OtherTok{=}\NormalTok{ beta\_loglin,}
+    \StringTok{"R2"}                 \OtherTok{=}\NormalTok{ R2,}
+    \StringTok{"p{-}value beta"}       \OtherTok{=}\NormalTok{ Sig}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.numeric), }\SpecialCharTok{\textasciitilde{}}\FunctionTok{round}\NormalTok{(.x, }\DecValTok{4}\NormalTok{)))}
+ 
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(synthese\_finale)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 10
+##   Zone   `Correlation (r)` `epsilon directe` Interpretation `epsilon croisee TC`
+##   <fct>              <dbl>             <dbl> <chr>                         <dbl>
+## 1 Urbai~             0.569              1.11 tres elastiqu~                 1.36
+## 2 Périu~             0.498              1.06 tres elastiqu~                 1.35
+## 3 Rurale             0.413              1.02 tres elastiqu~                 1.33
+## # i 5 more variables: `Seuil rupture` <fct>, `Delta epsilon` <dbl>,
+## #   `beta log-lin` <dbl>, R2 <dbl>, `p-value beta` <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ══════════════════════════════════════════════════════════════════════════════}
+\CommentTok{\#  VISUALISATIONS — SAUVEGARDE}
+\CommentTok{\# ══════════════════════════════════════════════════════════════════════════════}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Sauvegarde des graphiques...}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Sauvegarde des graphiques...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{"G1\_introduction\_temporelle.png"}\NormalTok{,  g1, }\AttributeTok{width =} \DecValTok{12}\NormalTok{, }\AttributeTok{height =} \DecValTok{5}\NormalTok{, }\AttributeTok{dpi =} \DecValTok{150}\NormalTok{)}
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{"G2\_SQ3\_elasticite\_directe.png"}\NormalTok{,   g2, }\AttributeTok{width =} \DecValTok{10}\NormalTok{, }\AttributeTok{height =} \DecValTok{6}\NormalTok{, }\AttributeTok{dpi =} \DecValTok{150}\NormalTok{)}
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{"G3\_SQ1\_seuil\_rupture.png"}\NormalTok{,        g3, }\AttributeTok{width =} \DecValTok{12}\NormalTok{, }\AttributeTok{height =} \DecValTok{6}\NormalTok{, }\AttributeTok{dpi =} \DecValTok{150}\NormalTok{)}
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{"G4\_SQ2\_elasticite\_croisee.png"}\NormalTok{,   g4, }\AttributeTok{width =} \DecValTok{10}\NormalTok{, }\AttributeTok{height =} \DecValTok{6}\NormalTok{, }\AttributeTok{dpi =} \DecValTok{150}\NormalTok{)}
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{"G5\_SQ3\_regression\_loglin.png"}\NormalTok{,    g5, }\AttributeTok{width =} \DecValTok{12}\NormalTok{, }\AttributeTok{height =} \DecValTok{6}\NormalTok{, }\AttributeTok{dpi =} \DecValTok{150}\NormalTok{)}
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{"G6\_SQ2\_report\_modal\_faixas.png"}\NormalTok{,  g6, }\AttributeTok{width =} \DecValTok{12}\NormalTok{, }\AttributeTok{height =} \DecValTok{6}\NormalTok{, }\AttributeTok{dpi =} \DecValTok{150}\NormalTok{)}
+ 
+\CommentTok{\# Grille narrative complète pour slides (ordre narratif : intro {-}\textgreater{} SQ1 {-}\textgreater{} SQ2 {-}\textgreater{} SQ3)}
+\NormalTok{grille\_narrative }\OtherTok{\textless{}{-}}\NormalTok{ (g1) }\SpecialCharTok{/}\NormalTok{ (g3 }\SpecialCharTok{|}\NormalTok{ g4) }\SpecialCharTok{/}\NormalTok{ (g2 }\SpecialCharTok{|}\NormalTok{ g5)}
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{"SYNTHESE\_DATA\_STORYTELLING.png"}\NormalTok{, grille\_narrative, }\AttributeTok{width =} \DecValTok{20}\NormalTok{, }\AttributeTok{height =} \DecValTok{18}\NormalTok{, }\AttributeTok{dpi =} \DecValTok{150}\NormalTok{)}
+ 
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Graphiques enregistres (7 fichiers).}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Graphiques enregistres (7 fichiers).
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ══════════════════════════════════════════════════════════════════════════════}
+\CommentTok{\#  EXPORT CSV DÉTAILLÉS (8 fichiers)}
+\CommentTok{\# ══════════════════════════════════════════════════════════════════════════════}
+\FunctionTok{write.csv}\NormalTok{(synthese\_finale,   }\StringTok{"RESULTATS\_00\_synthese\_finale.csv"}\NormalTok{,         }\AttributeTok{row.names =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{fileEncoding =} \StringTok{"UTF{-}8"}\NormalTok{)}
+\FunctionTok{write.csv}\NormalTok{(seuil\_table,       }\StringTok{"RESULTATS\_SQ1\_elasticite\_par\_faixa.csv"}\NormalTok{,   }\AttributeTok{row.names =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{fileEncoding =} \StringTok{"UTF{-}8"}\NormalTok{)}
+\FunctionTok{write.csv}\NormalTok{(seuil\_rupture,     }\StringTok{"RESULTATS\_SQ1\_seuil\_detecte.csv"}\NormalTok{,          }\AttributeTok{row.names =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{fileEncoding =} \StringTok{"UTF{-}8"}\NormalTok{)}
+\FunctionTok{write.csv}\NormalTok{(cross\_zone,        }\StringTok{"RESULTATS\_SQ2\_elasticite\_croisee.csv"}\NormalTok{,     }\AttributeTok{row.names =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{fileEncoding =} \StringTok{"UTF{-}8"}\NormalTok{)}
+\FunctionTok{write.csv}\NormalTok{(cross\_faix,        }\StringTok{"RESULTATS\_SQ2\_report\_par\_faixa.csv"}\NormalTok{,       }\AttributeTok{row.names =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{fileEncoding =} \StringTok{"UTF{-}8"}\NormalTok{)}
+\FunctionTok{write.csv}\NormalTok{(elast\_zone,        }\StringTok{"RESULTATS\_SQ3\_elasticite\_directe.csv"}\NormalTok{,     }\AttributeTok{row.names =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{fileEncoding =} \StringTok{"UTF{-}8"}\NormalTok{)}
+\FunctionTok{write.csv}\NormalTok{(res\_loglin\_SP95,   }\StringTok{"RESULTATS\_SQ3\_loglin\_SP95\_trafic.csv"}\NormalTok{,     }\AttributeTok{row.names =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{fileEncoding =} \StringTok{"UTF{-}8"}\NormalTok{)}
+\FunctionTok{write.csv}\NormalTok{(res\_loglin\_TC,     }\StringTok{"RESULTATS\_SQ3\_loglin\_SP95\_TC.csv"}\NormalTok{,         }\AttributeTok{row.names =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{fileEncoding =} \StringTok{"UTF{-}8"}\NormalTok{)}
+ 
+\FunctionTok{cat}\NormalTok{(}\StringTok{"CSVs exportes (8 fichiers).}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## CSVs exportes (8 fichiers).
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{SCRIPT EXECUTE AVEC SUCCES !}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## SCRIPT EXECUTE AVEC SUCCES !
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ══════════════════════════════════════════════════════════════════════════════}
+\CommentTok{\#  GUIDE D\textquotesingle{}INTERPRETATION (console) — pour la redaction du rapport}
+\CommentTok{\# ══════════════════════════════════════════════════════════════════════════════}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"======================================================================}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ======================================================================
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  GUIDE D\textquotesingle{}INTERPRETATION POUR LE RAPPORT}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   GUIDE D'INTERPRETATION POUR LE RAPPORT
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"======================================================================}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ======================================================================
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  SQ1 {-} Seuil de rupture : Regarder G3 + tableau SQ1.}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   SQ1 - Seuil de rupture : Regarder G3 + tableau SQ1.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"        Si Delta\_max est maximal entre F2 et F3, le seuil}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         Si Delta_max est maximal entre F2 et F3, le seuil
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"        est empiriquement \textasciitilde{}1.70 EUR (sans l\textquotesingle{}avoir suppose).}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         est empiriquement ~1.70 EUR (sans l'avoir suppose).
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  SQ2 {-} Report modal : Regarder G4 + G6.}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   SQ2 - Report modal : Regarder G4 + G6.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"        epsilon\_croisee \textgreater{} 0 {-}\textgreater{} TC et voiture sont substituts.}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         epsilon_croisee > 0 -> TC et voiture sont substituts.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"        G6 montre si ce report s\textquotesingle{}intensifie au{-}dessus}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         G6 montre si ce report s'intensifie au-dessus
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"        du seuil detecte en SQ1.}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         du seuil detecte en SQ1.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  SQ3 {-} Facteur geographique : Comparer G2 entre zones.}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   SQ3 - Facteur geographique : Comparer G2 entre zones.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"        Rurale {-}\textgreater{} epsilon \textasciitilde{} 0 : contrainte, pas de choix.}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         Rurale -> epsilon ~ 0 : contrainte, pas de choix.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"        Urbaine {-}\textgreater{} epsilon plus negatif : alternatives dispo.}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         Urbaine -> epsilon plus negatif : alternatives dispo.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"        G5 (log{-}lin) donne le beta structural pour citer}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         G5 (log-lin) donne le beta structural pour citer
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"        dans le rapport avec p{-}value et R2.}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         dans le rapport avec p-value et R2.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"======================================================================}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ======================================================================
+\end{verbatim}
+
+\end{document}
