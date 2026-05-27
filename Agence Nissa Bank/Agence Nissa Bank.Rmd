@@ -7,7 +7,7 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.path = "images/")
 ```
 
 ## Vérification du territoire (QPV)
@@ -36,6 +36,8 @@ Quand on sais déjà la quantité de groupes/clusters on veux, la methode pour t
 library(tidyverse)
 library(cluster)
 library(factoextra)
+library(ggplot2)
+library(dendextend)
 
 ```
 
@@ -83,9 +85,8 @@ dados_numericos <- select(dados_modif, where(is.numeric))
 dados_categoricos <- select(dados_modif, where(is.factor))
 ```
 
+1.  Calcular a Matriz de Correlação Rode a função cor() passando o seu dataframe numérico. O argumento use = "complete.obs" serve para o R ignorar linhas que tenham algum valor vazio (NA), evitando que o resultado dê erro.
 
-1. Calcular a Matriz de Correlação
-Rode a função cor() passando o seu dataframe numérico. O argumento use = "complete.obs" serve para o R ignorar linhas que tenham algum valor vazio (NA), evitando que o resultado dê erro.
 ```{r}
 # Calcula a correlação de Pearson entre todas as colunas numéricas
 matriz_cor <- cor(dados_numericos, use = "complete.obs")
@@ -93,7 +94,10 @@ matriz_cor <- cor(dados_numericos, use = "complete.obs")
 # Exibe a matriz de números no console
 print(matriz_cor)
 ```
-Embora a renda e a poupança apresentem uma correlação linear positiva moderada/forte ($\rho = 0.675$), optou-se por manter ambas na segmentação. No algoritmo de agrupamento K-means, elas representam dimensões distintas do comportamento do cliente (capacidade de ganho versus acumulação de patrimônio). A eventual redundância geométrica é controlada pela aplicação da normalização Min-Max, preservando a variância essencial de cada perfil sem os problemas de inversão de matriz típicos de uma regressão linear.
+
+Embora a renda e a poupança apresentem uma correlação linear positiva moderada/forte ($\rho = 0.675$), optou-se por manter ambas na segmentação.
+No algoritmo de agrupamento K-means, elas representam dimensões distintas do comportamento do cliente (capacidade de ganho versus acumulação de patrimônio).
+A eventual redundância geométrica é controlada pela aplicação da normalização Min-Max, preservando a variância essencial de cada perfil sem os problemas de inversão de matriz típicos de uma regressão linear.
 
 ```{r}
 # Teste 1: Profissão vs Produtos
@@ -111,9 +115,12 @@ cat("Situação vs Produtos: ", qui_1$p.value, "\n")
 cat("Situação vs Crédito:  ", qui_2$p.value, "\n")
 cat("Produtos vs Crédito:  ", qui_3$p.value, "\n")
 ```
+
 Os testes provam que as três variáveis são fortemente dependentes entre si.
 
-O comportamento dos clientes da Nissa Bank não é aleatório. A situação profissional de um cliente está diretamente amarrada ao tipo de produto que ele consome e ao tipo de crédito que ele pega. Da mesma forma, o produto que ele tem dita o tipo de crédito que ele utiliza.
+O comportamento dos clientes da Nissa Bank não é aleatório.
+A situação profissional de um cliente está diretamente amarrada ao tipo de produto que ele consome e ao tipo de crédito que ele pega.
+Da mesma forma, o produto que ele tem dita o tipo de crédito que ele utiliza.
 
 Esses resultados dão a validação científica perfeita para a escolha das suas features.Se um p-value desses tivesse dado maior que 0,05, significaria que a variável era "ruído" (irrelevante) e criar dummies para ela só serviria para deixar o algoritmo $K$-means confuso e lento.Como todas mostraram associações gigantescas, você acabou de provar que deixar as três variáveis na base e transformá-las em dummies é o caminho correto, pois cada uma delas carrega um padrão de comportamento único e crucial para desenhar os 4 perfis de clientes da agência.
 
@@ -136,34 +143,38 @@ preparar_dados <- function(dataset) {
 pronto_tudo <- preparar_dados(dados_modif)
 ```
 
-```{r}
-library(factoextra)
-
-# Gráfico do Cotovelo
-fviz_nbclust(pronto_tudo, kmeans, method = "wss") +
+```{r elbow-test}
+# Gráfico do Cotovelo (Rosa Neon)
+fviz_nbclust(pronto_tudo, kmeans, method = "wss", linecolor = "#FF10F0") +
   labs(title = "Teste do Cotovelo (Método WSS)", x = "Número de Clusters K", y = "Soma os Quadrados Dentro")
 
-# Gráfico da Silhueta Média
-fviz_nbclust(pronto_tudo, kmeans, method = "silhouette") +
+```
+
+```{r silhouette-method}
+# Gráfico da Silhueta Média (Verde Neon)
+fviz_nbclust(pronto_tudo, kmeans, method = "silhouette", linecolor = "#FF10F0") +
   labs(title = "Teste do Coeficiente de Silhueta", x = "Número de Clusters K", y = "Silhueta Média")
 ```
 
 
-
-```{r}
+```{r dendrogram-cluster-hierarchical}
 # 1. Calcula a matriz de distância geométrica
 matriz_distancia <- dist(pronto_tudo, method = "euclidean")
 
 # 2. Executa o agrupamento hierárquico (Método de Ward)
 modelo_hierarquico <- hclust(matriz_distancia, method = "ward.D2")
 
-# 3. Plota o Dendrograma exploratório
-plot(modelo_hierarquico, main = "Dendrograma de Clientes - Análise Exploratória", 
-     labels = FALSE, xlab = "Clientes", sub = "")
+# 3. Converte o resultado para um objeto dendrograma
+dend <- as.dendrogram(modelo_hierarquico)
 
-# 4. Desenha a linha de corte simulando 4 grupos para comparar com o K-means
-# rect.hclust(modelo_hierarquico, k = 4, border = "red")
+# 4. Colore as ramificações dos 4 grupos com as cores neon (processamento otimizado)
+dend <- color_branches(dend, k = 4, col = c("#39FF14", "#FF10F0", "#FF5F1F", "#00FFFF"))
+
+# 5. Plota o dendrograma modificado removendo os rótulos individuais das folhas (leaflab = "none")
+plot(dend, leaflab = "none", main = "Dendrograma de Clientes - Análise Exploratória", 
+     xlab = "Clientes", ylab = "Distância")
 ```
+
 
 
 ```{r}
@@ -244,6 +255,7 @@ print(round(prop.table(table(dados_modif$cluster_8, dados_modif$credit_en_cours)
 ```
 
 analise por cluster
+
 ```{r}
 # ==============================================================================
 # RESUMO INDIVIDUALIZADO POR PERSONA (K = 4)
@@ -284,7 +296,6 @@ for (i in 1:4) {
   print(freq_cred[freq_cred > 0])
 }
 ```
-
 
 ```{r}
 # ==============================================================================
@@ -337,31 +348,20 @@ for (i in 1:4) {
 }
 ```
 
-
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 ## Arguments pour un bon système de gestion de données commerciales
 
 Donnez 3 arguments solides.
 
-1. Segmentação Precisa e Aumento de Vendas (Cross-selling)
-Um sistema de gestão de dados estruturado e limpo é o pré-requisito fundamental para aplicar algoritmos de inteligência artificial, como a clusterização K-means que você acabou de executar. Ele permite cruzar histórico de transações com dados demográficos para calcular a afinidade de produtos (Lift). Sem esse sistema, o banco faria ofertas genéricas; com ele, a agência consegue direcionar a campanha de microcrédito exatamente para a persona com maior probabilidade de conversão.
+1.  Segmentação Precisa e Aumento de Vendas (Cross-selling) Um sistema de gestão de dados estruturado e limpo é o pré-requisito fundamental para aplicar algoritmos de inteligência artificial, como a clusterização K-means que você acabou de executar.
+    Ele permite cruzar histórico de transações com dados demográficos para calcular a afinidade de produtos (Lift).
+    Sem esse sistema, o banco faria ofertas genéricas; com ele, a agência consegue direcionar a campanha de microcrédito exatamente para a persona com maior probabilidade de conversão.
 
-2. Eficiência Operacional e Mitigação de Riscos de Crédito
-A integração de dados comerciais elimina silos de informação dentro da agência. Quando o gerente acessa o perfil de um cliente, ele vê o quadro completo em tempo real (idade, renda, poupança e créditos ativos). Isso não apenas acelera o tempo de atendimento presencial, mas fornece uma base matemática segura para a análise de risco, evitando a concessão de limite de cheque especial ou novos empréstimos para perfis com alta probabilidade de inadimplência.
+2.  Eficiência Operacional e Mitigação de Riscos de Crédito A integração de dados comerciais elimina silos de informação dentro da agência.
+    Quando o gerente acessa o perfil de um cliente, ele vê o quadro completo em tempo real (idade, renda, poupança e créditos ativos).
+    Isso não apenas acelera o tempo de atendimento presencial, mas fornece uma base matemática segura para a análise de risco, evitando a concessão de limite de cheque especial ou novos empréstimos para perfis com alta probabilidade de inadimplência.
 
-3. Conformidade Regulatória e Segurança da Informação (RGPD)
-Operando na França, a gestão rigorosa de dados de clientes é uma exigência legal imposta pelo Regulamento Geral sobre a Proteção de Dados (RGPD). Um sistema comercial sólido garante que informações financeiras sensíveis sejam armazenadas com criptografia adequada e controle de acesso. Além disso, permite gerenciar o consentimento dos clientes e executar rapidamente solicitações de direito ao esquecimento ou portabilidade de dados, blindando a agência contra vazamentos e multas severas.
-
-
-
-
-
-
-
-
-
-
-
-
-
+3.  Conformidade Regulatória e Segurança da Informação (RGPD) Operando na França, a gestão rigorosa de dados de clientes é uma exigência legal imposta pelo Regulamento Geral sobre a Proteção de Dados (RGPD).
+    Um sistema comercial sólido garante que informações financeiras sensíveis sejam armazenadas com criptografia adequada e controle de acesso.
+    Além disso, permite gerenciar o consentimento dos clientes e executar rapidamente solicitações de direito ao esquecimento ou portabilidade de dados, blindando a agência contra vazamentos e multas severas.
