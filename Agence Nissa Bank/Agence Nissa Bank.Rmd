@@ -1,6 +1,9 @@
 ---
 title: "Agence Nissa Bank"
 author: "MARIANO ALBUQUERQUE, Melissa"
+output: 
+  pdf_document:
+    toc: true
 editor_options: 
   markdown: 
     wrap: sentence
@@ -10,36 +13,33 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.path = "images/")
 ```
 
-## Vérification du territoire (QPV)
+```{r carregando-pacotes}
+library(tidyverse)   # manipulação do dataframe, renomeação de colunas e seleção de variáveis.
+library(cluster)     # suporte a métricas e cálculos complementares de agrupamento (clustering).
+library(factoextra)  # gerar os gráficos de validação de clusters (teste do cotovelo e silhueta).
+library(ggplot2)     # adicionar e customizar títulos e eixos dos gráficos.
+library(dendextend)  # converter e colorir as ramificações do dendrograma hierárquico.
+```
 
-Oui, l'agence est dans un QPV, selon le site <https://sig.ville.gouv.fr/>.
+## verificando se o endereço é um QPV
+
+uma pesquisa feita no site <https://sig.ville.gouv.fr/> confirma que o endereço está sim em um QPV, como mostra a imagem abaixo.
 
 ![](images/clipboard-4190228401.png)
 
-Les besoins des clients :
+### necessidades dos clientes dessa localidade :
 
-- **pas chers :** les gens ont besoin de trucs simples.
+- **produtos que não sejam caros :** les gens ont besoin de trucs simples.
   Par exemple, une carte bancaire de base et un compte sans frais compliqués (ou gratuits).
 
-- **petits crédits :** les petits commerçants du quartier ont besoin des micro-crédits pour rester ouvert.
+- **microcréditos :** les petits commerçants du quartier ont besoin des micro-crédits pour rester ouvert.
 
-- **épargne simple :** pour mettre de l'argent de côté, ils veulent des choses faciles comme le Livret A.
+- **poupança :** pour mettre de l'argent de côté, ils veulent des choses faciles comme le Livret A.
 
-- **aide et conseils :** c'est important de parler avec eux et de donner des conseils de gestion simples.
+- **ajuda e conselhos :** c'est important de parler avec eux et de donner des conseils de gestion simples.
   Pour éviter les gros problèmes d'argent et les dettes.
 
-## Segmentation de la cientèle
-
-Quand on sais déjà la quantité de groupes/clusters on veux, la methode pour travailler c'est le Clustering K-means.
-
-```{r carregando-pacotes}
-library(tidyverse)
-library(cluster)
-library(factoextra)
-library(ggplot2)
-library(dendextend)
-
-```
+## limpeza e preparação de dados
 
 ```{r importando-dados}
 dados <- read.csv("agence_nissa_bank.csv", stringsAsFactors = TRUE)
@@ -78,51 +78,12 @@ dados_modif <- select(dados_modif, -c(1:3))
 ```
 
 ```{r}
-# cria um novo dataframe apenas com as colunas numéricas (age, revenu_mensuel, epargne)
+# cria um novo dataframe apenas com as colunas numéricas
 dados_numericos <- select(dados_modif, where(is.numeric))
 
-# cria um novo dataframe apenas com os fatores/categóricas (situation, credit_en_cours, etc.)
+# cria um novo dataframe apenas com os fatores/categóricas
 dados_categoricos <- select(dados_modif, where(is.factor))
 ```
-
-1.  Calcular a Matriz de Correlação Rode a função cor() passando o seu dataframe numérico. O argumento use = "complete.obs" serve para o R ignorar linhas que tenham algum valor vazio (NA), evitando que o resultado dê erro.
-
-```{r}
-# Calcula a correlação de Pearson entre todas as colunas numéricas
-matriz_cor <- cor(dados_numericos, use = "complete.obs")
-
-# Exibe a matriz de números no console
-print(matriz_cor)
-```
-
-Embora a renda e a poupança apresentem uma correlação linear positiva moderada/forte ($\rho = 0.675$), optou-se por manter ambas na segmentação.
-No algoritmo de agrupamento K-means, elas representam dimensões distintas do comportamento do cliente (capacidade de ganho versus acumulação de patrimônio).
-A eventual redundância geométrica é controlada pela aplicação da normalização Min-Max, preservando a variância essencial de cada perfil sem os problemas de inversão de matriz típicos de uma regressão linear.
-
-```{r}
-# Teste 1: Profissão vs Produtos
-qui_1 <- chisq.test(table(dados_modif$situation, dados_modif$produits_detenus))
-
-# Teste 2: Profissão vs Crédito
-qui_2 <- chisq.test(table(dados_modif$situation, dados_modif$credit_en_cours))
-
-# Teste 3: Produtos vs Crédito
-qui_3 <- chisq.test(table(dados_modif$produits_detenus, dados_modif$credit_en_cours))
-
-# Exibe os p-values para o seu relatório
-cat("=== RESULTADOS DOS TESTES QUI-QUADRADO (P-VALUES) ===\n")
-cat("Situação vs Produtos: ", qui_1$p.value, "\n")
-cat("Situação vs Crédito:  ", qui_2$p.value, "\n")
-cat("Produtos vs Crédito:  ", qui_3$p.value, "\n")
-```
-
-Os testes provam que as três variáveis são fortemente dependentes entre si.
-
-O comportamento dos clientes da Nissa Bank não é aleatório.
-A situação profissional de um cliente está diretamente amarrada ao tipo de produto que ele consome e ao tipo de crédito que ele pega.
-Da mesma forma, o produto que ele tem dita o tipo de crédito que ele utiliza.
-
-Esses resultados dão a validação científica perfeita para a escolha das suas features.Se um p-value desses tivesse dado maior que 0,05, significaria que a variável era "ruído" (irrelevante) e criar dummies para ela só serviria para deixar o algoritmo $K$-means confuso e lento.Como todas mostraram associações gigantescas, você acabou de provar que deixar as três variáveis na base e transformá-las em dummies é o caminho correto, pois cada uma delas carrega um padrão de comportamento único e crucial para desenhar os 4 perfis de clientes da agência.
 
 ```{r}
 preparar_dados <- function(dataset) {
@@ -143,60 +104,107 @@ preparar_dados <- function(dataset) {
 pronto_tudo <- preparar_dados(dados_modif)
 ```
 
-```{r elbow-test}
-# Gráfico do Cotovelo (Rosa Neon)
+
+## explorando a relação entre os dados
+
+aqui começa os testes para entender melhor a relação que as variáveis têm entre si, para saber quais variáveis devem ser escolhidas como features do nosso modelo de K-means.
+
+```{r}
+# Calcula a correlação de Pearson entre todas as colunas numéricas
+matriz_cor <- cor(dados_numericos, use = "complete.obs")
+
+# Exibe a matriz de números no console
+print(matriz_cor)
+```
+
+embora a renda e a poupança apresentem uma correlação linear positiva moderada/forte ($\rho = 0.675$), optou-se por manter ambas na segmentação.
+
+no algoritmo de agrupamento K-means, elas representam dimensões distintas do comportamento do cliente (capacidade de ganho versus acumulação de patrimônio).
+
+a eventual redundância geométrica é controlada pela aplicação da normalização Min-Max, preservando a variância essencial de cada perfil sem os problemas de inversão de matriz típicos de uma regressão linear.
+
+```{r}
+# teste 1: profissão vs produtos
+qui_1 <- chisq.test(table(dados_modif$situation, dados_modif$produits_detenus))
+
+# teste 2: profissão vs crédito
+qui_2 <- chisq.test(table(dados_modif$situation, dados_modif$credit_en_cours))
+
+# teste 3: produtos vs crédito
+qui_3 <- chisq.test(table(dados_modif$produits_detenus, dados_modif$credit_en_cours))
+
+# exibe os p-values para o seu relatório
+cat("=== RESULTADOS DOS TESTES QUI-QUADRADO (P-VALUES) ===\n")
+cat("Situação vs Produtos: ", qui_1$p.value, "\n")
+cat("Situação vs Crédito:  ", qui_2$p.value, "\n")
+cat("Produtos vs Crédito:  ", qui_3$p.value, "\n")
+```
+
+os testes provam que as três variáveis são fortemente dependentes entre si.
+
+o comportamento dos clientes da Nissa Bank não é aleatório.
+A situação profissional de um cliente está diretamente amarrada ao tipo de produto que ele consome e ao tipo de crédito que ele pega.Da mesma forma, o produto que ele tem dita o tipo de crédito que ele utiliza.
+
+esses resultados dão a validação científica perfeita para a escolha das suas features.Se um p-value desses tivesse dado maior que 0,05, significaria que a variável era "ruído" (irrelevante) e criar dummies para ela só serviria para deixar o algoritmo $K$-means confuso e lento.Como todas mostraram associações gigantescas, você acabou de provar que deixar as três variáveis na base e transformá-las em dummies é o caminho correto, pois cada uma delas carrega um padrão de comportamento único e crucial para desenhar os 4 perfis de clientes da agência.
+
+
+## segmentação de clientes
+
+```{r teste-cotovelo}
+# gráfico do cotovelo
 fviz_nbclust(pronto_tudo, kmeans, method = "wss", linecolor = "#FF10F0") +
   labs(title = "Teste do Cotovelo (Método WSS)", x = "Número de Clusters K", y = "Soma os Quadrados Dentro")
 
 ```
 
-```{r silhouette-method}
-# Gráfico da Silhueta Média (Verde Neon)
+```{r silhueta}
+# gráfico da silhueta média
 fviz_nbclust(pronto_tudo, kmeans, method = "silhouette", linecolor = "#FF10F0") +
   labs(title = "Teste do Coeficiente de Silhueta", x = "Número de Clusters K", y = "Silhueta Média")
 ```
 
 
+quando não sabemos a quantidade ideal de grupos para dividir nossos clientes, fazemos uma análise de clustering exploratória primeiro, e nesse caso a análise é feita com o *agrupamento hierárquico*, que é uma técnica não supervisionada de machine learning, ou seja, ela não serve para extrapolar a amostra, mas serve muito bem para o que preciso agora que é ter uma ideia de como os clusters se dividem naturalmente.
+
+ele cria um gráfico chamado "dendograma" que mostra como os clusters se dividem.
+
 ```{r dendrogram-cluster-hierarchical}
-# 1. Calcula a matriz de distância geométrica
+# 1. calcula a matriz de distância geométrica
 matriz_distancia <- dist(pronto_tudo, method = "euclidean")
 
-# 2. Executa o agrupamento hierárquico (Método de Ward)
+# 2. executa o agrupamento hierárquico (Método de Ward)
 modelo_hierarquico <- hclust(matriz_distancia, method = "ward.D2")
 
-# 3. Converte o resultado para um objeto dendrograma
+# 3. converte o resultado para um objeto dendrograma
 dend <- as.dendrogram(modelo_hierarquico)
 
-# 4. Colore as ramificações dos 4 grupos com as cores neon (processamento otimizado)
+# 4. colore as ramificações dos 4 grupos com as cores neon (processamento otimizado)
 dend <- color_branches(dend, k = 4, col = c("#39FF14", "#FF10F0", "#FF5F1F", "#00FFFF"))
 
-# 5. Plota o dendrograma modificado removendo os rótulos individuais das folhas (leaflab = "none")
+# 5. plota o dendrograma modificado removendo os rótulos individuais das folhas (leaflab = "none")
 plot(dend, leaflab = "none", main = "Dendrograma de Clientes - Análise Exploratória", 
      xlab = "Clientes", ylab = "Distância")
 ```
 
 
+e quando nós já fizemos uma análise prévia e já decidimos quantos grupos vamos trabalhar, passamos para outra técnica de machine learning não supervisionado, o *K-means*.
+
+só que, nesse caso, precisamos escolher entre o que os dados estão nos indicando e o que é prático no mundo real.
 
 ```{r}
-# ==============================================================================
 # EXECUÇÃO DOS DOIS MODELOS EM PARALELO (4 E 8 CLUSTERS)
-# ==============================================================================
-
-# Garante que os resultados sejam sempre os mesmos ao rodar
+# garante que os resultados sejam sempre os mesmos ao rodar
 set.seed(123)
 
-# Modelo A: A preferência do negócio (4 Clusters)
+# modelo A: a preferência do negócio (4 Clusters)
 modelo_k4 <- kmeans(pronto_tudo, centers = 4, nstart = 25)
 dados_modif$cluster_4 <- as.factor(modelo_k4$cluster)
 
-# Modelo B: O ideal matemático (8 Clusters)
+# modelo B: o ideal matemático (8 Clusters)
 modelo_k8 <- kmeans(pronto_tudo, centers = 8, nstart = 25)
 dados_modif$cluster_8 <- as.factor(modelo_k8$cluster)
 
-# ==============================================================================
 # COMPARAÇÃO DO TAMANHO DOS GRUPOS
-# ==============================================================================
-
 cat("=== DISTRIBUIÇÃO DOS CLIENTES EM 4 CLUSTERS ===\n")
 print(table(dados_modif$cluster_4))
 cat("\n")
@@ -206,9 +214,8 @@ print(table(dados_modif$cluster_8))
 ```
 
 ```{r}
-# ==============================================================================
 # PERFILAMENTO DOS 4 CLUSTERS (K = 4)
-# ==============================================================================
+
 cat("\n#########################################################\n")
 cat("                CARACTERÍSTICAS DOS 4 CLUSTERS             \n")
 cat("#########################################################\n\n")
@@ -229,10 +236,11 @@ print(round(prop.table(table(dados_modif$cluster_4, dados_modif$produits_detenus
 cat("\n=== CATEGÓRICAS: Crédito em Curso (%) ===\n")
 print(round(prop.table(table(dados_modif$cluster_4, dados_modif$credit_en_cours), margin = 1), 4) * 100)
 
+```
 
-# ==============================================================================
+```{r}
 # PERFILAMENTO DOS 8 CLUSTERS (K = 8)
-# ==============================================================================
+
 cat("\n\n#########################################################\n")
 cat("                CARACTERÍSTICAS DOS 8 CLUSTERS             \n")
 cat("#########################################################\n\n")
@@ -254,12 +262,12 @@ cat("\n=== CATEGÓRICAS: Crédito em Curso (%) ===\n")
 print(round(prop.table(table(dados_modif$cluster_8, dados_modif$credit_en_cours), margin = 1), 4) * 100)
 ```
 
-analise por cluster
+
+
+o escolhido foi o modelo de 4 grupos, porque é impraticável uma empresa ter mais de 4 personas para se comunicar. o trabalho de marketing tem que ser muito bem definido e coeso, o que não seria possível com 8 grupos, até porque quem fala com todo mundo, não fala com ninguém ;)
 
 ```{r}
-# ==============================================================================
 # RESUMO INDIVIDUALIZADO POR PERSONA (K = 4)
-# ==============================================================================
 
 for (i in 1:4) {
   cat("\n==================================================================\n")
@@ -297,6 +305,8 @@ for (i in 1:4) {
 }
 ```
 
+
+## sugestões de proutos 
 ```{r}
 # ==============================================================================
 # ANÁLISE DE AFINIDADE (LIFT) PARA CROSS-SELLING E UP-SELLING
