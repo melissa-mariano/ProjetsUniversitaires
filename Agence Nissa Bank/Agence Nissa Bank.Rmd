@@ -19,6 +19,7 @@ library(cluster)     # suporte a métricas e cálculos complementares de agrupam
 library(factoextra)  # gerar os gráficos de validação de clusters (teste do cotovelo e silhueta).
 library(ggplot2)     # adicionar e customizar títulos e eixos dos gráficos.
 library(dendextend)  # converter e colorir as ramificações do dendrograma hierárquico.
+library(corrplot) # plotar uma matriz de correlação com controle preciso de cores e boa visualização
 ```
 
 ## verificando se o endereço é um QPV

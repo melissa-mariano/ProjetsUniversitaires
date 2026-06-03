@@ -1,0 +1,170 @@
+---
+title: "TP1 - Estimation par échantillonage"
+author: "MARIANO ALBUQUERQUE, Melissa"
+date: "2026-06-03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# exercice 1
+
+## item 2
+Un avion de 100 places pèse 120 tonnes à vide, c’est-à-dire sans passager ni bagage, mais équipage au complet et plein de carburant effectué. 
+Le poids d’un voyageur avec ses bagages est une variable aleatoire d’espérance 90 kg et d’ecart type 15 kg. 
+Lorsque le poids total de l’avion depasse 130 tonnes, une partie des bagages doit être embarquée dans l’avion suivant. 
+Cela se produit-il souvent (lorsque toutes les places de l’avion sont occupées) ? 
+
+peso aviao vazio 120 toneladas ou 120.000kg
+limite de carga 130.000kg
+média 90kg 
+desvio padrao 15kg
+
+```{r}
+peso_aviao <- 120000
+limite_carga <- 130000
+esperanca <- 90
+desvio_padrao <- 15
+passageiros <- 100
+limite_passageiros <- limite_carga - peso_aviao
+```
+
+O **objetivo** é calcular a probabilidade de o peso total dos 100 passageiros ultrapassar 10.000 kg (já que 130.000 - 120.000 = 10.000 kg).
+
+Resolução Passo a Passo:
+### 1. Definir a variável de interesse (Soma)
+
+Queremos analisar o peso total dos passageiros, que é a soma de 100 variáveis independentes: $S_{100} = X_1 + X_2 + \dots + X_{100}$.
+
+### 2. Calcular a Esperança e Variância da Soma
+
+```{r}
+esperanca_soma <- passageiros*esperanca
+variancia_soma <- passageiros*(desvio_padrao^2)
+desvio_padrao_soma <- sqrt(variancia_soma)
+```
+
+### 3. Aplicar o TCL para normalização
+Pelo TCL, como $n=100$ (que é $> 30$), a distribuição da soma $S_{100}$ é aproximadamente normal:$$S_{100} \sim \mathcal{N}(9000, 150^2)$$
+
+
+### 4. Calcular a probabilidade no R
+Para verificar se o peso excede 10.000 kg, queremos calcular $P(S_{100} > 10000)$. No R, utilizamos a função pnorm (função de distribuição acumulada). Como queremos o valor superior, usamos o argumento lower.tail = FALSE.
+
+```{r}
+probabilidade <- pnorm(limite_passageiros, mean = esperanca_soma, sd = desvio_padrao_soma, lower.tail = FALSE)
+print(probabilidade)
+```
+La probabilité obtenue est environ $1,31 \times 10^{-11}$. Cette valeur étant extrêmement proche de zéro, nous pouvons conclure que le dépassement du poids maximal est un événement quasi impossible dans les conditions données.
+
+
+# exercice 2 - Simulação do Teorema Central do Limite (TCL)
+
+Neste exercício, o objetivo é demonstrar na prática, através de simulações computacionais no R, como a média de amostras de diferentes distribuições (Uniforme, Exponencial e Poisson) converge para uma distribuição Normal conforme o tamanho da amostra ($n$) aumenta. Você deve criar funções que gerem esses dados, visualizem os resultados e confirmem a teoria do TCL.
+
+## item 1
+### 1. Estrutura de uma Função no R
+Como sugerido no material, uma função no R segue a sintaxe:
+nome_da_funcao <- function(argumentos) { corpo da função }.
+
+### 2. Criação da função simulTCLunif
+Esta função simulará tiragens de uma distribuição uniforme no intervalo $[45, 135]$. Note que o centro (média) dessa distribuição é $90$, o que mantém a consistência com o exemplo anterior.
+```{r}
+simulTCLunif <- function(n, nb_simul) {
+  dados <- matrix(runif(n * nb_simul, min = 45, max = 135), ncol = n)
+  medias <- rowMeans(dados)
+  hist(medias, probability = TRUE, main = "distribuição das médias - uniforme", xlab = "média", col = "green")
+  mu <- 90
+  sigma2 <- 675
+  sd_media <- sqrt(sigma2 / n)
+  curve(dnorm(x, mean = mu, sd = sd_media), add = TRUE)
+  qqnorm(medias)
+  qqline(medias)
+}
+```
+
+```{r}
+simulTCLunif(5, 10)
+```
+
+```{r}
+simulTCLunif(50, 100)
+```
+
+```{r}
+simulTCLunif(100, 1000)
+```
+
+
+```{r}
+simulTCLexp <- function(n, nb_simul) {
+  # lambda = 1/90
+  dados <- matrix(rexp(n * nb_simul, rate = 1/90), ncol = n)
+  medias <- rowMeans(dados)
+  
+  hist(medias, probability = TRUE, main = "Distribuição das Médias (Exponencial)")
+  # Parâmetros da Normal teórica: média=90, var=8100/n
+  curve(dnorm(x, mean = 90, sd = sqrt(8100/n)), add = TRUE, col = "green")
+  
+  qqnorm(medias); qqline(medias)
+}
+```
+
+```{r}
+simulTCLexp(5, 10)
+```
+
+```{r}
+simulTCLexp(50, 100)
+```
+
+```{r}
+simulTCLexp(100, 1000)
+```
+
+
+```{r}
+simulTCLPois <- function(n, nb_simul) {
+  # lambda = 90 (definido para ter média 90)
+  # rpois gera valores da distribuição de Poisson
+  dados <- matrix(rpois(n * nb_simul, lambda = 90), ncol = n)
+  
+  # Calcula a média de cada amostra
+  medias <- rowMeans(dados)
+  
+  # Histograma das médias amostrais
+  hist(medias, probability = TRUE, main = "Distribuição das Médias (Poisson)", 
+       xlab = "Médias", col = "hotpink")
+  
+  # Adiciona a curva normal teórica: mu = 90, sd = sqrt(90/n)
+  curve(dnorm(x, mean = 90, sd = sqrt(90/n)), add = TRUE, col = "green", lwd = 2)
+  
+  # Gráfico Quantile-Quantile
+  qqnorm(medias)
+  qqline(medias, col = "green")
+}
+```
+
+```{r}
+simulTCLPois(5, 10)
+```
+
+```{r}
+simulTCLPois(50, 100)
+```
+
+```{r}
+simulTCLPois(100, 1000)
+```
+
+
+
+
+
+
+
+
+
+
