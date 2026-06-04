@@ -1,0 +1,11 @@
+---
+title: "tp1 test"
+author: "MARIANO ALBUQUERQUE, Melissa"
+date: "2026-06-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+

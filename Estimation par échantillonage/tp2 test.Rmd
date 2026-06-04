@@ -1,0 +1,253 @@
+---
+title: "tp2 test"
+author: "MARIANO ALBUQUERQUE, Melissa"
+date: "2026-06-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Exercice 1 : tirage d’échantillons
+## 1
+```{r}
+n_amostra <- 20
+N_população <- 200
+```
+tirage sans remise = SAS
+
+```{r}
+# sample(1:N, n, replace = FALSE), replace = FALSEé pra garantir que não tenha repetição
+```
+
+1a) Variables quantitative discrete.
+1b) 
+```{r}
+ech1 <- sample(1:200, 20, replace = FALSE)
+ech1
+```
+
+1c) 
+```{r}
+# verificar se tem alguma duplicata na amostra
+anyDuplicated(ech1)
+```
+-----------------------------------------------------------------------
+## 2
+```{r}
+P <- c("Bob", "Nico", "Ali", "Fabien", "Malik", "John", "Jean", "Cris", "Karl")
+```
+
+```{r}
+ech2 <- sample(P, 3, replace = FALSE)
+ech2
+```
+
+## 3
+3a) 
+```{r}
+STID <- read.csv("reponsesSTID.csv", stringsAsFactors = TRUE)
+STID
+```
+
+```{r}
+str(STID)
+```
+
+
+```{r}
+STID <- transform(STID,
+                  cp.naissance = as.character(cp.naissance))
+```
+
+```{r}
+str(STID)
+```
+
+3b)
+```{r}
+n <- 10
+indices <- sample(1:nrow(STID), size = n, replace = FALSE)
+```
+
+```{r}
+ech_stid <- STID[indices, ]
+ech_stid
+```
+
+
+# Exercice 2 : Sondage Aléatoire Simple 
+
+## 2
+
+```{r}
+library(questionr)
+data(hdv2003)
+```
+
+## 3
+a) Donner la distribution (tri à plat) de la variable nombre de frères et soeurs, en tracer deux 
+représentations graphiques puis commenter.
+
+"tri à plat" (também chamado de tabela de frequências)
+```{r}
+freq(hdv2003$freres.soeurs)
+```
+
+
+```{r}
+table_freres.souers <- table(hdv2003$freres.soeurs)
+table_freres.souers
+```
+
+```{r barplot}
+barplot(table_freres.souers, col = "green")
+```
+
+b) Extraire de cette population, sous forme d’un data frame, un échantillon de 50 individus par SAS 
+et le stocker dans la variable ech.
+```{r}
+n <- 50
+indices2 <- sample(1:nrow(hdv2003), size = n, replace = FALSE)
+ech_hdv <- hdv2003[indices2, ]
+```
+
+
+c)
+```{r}
+# Calculamos a média da amostra (ech), especificando a variável
+estimativa_media <- mean(ech_hdv$freres.soeurs, na.rm = TRUE)
+
+# Exibe o valor calculado
+print(estimativa_media)
+```
+
+d) Réitérer l’échantillonnage puis l’estimation 3 fois, commenter les résultats et comparer à la 
+vraie valeur sur la population. 
+```{r}
+# Repetição 1
+indices1 <- sample(1:nrow(hdv2003), 50, replace = FALSE)
+media1 <- mean(hdv2003$freres.soeurs[indices1], na.rm = TRUE)
+
+# Repetição 2
+indices2 <- sample(1:nrow(hdv2003), 50, replace = FALSE)
+media2 <- mean(hdv2003$freres.soeurs[indices2], na.rm = TRUE)
+
+# Repetição 3
+indices3 <- sample(1:nrow(hdv2003), 50, replace = FALSE)
+media3 <- mean(hdv2003$freres.soeurs[indices3], na.rm = TRUE)
+
+# Mostra os resultados
+print(c(media1, media2, media3))
+```
+
+```{r}
+pop_media <- mean(hdv2003$freres.soeurs, na.rm = TRUE)
+print(pop_media)
+```
+
+e) Comparer la vraie valeur à vos 4 estimations puis conclure.
+```{r}
+valor.1 <- estimativa_media - pop_media
+valor.2 <- media1 - pop_media
+valor.3 <- media2 - pop_media
+valor.4 <- media3 - pop_media
+
+print(valor.1)
+print(valor.2)
+print(valor.3)
+print(valor.4)
+```
+
+
+
+## 4 
+a) Ecrire une fonction *sondage* qui prend comme argument un data frame df, le nom var d’une de 
+ses variables quantitatives (sous forme de chaîne de caractère), une taille d’échantillon n et qui 
+retourne en sortie l’estimations de la moyenne de la population réalisée à partir du tirage par SAS de 
+n individus dans le data frame df c’est-à-dire qui reproduit le résultat des questions 3) b) et c).
+```{r}
+sondage <- function(df, var, n) {
+  # 1. Tirage des indices (SAS)
+  indices <- sample(1:nrow(df), n, replace = FALSE)
+  
+  # 2. Extraction de l'échantillon
+  ech <- df[indices, ]
+  
+  # 3. Calcul de la moyenne de la variable spécifiée
+  # On utilise df[[var]] pour accéder à la colonne via son nom en chaîne de caractères
+  moyenne_estimee <- mean(ech[[var]], na.rm = TRUE)
+  
+  # 4. Retourner le résultat
+  return(moyenne_estimee)
+}
+```
+
+```{r}
+# Exemple pour le nombre de frères et sœurs
+resultat <- sondage(hdv2003, "freres.soeurs", 500)
+print(resultat)
+```
+
+ b) Ecrire une fonction *estimations* qui prend comme argument un data frame df, le nom var d’une 
+de ses variables quantitatives (sous forme de chaîne de caractère), une taille d’échantillon n, le 
+nombre de Sondages Aléatoires Simples nbSond à réitérer et qui retourne en sortie le vecteur des 
+nbSond estimations de la moyenne de la population réalisées à partir de tirages par SAS 
+d’échantillons de n individus dans le data frame df. 
+
+```{r}
+estimations <- function(df, var, n, nbSond) {
+  # 1. Cria um vetor vazio do tamanho de nbSond para guardar os resultados
+  vecteur_estimations <- numeric(nbSond)
+  
+  # 2. Cria um loop que repete o processo nbSond vezes
+  for(i in 1:nbSond) {
+    # Chama a função sondage criada anteriormente e guarda no vetor
+    vecteur_estimations[i] <- sondage(df, var, n)
+  }
+  
+  # 3. Retorna o vetor completo com todas as médias calculadas
+  return(vecteur_estimations)
+}
+```
+
+```{r}
+# Executa a função e guarda o resultado na variável 'simulacao'
+simulacao <- estimations(hdv2003, "freres.soeurs", 50, 1000)
+
+# Para ver o resultado (os primeiros valores do vetor):
+head(simulacao)
+
+# Para ver a média de todas as 1000 estimativas (deve ser muito próxima da real!):
+mean(simulacao)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

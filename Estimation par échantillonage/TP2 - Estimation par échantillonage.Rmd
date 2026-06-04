@@ -9,22 +9,215 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+# Exercício 1: Tiragem de Amostras (Sondagem Aleatória Simples)
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## 1) Conceitos básicos de sample
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+### a) Tipo da variável 1:200:
+A expressão 1:200 cria um vetor numérico de sequência (do tipo integer no R). Ele contém 200 números inteiros consecutivos de 1 a 200.  
 
-```{r cars}
-summary(cars)
+### b) Armazenamento do amostra:
+Para extrair um amostra de 20 indivíduos sem repetição, usamos o parâmetro replace = FALSE:  
+```{r}
+ech1 <- sample(1:200, 20, replace = FALSE)
 ```
 
-## Including Plots
+### c) Verificação de repetições:
+Para garantir que não há valores duplicados, usamos a função **anyDuplicated()** ou comparamos o tamanho do vetor original com o tamanho do conjunto de valores únicos **(unique)**:
+```{r}
+# Se retornar 0, não há duplicados
+anyDuplicated(ech1)
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+# Ou, se o tamanho dos únicos for igual ao tamanho do vetor, está correto:
+length(unique(ech1)) == length(ech1)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## 2) Exemplo com nomes
+Para extrair 3 indivíduos de um vetor de nomes, o raciocínio é o mesmo:
+```{r}
+P <- c("Bob", "Nico", "Ali", "Fabien", "Malik", "John", "Jean", "Chris", "Karl")
+ech2 <- sample(P, 3, replace = FALSE)
+```
+
+## 3) Importação e SAS com data frames
+Para extrair um amostra de linhas de um banco de dados, usamos o sample nos índices das linhas do data frame:
+```{r}
+# Supondo que STID seja seu data frame:
+indices <- sample(1:nrow(STID), 10, replace = FALSE)
+ech_stid <- STID[indices, ] # Extrai as linhas correspondentes aos índices sorteados
+```
+
+
+```{r}
+library(questionr)
+data(hdv2003)
+
+# Tabela simples
+table(hdv2003$freres.soeurs)
+
+# Tabela com porcentagens (mais útil para análise)
+freq(hdv2003$freres.soeurs)
+```
+
+
+
+Exercício 2, item 3: Sondagem Aleatória Simples (SAS)
+b) Extração da Amostra (SAS)
+Para extrair uma amostra de 50 indivíduos (n=50) do conjunto de dados hdv2003, utilizamos a função sample() nos índices das linhas do data frame.
+
+```{r}
+# Definimos o tamanho da amostra
+n <- 50
+
+# Sorteamos 50 índices únicos entre 1 e o total de linhas do hdv2003
+indices <- sample(1:nrow(hdv2003), n, replace = FALSE)
+
+# Criamos o data frame da amostra (ech)
+ech <- hdv2003[indices, ]
+```
+
+
+c) Estimativa da média na amostra
+Agora, calculamos a média da variável freres.soeurs nesta amostra específica.
+```{r}
+# Calculamos a média da amostra
+estimativa_media <- mean(ech$freres.soeurs, na.rm = TRUE)
+print(estimativa_media)
+```
+Nota: O argumento na.rm = TRUE é fundamental, pois ele instrui o R a ignorar valores ausentes (NA) no cálculo da média.  
+
+Exercício 2, item 4: Automatizando com FunçõesAgora vamos criar a função sondage para reproduzir esse processo de forma automática, conforme pedido.  
+
+a) Função sondageEsta função facilitará o seu trabalho, pois você só precisará fornecer o banco de dados, a variável e o tamanho da amostra.  
+```{r}
+sondage <- function(df, var, n) {
+  # Sorteia os índices
+  indices <- sample(1:nrow(df), n, replace = FALSE)
+  # Extrai a amostra
+  ech <- df[indices, ]
+  # Calcula e retorna a média da variável solicitada
+  return(mean(ech[[var]], na.rm = TRUE))
+}
+
+# Exemplo de uso:
+sondage(hdv2003, "freres.soeurs", 50)
+```
+
+b) Função estimations
+Esta função vai "rodar o experimento" várias vezes (nbSond), criando um vetor com várias estimativas diferentes. Isso é o que chamamos de distribuição amostral.
+```{r}
+estimations <- function(df, var, n, nbSond) {
+  resultados <- numeric(nbSond) # Cria um vetor vazio para armazenar os resultados
+  
+  for(i in 1:nbSond) {
+    resultados[i] <- sondage(df, var, n)
+  }
+  
+  return(resultados)
+}
+```
+
+
+Por que fazemos isso?
+Ao rodar a função estimations 1000 vezes, você verá que, embora cada amostra de 50 pessoas dê um resultado diferente, a média dessas 1000 estimativas estará muito próxima da verdadeira média da população total. É assim que validamos se a nossa amostra é um bom "espelho" da população.  Agora que você tem essas funções, tente rodar a questão 4c para armazenar 1000 resultados na variável resultats:
+
+
+```{r}
+resultats <- estimations(hdv2003, "freres.soeurs", 50, 1000)
+```
+
+Análise da Estabilidade das Estimativas
+O objetivo aqui é verificar se, ao repetir o sorteio 1000 vezes, as estimativas se comportam como uma distribuição normal (o que valida a teoria da amostragem).
+
+1. Análise Visual (Boxplot, Histograma e Q-Q Plot)
+Execute os comandos abaixo para visualizar a distribuição dos resultados:
+
+```{r}
+# 4d) Diagrama em caixa (Boxplot)
+boxplot(resultats, main="Distribuição das Estimativas da Média", ylab="Média de irmãos")
+
+# 4e) Histograma
+hist(resultats, breaks=30, main="Histograma das 1000 Estimativas", xlab="Média estimada", col="lightblue")
+
+# 4f) Q-Q Plot e Reta de Henry
+qqnorm(resultats)
+qqline(resultats, col="red")
+```
+
+
+2. Testes Estatísticos (Skewness e Kurtosis)
+Para confirmar a simetria e a forma da distribuição, utilizamos o pacote moments. O Skewness mede a assimetria e o Kurtosis mede o achatamento (se há muitos valores extremos).
+
+```{r}
+# Caso não tenha o pacote instalado: install.packages("moments")
+library(moments)
+
+skewness(resultats) # Valores próximos de 0 indicam simetria
+kurtosis(resultats) # Valor próximo de 3 indica que a distribuição é próxima da normal
+```
+
+Como interpretar e concluir o Exercício 2:Boxplot: Observe se a mediana está bem centralizada e se existem muitos outliers. Valores extremos fora dos "bigodes" indicam amostras que foram muito atípicas durante o sorteio.  Histograma: Se o seu gráfico tiver um formato de "sino", isso visualmente confirma que as estimativas médias tendem à normalidade.  Q-Q Plot: Se os pontos estiverem alinhados sobre a reta vermelha, a distribuição das suas 1000 estimativas segue uma lei normal. Se houver curvatura nas pontas, significa que a distribuição das médias tem "caudas" mais pesadas que a normal.  Skewness e Kurtosis: * Um skewness perto de 0 confirma que não há uma inclinação viciada.  Um kurtosis perto de 3 (ou excesso de curtose perto de 0) sugere uma normalidade ideal.  Conclusão: Ao final, compare a média da população real (mean(hdv2003$freres.soeurs, na.rm=T)) com a média das suas 1000 estimativas. Elas devem ser muito próximas. Isso prova que, embora uma única amostra possa errar, a média das amostras é um estimador não viesado e muito confiável para a população.
+
+Exercício 2, Item 5: Estimação de uma proporçãoa) Por que estimar uma proporção é o mesmo que estimar uma média?Em estatística, quando você tem uma variável binária (0 ou 1, como "não satisfeito" vs "satisfeito"), a média dessa variável é matematicamente igual à proporção de indivíduos que possuem a característica "1".  Se você transformar a variável trav.satisf (que pode ser texto ou fator) em números (0 para não satisfeito, 1 para satisfeito), a média resultará diretamente no percentual de pessoas satisfeitas.b) Estimação da variável trav.satisfPara aplicar isso ao hdv2003, precisamos garantir que o R entenda a variável como binária.
+
+```{r}
+# 1. Transformar a variável de interesse em 0 e 1
+# Supondo que "Satisfait" seja o nível desejado
+hdv2003$satisf_bin <- ifelse(hdv2003$trav.satisf == "Satisfait", 1, 0)
+
+# 2. Aplicar as funções criadas anteriormente usando a nova variável binária
+# Estimativa de uma única amostra
+estimativa_prop <- sondage(hdv2003, "satisf_bin", 50)
+
+# Distribuição de 1000 estimativas
+resultats_prop <- estimations(hdv2003, "satisf_bin", 50, 1000)
+```
+
+```{r}
+unique(hdv2003$trav.satisf)
+```
+
+```{r}
+# Criamos uma coluna nova chamada 'satisf_num' que só tem 0 e 1
+hdv2003$satisf_num <- ifelse(hdv2003$trav.satisf == "Satisfait", 1, 0)
+
+# Agora, peça a média desta coluna nova
+mean(hdv2003$satisf_num, na.rm = TRUE)
+```
+
+
+3. Ajuste na sua função sondage
+Se a sua função sondage está dando esse erro, é porque você está passando o nome da variável original (texto) em vez da variável que você transformou.
+
+Quando for chamar a função, certifique-se de passar o nome da coluna que contém números:
+
+```{r}
+# ERRADO:
+#sondage(hdv2003, "trav.satisf", 50) 
+
+# CERTO (usando a coluna que você transformou em 0 e 1):
+sondage(hdv2003, "satisf_num", 50)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

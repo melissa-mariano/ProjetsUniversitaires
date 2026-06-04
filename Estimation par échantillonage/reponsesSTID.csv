@@ -1,0 +1,100 @@
+"annee","age","nee.france","cp.naissance","sexe","nb.freres.soeurs","taille","pointure","couleur.yeux","couleur.yeux.mere","couleur.derniere.voiture","last.departement","visite","football","rugby","bac","mention","csp","moy.math","bac.math","bac.eps"
+2007,19,"Oui",77000,"Masculin",1,175,42,"Marron","Marron","Noire",77,"Le Mexique","Beaucoup","Un peu","S","P","Cadre, profession intellectuelle supérieure",13,13,18
+2007,19,"Oui",11000,"Masculin",1,179,43,"Marron","Marron","Rouge",66,"Saint-Pétersbourg","Un peu","Un peu","ES","P","Profession intermédiaire",6,13.5,14.5
+2007,18,"Oui",66000,"Masculin",0,182,42,"Bleu","Vert","Blanche",66,,"Beaucoup","Un peu","ES","P","Profession intermédiaire",8,17,15
+2007,20,"Oui",45700,"Masculin",3,171,42,"Bleu","Vert","Grise",45,,"Un peu","Un peu","S","P","Autres",9,12,13
+2007,17,"Oui",31000,"Masculin",2,177,44,"Vert","Vert","Blanche",31,"Île de Pâques","Beaucoup","Beaucoup","ES","AB","Autres",15,17,9
+2007,21,"Oui",94000,"Féminin",1,165,41,"Vert","Bleu","Blanche",66,"Cité de Carcassonne","Pas du tout","Un peu","S","P","Autres",12,11,12
+2007,21,"Oui",59000,"Féminin",3,175,39,"Marron","Marron","Rouge",,"Monaco","Un peu","Pas du tout","STI","P","Retraité",,15,13
+2007,19,"Oui",11000,"Féminin",2,168,40,"Bleu","Vert","Noire",33,,"Pas du tout","Un peu","S","AB","Agriculteur exploitant",,11,12
+2007,18,"Oui",97200,"Féminin",2,164,39,"Marron","Vert","Dorée",97,"Les Bahamas","Pas du tout","Pas du tout","S","AB","Employé",10,11,14
+2007,18,"Oui",66740,"Masculin",1,179,45,"Marron","Marron","Grise",66,"Aqualand","Pas du tout","Pas du tout","ES","AB","Cadre, profession intellectuelle supérieure",10,13,15
+2007,18,"Oui",11000,"Masculin",2,180,44,"Vert","Bleu","Grise",66,"New York","Beaucoup","Un peu","S","P",,8,10,12
+2007,18,"Oui",34000,"Féminin",2,168,40,"Vert","Marron","Bleue",34,"Espagne","Pas du tout","Un peu","ES","P","Employé",11,15,10
+2007,18,"Oui",18100,"Féminin",1,158,37,"Bleu","Marron","Blanche",66,"Londres","Pas du tout","Pas du tout","S","P",,8,10,9
+2007,19,"Oui",11000,"Masculin",1,165,42,"Vert","Vert","Rouge",66,"Los Angeles","Beaucoup","Pas du tout","ES","AB","Artisan, commerçant, profession libérale",17,19,15
+2007,18,"Oui",19100,"Masculin",2,170,41,"Marron","Marron","Rouge",19,"Chutes du Niagara","Beaucoup","Beaucoup","S","AB","Artisan, commerçant, profession libérale",11,17,13
+2007,20,"Oui",11000,"Masculin",2,172,42,"Marron","Bleu","Rouge",34,"Dallas","Un peu","Un peu","S","P","Retraité",8,4,18
+2007,19,"Oui",11610,"Masculin",2,,,"Marron","Marron","Bleue",31,"Santiago Bernabev","Beaucoup","Beaucoup","ES","P","Autres",7,10,14
+2007,20,"Oui",11000,"Féminin",1,160,39,"Marron","Vert","Grise",31,"Paris","Pas du tout","Pas du tout","ES","AB","Employé",14,15,11
+2007,18,"Oui",59000,"Masculin",4,182,47,"Bleu","Vert",,59,"Paris","Un peu","Un peu","S","P","Retraité",6,10,13
+2007,19,"Non",,"Masculin",1,188,45,"Marron","Marron","Noire",9,"Appartements des autres","Un peu","Un peu","ES","P","Artisan, commerçant, profession libérale",12.5,8,14
+2007,20,"Non",,"Masculin",3,175,42,"Marron","Marron","Noire",31,,"Un peu","Un peu","ES","AB","Cadre, profession intellectuelle supérieure",16,17,18
+2007,18,"Oui",34000,"Féminin",1,167,39,"Marron","Marron","Rouge",30,"Sidney","Un peu","Un peu",,,,,,
+2007,18,"Oui",33000,"Féminin",4,169,39,"Bleu","Bleu","Jaune",31,"Vienne","Un peu","Un peu","ES","P","Retraité",12.5,16,11
+2007,20,"Oui",45000,"Féminin",2,159,40,"Vert","Marron","Grise",63,"Pays de l'Est","Un peu","Un peu","ES","P","Cadre, profession intellectuelle supérieure",15,18,13
+2007,20,"Non",,"Masculin",2,183,,"Marron","Marron","Bleue",34,"Lune","Beaucoup","Un peu","S","AB","Cadre, profession intellectuelle supérieure",16,16.5,14
+2009,20,"Oui",69000,"Masculin",2,185,44,"Marron","Marron","grise",31,"Statue liberté (NY)","Beaucoup","Un peu","STG","P","Ouvrier",12,16,
+2009,23,"Non",,"Masculin",2,170,,"Marron","Marron",,,"Paris","Beaucoup","Pas du tout","Autre",,"Agriculteur exploitant",,,
+2009,22,"Non",,"Masculin",1,160,39,"Vert","Bleu","grise",31,"New York","Pas du tout","Un peu","ES","P","Employé",15,17,15
+2009,19,"Oui",84000,"Masculin",2,183,43,"Bleu","Bleu","rouge",34,"Antarctique","Pas du tout","Pas du tout","S","AB","Employé",8,13,13
+2009,19,"Oui",11000,"Masculin",3,175,43,"Vert","Vert","blanche",31,"Barcelone","Beaucoup","Pas du tout","STG","P","Autres",,13,15
+2009,17,"Oui",80000,"Masculin",1,182,44,"Marron","Marron","rose",33,"Afrique du Nord","Un peu","Un peu","S","AB","Artisan, commerçant, profession libérale",10,11,19
+2009,17,"Oui",6600,"Masculin",1,190,46,"Marron","Marron","blanche",66,"Rome","Beaucoup","Un peu","S","P","Cadre, profession intellectuelle supérieure",8,8,15
+2009,25,"Oui",75000,"Masculin",0,179,44,"Marron","Marron","bleu ciel métalisé",78,"Chutes du Niagara","Un peu","Un peu","S","P","Employé",12,12,12
+2009,22,"Non",,"Masculin",1,190,44,"Marron","Marron","noire",66,"Londres","Un peu","Pas du tout","S","P","Employé",12,10,
+2009,20,"Oui",83000,"Masculin",0,172,42,"Vert","Bleu","noire",73,"Rome","Pas du tout","Un peu","S","AB","Cadre, profession intellectuelle supérieure",10,8,10
+2009,18,"Oui",11000,"Masculin",0,180,46,"Marron","Marron","grise",31,"Londres","Pas du tout","Beaucoup","S","P","Ouvrier",10,12,17
+2009,17,"Oui",11000,"Masculin",0,177,44,"Marron","Marron","rouge bordeaux",34,"Grèce","Un peu","Pas du tout","S","P","Artisan, commerçant, profession libérale",10,10,13
+2009,18,"Oui",47000,"Féminin",1,,37,"Marron","Marron","verte",82,"PACA","Un peu","Pas du tout","ES","P","Agriculteur exploitant",16,16,11
+2009,18,"Oui",98714,"Féminin",0,166,41,"Marron","Marron","noire",31,"Québec","Un peu","Pas du tout","ES","P","Employé",15,13,11
+2009,18,"Oui",66000,"Masculin",1,180,44,"Marron","Marron","grise anthracite",66,"Everest","Un peu","Un peu","S","P","Artisan, commerçant, profession libérale",5,8,14
+2009,18,"Oui",31000,"Masculin",2,175,43,"Marron","Marron","grise",31,"Moscou","Beaucoup","Beaucoup","ES","P","Cadre, profession intellectuelle supérieure",14.1,18,13
+2009,19,"Oui",26000,"Féminin",1,171,39,"Marron","Marron","bleue",26,"États-Unis","Un peu","Pas du tout","S","P","Employé",6,6,11
+2009,19,"Oui",78000,"Masculin",2,182,45,"Marron","Marron","grise",66,"Réunion","Un peu","Beaucoup","ES","P","Cadre, profession intellectuelle supérieure",10,8,16
+2009,19,"Oui",66330,"Masculin",2,185,46,"Marron","Marron","grise lunaire",66,"Dubaï","Un peu","Beaucoup","S","P","Employé",11,11,12
+2009,24,"Oui",31000,"Masculin",1,182,46,"Bleu","Marron","grise",31,"Canada","Beaucoup","Beaucoup","S","P","Retraité",10,11,16
+2009,20,"Oui",21000,"Féminin",4,150,36,"Vert","Vert","blanche",34,"Japon","Un peu","Pas du tout","STG","P","Employé",12,16,10
+2009,20,"Non",,"Masculin",2,185,44,"Bleu","Vert","grise",,"Barcelone","Beaucoup","Un peu","S","P","Artisan, commerçant, profession libérale",10,9,17
+2009,21,"Oui",11000,"Masculin",2,183,43,"Marron","Marron","verte",74,"Hollande","Un peu","Un peu","ES","P","Retraité",13,11,14
+2009,18,"Oui",11000,"Masculin",3,173,43,"Marron","Marron","bleue",34,"Guyane","Un peu","Beaucoup","ES","P","Ouvrier",13,13,8
+2009,18,"Oui",11000,"Féminin",3,165,38,"Marron","Marron","grise",31,"États-Unis","Pas du tout","Pas du tout","ES","AB","Ouvrier",17,17,11
+2009,20,"Oui",84000,"Masculin",0,172,41,"Vert","Vert","bleue",34,"Central Park","Beaucoup","Un peu","STG","P","Artisan, commerçant, profession libérale",9,9,16
+2009,19,"Oui",92000,"Féminin",1,168,39,"Marron","Vert","grise",34,"Irlande","Pas du tout","Un peu","S","P","Cadre, profession intellectuelle supérieure",11,7,13
+2009,18,"Oui",31000,"Féminin",2,169,39,"Marron","Marron","grise",31,"New York","Un peu","Beaucoup","ES","P","Cadre, profession intellectuelle supérieure",14,16,13
+2009,18,"Oui",77000,"Féminin",1,158,37,"Bleu","Marron","noire",9,"Paris","Un peu","Un peu","S","AB","Employé",12,11,18
+2009,18,"Oui",11000,"Masculin",1,198,48,"Vert","Marron","grise",53,"Stade Gerland","Beaucoup","Beaucoup","S","AB","Ouvrier",12,11,12
+2009,19,"Oui",11400,"Masculin",1,178,42,"Marron","Marron","violette",,,"Un peu","Pas du tout","ES","P","Profession intermédiaire",14,17,16
+2010,17,"Oui",11000,"Masculin",0,180,44,"Marron","Marron","Noir",66,"Égypte","Pas du tout","Pas du tout","ES","B","Cadre, profession intellectuelle supérieure",10,16,10
+2010,19,"Oui",65000,"Masculin",0,187,46,"Bleu","Marron","Bleu foncé",66,"Paris","Un peu","Beaucoup","S","P","Autres",9.5,8,17
+2010,18,"Oui",31000,"Masculin",1,184,46,"Vert","Marron","Noir",31,"Irlande","Un peu","Beaucoup","S","P","Employé",10,14,16
+2010,17,"Oui",11000,"Masculin",2,170,42,"Marron","Marron","Gris",34,,"Pas du tout","Pas du tout","S","P","Artisan, commerçant, profession libérale",13,11,10
+2010,19,"Oui",81100,"Masculin",4,183,45,"Bleu","Bleu","Gris",81,"La maison blanche","Un peu","Beaucoup","ES","AB","Cadre, profession intellectuelle supérieure",12,15,13
+2010,19,"Oui",11000,"Féminin",2,,36,"Marron","Bleu","Blanc",,"Corse","Un peu","Un peu","STG","AB","Employé",16,15,12
+2010,19,"Oui",11000,"Masculin",0,176,42,"Vert","Marron","Bleu foncé",64,"Australie","Pas du tout","Pas du tout","ES","P","Cadre, profession intellectuelle supérieure",14.5,12,14
+2010,20,"Oui",31000,"Masculin",1,167,41,"Marron","Marron","Gris",30,"Tokyo","Un peu","Un peu","STI","P","Retraité",15,15,14
+2010,18,"Oui",95000,"Masculin",1,171,43,"Marron","Marron","Gris",34,"Plaine des menhirs en Bretagne","Un peu","Pas du tout","S","P","Cadre, profession intellectuelle supérieure",6.5,3,14
+2010,18,"Oui",34000,"Masculin",1,188,47,"Marron","Marron","Gris",34,"Pérou","Beaucoup","Beaucoup","S","B","Artisan, commerçant, profession libérale",12,13,17
+2010,20,"Oui","09100","Féminin",1,160,38,"Vert","Marron","Gris","09","Amérique latine","Pas du tout","Un peu","ES","P","Employé",16,12,12
+2010,20,"Oui",11000,"Masculin",1,167,42,"Marron","Marron",,31,"Marseille","Un peu","Un peu","S","AB","Cadre, profession intellectuelle supérieure",12,11,10
+2010,19,"Oui",69000,"Masculin",1,178,44,"Vert","Marron","Gris anthracite",66,"L'Everest","Un peu","Un peu","S","B","Employé",11,16,14
+2010,18,"Oui",31400,"Féminin",2,175,39,"Marron","Bleu","Gris",31,,"Un peu","Un peu","S","P","Profession intermédiaire",12,12,14
+2010,18,"Oui",66000,"Féminin",0,170,38,"Bleu","Marron","Vert",66,"La Corse","Un peu","Pas du tout","ES","P","Autres",14,15,11
+2010,19,"Oui",31100,"Féminin",4,174,40,"Marron","Bleu","Bleu foncé",31,,"Beaucoup","Un peu","ES","P","Ouvrier",12,10,13
+2010,18,"Oui",,"Masculin",2,175,42,"Marron","Marron","Bleu",95,"Londres","Beaucoup","Un peu","S","P","Autres",7,12,16
+2010,19,"Oui",11000,"Masculin",2,182,45,"Bleu","Marron","Gris",31,"Central Park","Un peu","Un peu","S","P","Retraité",12.5,7,11
+2010,18,"Oui",81500,"Masculin",1,180,44,"Marron","Marron","Vert",31,"Afrique","Beaucoup","Beaucoup","S","P","Autres",13,12,14
+2010,18,"Oui",34000,"Féminin",1,160,38,"Bleu","Vert","Blanc",34,,"Un peu","Un peu","ES","AB","Employé",13.5,15,14
+2010,17,"Oui",31700,"Masculin",1,180,42,"Marron","Marron","Gris",31,"Guadeloupe","Beaucoup","Beaucoup","S","AB","Cadre, profession intellectuelle supérieure",12,15,18
+2010,21,"Oui",80000,"Féminin",1,174,40,"Vert","Vert","Bleu",,,"Pas du tout","Pas du tout","S","B","Employé",12,,
+2010,26,"Oui",33000,"Masculin",4,190,44,"Marron","Marron","Blanc",33,,"Pas du tout","Pas du tout","S","P","Autres",13,14,11
+2010,23,"Oui",88000,"Féminin",1,166,39,"Vert","Marron","Blanc",34,"Mexique","Pas du tout","Pas du tout","ES","P","Artisan, commerçant, profession libérale",10,9,14
+2013,21,"Non",,"Masculin",1,178,,,,"Blanc",,,"Un peu","Un peu","S","P","Artisan, commerçant, profession libérale",9,9,
+2013,17,"Oui",34500,"Féminin",3,164,39,"Marron","Marron","Gris",34,"Bayonne","Pas du tout","Beaucoup","ES","P","Artisan, commerçant, profession libérale",8,13,14
+2013,18,"Oui",66000,"Féminin",2,162,38,"Marron","Marron","Gris",66,"Corse","Pas du tout","Un peu","S","P","Employé",8,13,11
+2013,18,"Oui",11100,"Masculin",1,172,42,"Marron","Marron","Marron",34,"Camp Nou","Un peu","Un peu","Autre","P","Autres",,,15
+2013,18,"Non",,"Masculin",2,,46,"Marron","Marron","Noir",,,"Beaucoup","Pas du tout","S","P","Autres",9,12,16
+2013,18,"Oui",91080,"Masculin",0,,43,"Marron","Marron","Noir",82,"Canada","Pas du tout","Pas du tout","S","AB",,,15,
+2013,18,"Oui","09000","Masculin",1,175,42,"Marron","Marron","Gris","09","Machu Pitchu (Pérou)","Beaucoup","Beaucoup","Autre","P","Ouvrier",19,18,15
+2013,20,"Oui","09000","Masculin",2,176,40,"Vert","Vert","Vert","09","Rio","Un peu","Un peu","Autre","P","Employé",18,17,12
+2013,17,"Oui",11000,"Masculin",1,175,43,"Bleu","Bleu","Bleu",66,"New York","Beaucoup","Un peu","S","AB","Employé",14,12,13
+2013,18,"Oui",11000,"Masculin",0,160,41,"Marron","Marron","Noir",,"Londres","Un peu","Un peu","S","AB","Artisan, commerçant, profession libérale",,13,13
+2013,18,"Oui",31000,"Féminin",1,157,39,"Marron","Marron","Gris",31,"Espagne","Un peu","Un peu","ES","P","Cadre, profession intellectuelle supérieure",13,18,16
+2013,21,"Oui",75000,"Féminin",1,170,38,"Marron","Marron","Bleu",34,"Australie","Un peu","Pas du tout","ES","P","Cadre, profession intellectuelle supérieure",14,16,14
+2013,20,"Oui",,"Masculin",1,,41,"Marron","Marron","Noir",,,"Pas du tout","Un peu","STI","P","Artisan, commerçant, profession libérale",,,
+2013,17,"Oui",,"Féminin",3,157,38,"Vert","Bleu","Gris",85,"Japon","Pas du tout","Pas du tout","S","P","Employé",12,11,16
+2013,18,"Oui",66000,"Masculin",1,176,43,"Marron","Marron","Gris",66,"Tour Eiffel","Beaucoup","Beaucoup","S","P",,13,13,11.5
+2013,18,"Oui",,"Masculin",2,185,42,"Bleu","Bleu","Gris",31,"Norvège","Pas du tout","Pas du tout","S","AB","Artisan, commerçant, profession libérale",15,15,10
+2013,19,"Non",,"Masculin",2,186,49,"Marron","Marron","Or",46,"Barcelone","Un peu","Beaucoup","ES","P","Retraité",10,16,13
+2013,18,"Oui",34500,"Masculin",1,182,45,"Bleu","Vert","Gris",34,"New York","Beaucoup","Un peu","ES","P","Cadre, profession intellectuelle supérieure",15,10,15
+2013,22,"Oui",75018,"Masculin",2,180,44,,"Marron","Rouge",93,"Amérique du Nord","Pas du tout","Pas du tout","S","P","Cadre, profession intellectuelle supérieure",7,10,12
